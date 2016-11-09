@@ -1,0 +1,68 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="yAll4EPlr2_e1um0bWWH0jsp9W8jAliwscuOlcjKBew" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ site.description }}">
+    <meta name="keyword"  content="{{ site.keyword }}">
+    <link rel="shortcut icon" href="{{ site.baseurl }}/img/favicon.ico">
+
+    <title>{% if page.title %}{{ page.title }} - {{ site.SEOTitle }}{% else %}{{ site.SEOTitle }}{% endif %}</title>
+
+    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="{{ "/css/bootstrap.min.css" | prepend: site.baseurl }}">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ "/css/hux-blog.min.css" | prepend: site.baseurl }}">
+
+    <!-- Pygments Github CSS -->
+<!--    <link rel="stylesheet" href="{{ "/css/syntax.css" | prepend: site.baseurl }}">-->
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- add android syntax highlight (1) -->
+    <link rel="stylesheet" href="/css/androidstudio-as.css">
+    <script type="text/javascript" src="/js/highlight.pack-as.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+<!--    带行号的代码显示,此处与上面(1)相辅相成，才能正常显示行号及代码高亮正确-->
+    <link rel="stylesheet" href="/css/androidstudio-ln.css">
+    <script type="text/javascript" src="/js/highlight.pack-ln.js"></script>
+    <script>
+      hljs.tabReplace = '    ';
+      hljs.lineNodes = true;
+      hljs.initHighlightingOnLoad();
+    </script>    
+    
+<!--    prism格式代码显示-->
+<!--
+    <link rel="stylesheet" href="/css/prism.css" data-noprefix />
+    <script src="/js/prism.js"></script>
+-->
+<!--    回顶部CSS和JS-->
+<!--    <link rel="stylesheet" href="/css/dynamic-to-top.css" type="text/css" media="screen" charset="utf-8"/>-->
+    <link href="/topDown/style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/topDown/jquery.js"></script>
+    <script type="text/javascript" src="/topDown/jquery_cmhello.js"></script>
+    <script type="text/javascript">HcmsLazyload("/topDown/space.gif");</script> 
+  
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>

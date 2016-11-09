@@ -1,0 +1,276 @@
+---
+layout:     post
+title:      "Odroid软件开发环境搭建及烧录"
+subtitle:   "熟悉ODROID-XU3平台"
+date:       2016-03-07
+author:     "yuchen"
+header-img: "img/post-bg-odroid.jpg"
+tags:
+    - ODROID-XU3
+    - 开发环境搭建
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>2016-03-07-odroid.html</title>
+  <meta name="generator" content="Haroopad 0.12.2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF) repeat scroll 0 0 transparent;background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:medium none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:medium none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:medium none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:none no-repeat scroll 5px -27px #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:none repeat scroll 0 0 #FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:none repeat scroll 0 0 #EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:none repeat scroll 0 0 #75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:#1A3C6C solid 1px;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-bottom-width:0;border-left-width:0;border-right-width:0;border-top-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;max-width:none;min-height:0;outline-color:#112644;outline-style:none;outline-width:0;overflow-x:visible;overflow-y:visible;padding-bottom:0;padding-left:0;padding-right:0;padding-top:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;border:0 none;color:#ccc;height:3px;padding:0}hr.underscore{border:0 none!important;height:30px;padding:0;-webkit-margin-before:0;-webkit-margin-after:0}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:#fff url(../img/ajax.gif) no-repeat center center}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}.markdown{padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-break:break-all;word-wrap:break-word}.markdown pre{border-radius:3px;word-break:break-all;word-wrap:break-word;overflow:auto}.markdown pre code{display:block}.markdown pre>code{border:1px solid #ccc;white-space:pre;padding:.5em;margin:0}.markdown code{border-radius:3px;word-break:break-all;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown table{padding:0;border-collapse:collapse;border-spacing:0}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.markdown em.underline{font-style:normal;text-decoration:underline}.markdown strong.highlight{color:#000;padding:0 5px;background-color:#fdffb6;-webkit-box-shadow:#fdffb6 0 0 5px;-moz-box-shadow:#fdffb6 0 0 5px;box-shadow:#fdffb6 0 0 5px}.solarized-light{padding:20px;color:#737373;font-size:15px;font-family:"Lucida Grande","Lucida Sans Unicode","Lucida Sans",AppleSDGothicNeo-Medium,'Segoe UI','Malgun Gothic',Verdana,Tahoma,sans-serif;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em;font-family:Consolas,Inconsolata,Courier,monospace}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;color:#dccf8f;background:url(./pojoaque.jpg) repeat scroll left top #181914;-webkit-text-size-adjust:none}.diff .hljs-header,.hljs-comment,.hljs-doctype,.hljs-javadoc,.hljs-template_comment,.lisp .hljs-string{color:#586e75;font-style:italic}.clojure .hljs-title,.css .hljs-tag,.css .rule .hljs-keyword,.hljs-addition,.hljs-keyword,.hljs-winutils,.javascript .hljs-title,.method,.nginx .hljs-title{color:#b64926}.hljs-command,.hljs-hexcolor,.hljs-number,.hljs-phpdoc,.hljs-regexp,.hljs-string,.hljs-tag .hljs-value,.tex .hljs-formula{color:#468966}.clojure .hljs-built_in,.hljs-built_in,.hljs-chunk,.hljs-decorator,.hljs-function .hljs-title,.hljs-id,.hljs-identifier,.hljs-localvars,.hljs-title,.lisp .hljs-title{color:#ffb03b}.hljs-attribute,.hljs-class .hljs-title,.hljs-constant,.hljs-parent,.hljs-type,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number{color:#b58900}.css .hljs-attribute{color:#b89859}.css .hljs-hexcolor,.css .hljs-number{color:#dccf8f}.css .hljs-class{color:#d3a60c}.diff .hljs-change,.hljs-attr_selector,.hljs-cdata,.hljs-important,.hljs-pi,.hljs-pragma,.hljs-preprocessor,.hljs-shebang,.hljs-special,.hljs-subst,.hljs-symbol,.hljs-symbol .hljs-string{color:#cb4b16}.hljs-deletion{color:#dc322f}.tex .hljs-formula{background:#073642}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+
+  <h2 id="odroid软件开发环境搭建及烧录"><a name="odroid软件开发环境搭建及烧录" href="#odroid软件开发环境搭建及烧录"></a>Odroid软件开发环境搭建及烧录</h2><p class="toc" style="float:right"></p><ul>
+<li><ul>
+<li><span class="title">
+<a href="#odroid软件开发环境搭建及烧录" title="Odroid软件开发环境搭建及烧录">Odroid软件开发环境搭建及烧录</a>
+</span>
+<!--span class="number">
+0
+</span-->
+<ul>
+<li><span class="title">
+<a href="#一.odroid-xu3开发板图示" title="一.ODROID-XU3开发板图示">一.ODROID-XU3开发板图示</a>
+</span>
+<!--span class="number">
+1
+</span-->
+</li>
+<li><span class="title">
+<a href="#二.软件开发环境搭建及烧录" title="二.软件开发环境搭建及烧录">二.软件开发环境搭建及烧录</a>
+</span>
+<!--span class="number">
+2
+</span-->
+<ul>
+<li><ul>
+<li><span class="title">
+<a href="#1.系统配置信息" title="1.系统配置信息">1.系统配置信息</a>
+</span>
+<!--span class="number">
+3
+</span-->
+</li>
+<li><span class="title">
+<a href="#2.编译说明" title="2.编译说明">2.编译说明</a>
+</span>
+<!--span class="number">
+4
+</span-->
+</li>
+<li><span class="title">
+<a href="#3.烧录官方release的镜像" title="3.烧录官方release的镜像">3.烧录官方release的镜像</a>
+</span>
+<!--span class="number">
+5
+</span-->
+</li>
+<li><span class="title">
+<a href="#4.编译并安装u-boot" title="4.编译并安装U-boot">4.编译并安装U-boot</a>
+</span>
+<!--span class="number">
+6
+</span-->
+</li>
+<li><span class="title">
+<a href="#5.编译android-kernel和android-platform所需工具链的配置" title="5.编译Android Kernel和Android Platform所需工具链的配置">5.编译Android Kernel和Android Platform所需工具链的配置</a>
+</span>
+<!--span class="number">
+7
+</span-->
+</li>
+<li><span class="title">
+<a href="#6.android-kernel下载" title="6.Android Kernel下载">6.Android Kernel下载</a>
+</span>
+<!--span class="number">
+8
+</span-->
+</li>
+<li><span class="title">
+<a href="#7.android-platform下载" title="7.Android Platform下载">7.Android Platform下载</a>
+</span>
+<!--span class="number">
+9
+</span-->
+</li>
+<li><span class="title">
+<a href="#8.android-kernel编译" title="8.Android Kernel编译">8.Android Kernel编译</a>
+</span>
+<!--span class="number">
+10
+</span-->
+</li>
+<li><span class="title">
+<a href="#9.android-platform编译" title="9.Android Platform编译">9.Android Platform编译</a>
+</span>
+<!--span class="number">
+11
+</span-->
+</li>
+<li><span class="title">
+<a href="#10.安装" title="10.安装">10.安装</a>
+</span>
+<!--span class="number">
+12
+</span-->
+</li>
+<li><span class="title">
+<a href="#11.初始化分区表并重新启动系统" title="11.初始化分区表并重新启动系统">11.初始化分区表并重新启动系统</a>
+</span>
+<!--span class="number">
+13
+</span-->
+</li>
+<li><span class="title">
+<a href="#12.附录" title="12.附录">12.附录</a>
+</span>
+<!--span class="number">
+14
+</span-->
+</li>
+<li><span class="title">
+<a href="#==注意==" title="注意">注意</a>
+</span>
+<!--span class="number">
+15
+</span-->
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+
+</ul>
+<p></p><h3 id="一.odroid-xu3开发板图示"><a name="一.odroid-xu3开发板图示" href="#一.odroid-xu3开发板图示"></a>一.ODROID-XU3开发板图示</h3><p></p><div align="center"><img src="http://img.blog.csdn.net/20151130215340982" alt="图片" title="Odroid开发板简介" style="width:440px;height: 540px;"></div><p></p><p></p><div align="center">开发板硬件介绍<sup class="footnote-ref" id="fnref-f1"><a href="#fn-f1">1</a></sup></div><p></p><h3 id="二.软件开发环境搭建及烧录"><a name="二.软件开发环境搭建及烧录" href="#二.软件开发环境搭建及烧录"></a>二.软件开发环境搭建及烧录</h3><h5 id="1.系统配置信息"><a name="1.系统配置信息" href="#1.系统配置信息"></a>1.系统配置信息</h5><p>&nbsp;&nbsp;&nbsp;&nbsp;1)操作系统：Ubuntu 14.04.3 LTS<br>&nbsp;&nbsp;&nbsp;&nbsp;2)gcc版本：gcc version 4.4.7<br>&nbsp;&nbsp;&nbsp;&nbsp;3)g++版本:gcc version 4.4.7<br>&nbsp;&nbsp;&nbsp;&nbsp;4)JDK版本:java version “1.6.0_45”  </p><h5 id="2.编译说明"><a name="2.编译说明" href="#2.编译说明"></a>2.编译说明</h5><p>建议在编译Odroid的Android版本之前先编译谷歌官方发布的Android源码，按照谷歌官方的方法进行android源码同步及环境配置，参见<a href="http://source.android.com/source/initializing.html">Android官网</a>，简易方法请点击<a href="http://www.wzzju.top/2016/03/02/android/">编译Android4.4.4</a>。</p><h5 id="3.烧录官方release的镜像"><a name="3.烧录官方release的镜像" href="#3.烧录官方release的镜像"></a>3.烧录官方release的镜像</h5><p>为了验证开发版功能，也为了后面烧录内核镜像、Android系统镜像方便，我们首先烧录官方提供的安卓release镜像，这样我们就不需要自己制作<a href="http://odroid.com/dokuwiki/doku.php?id=en:xu3_partition_table">分区表</a>（如，u-boot区、kernel区、system区等，注意：自己划分分区表也很容易出错）。这样，在我们将官方release镜像烧录到SD卡后，我们就搭建好了一个分区框架，之后就可以使用fastboot命令向对应分区烧录镜像。<br><strong class="highlight">烧录官方release镜像步骤：</strong><br>a.准备一个读卡器和一个8G以上的SD卡；<br>b.下载在windows平台上进行烧写的<a href="http://com.odroid.com/sigong/nf_file_board/nfile_board_view.php?bid=199and">工具</a>,用管理员权限打开，方法：选择镜像-&gt;选择U盘符-&gt;点击Write-&gt;点击Verify。<br>c.下载官方release版本镜像（<a href="http://dn.odroid.com/5422/ODROID-XU3/Android/">Download</a>）；<br>d.烧写到SD卡后，即可将SD卡插到板载SD卡槽中，并将启动模式选择为左下右上的模式，即SD Card启动方式，之后Android系统便成功启动。  </p><h5 id="4.编译并安装u-boot"><a name="4.编译并安装u-boot" href="#4.编译并安装u-boot"></a>4.编译并安装U-boot</h5><p>1）下载U-boot交叉编译工具链（<a href="http://dn.odroid.com/toolchains/gcc-linaro-arm-linux-gnueabihf-4.7-2013.04-20130415_linux.tar.bz2">Download</a>）。<br>2）将工具链解压到/opt/toolchains/目录下:</p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ sudo mkdir -p /opt/toolchains
+$ sudo tar jxf gcc-linaro-arm-linux-gnueabihf-4.7-2013.04-20130415_linux.tar.bz2 -C /opt/toolchains/
+&lt;/code&gt;&lt;/pre&gt;">$ sudo mkdir -p /opt/toolchains
+$ sudo tar jxf gcc-linaro-arm-linux-gnueabihf-4.7-2013.04-20130415_linux.tar.bz2 -C /opt/toolchains/
+</code></pre><p>3）配置.bashrc文件</p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ vim ~/.bashrc
+export PATH=/opt/toolchains/gcc-linaro-arm-linux-gnueabihf-4.7-2013.04-20130415_linux/bin:$PATH
+export CROSS_COMPILE=arm-linux-gnueabihf-
+$ source ~/.bashrc
+&lt;/code&gt;&lt;/pre&gt;">$ vim ~/.bashrc
+export PATH=/opt/toolchains/gcc-linaro-arm-linux-gnueabihf-4.7-2013.04-20130415_linux/bin:$PATH
+export CROSS_COMPILE=arm-linux-gnueabihf-
+$ source ~/.bashrc
+</code></pre><p>4)测试工具链是否配置正确：</p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ arm-linux-gnueabihf-gcc -v
+&lt;/code&gt;&lt;/pre&gt;">$ arm-linux-gnueabihf-gcc -v
+</code></pre><p>5)下载U-boot源码:</p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ git clone https://github.com/hardkernel/u-boot.git -b odroidxu3-v2012.07
+&lt;/code&gt;&lt;/pre&gt;">$ git clone https://github.com/hardkernel/u-boot.git -b odroidxu3-v2012.07
+</code></pre><p>6）编译U-boot：</p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ cd u-boot
+$ make odroid_config
+$ make -j4
+&lt;/code&gt;&lt;/pre&gt;">$ cd u-boot
+$ make odroid_config
+$ make -j4
+</code></pre><p>7)因为我们利用了官方的release版本镜像，所以如果需要安装新的u-boot（一般不需要的），可以使用如下命令：</p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;a)u-boot.bin 安装
+
+$ sudo fastboot flash bootloader u-boot.bin
+
+b)bl1.bin 安装
+
+$ sudo fastboot flash fwbl1 sd_fuse/hardkernel/bl1.bin.hardKernel
+
+c)bl2.bin 安装
+
+$ sudo fastboot flash bl2 sd_fuse/hardkernel/bl2.bin.hardKernel
+
+d)tzsw.bin 安装
+
+$ sudo fastboot flash tzsw sd_fuse/hardkernel/tzsw.bin.hardKernel
+
+e)安装完成，使用fastboot重启 ODROID-XU3
+
+$ sudo fastboot reboot
+&lt;/code&gt;&lt;/pre&gt;">a)u-boot.bin 安装
+
+$ sudo fastboot flash bootloader u-boot.bin
+
+b)bl1.bin 安装
+
+$ sudo fastboot flash fwbl1 sd_fuse/hardkernel/bl1.bin.hardKernel
+
+c)bl2.bin 安装
+
+$ sudo fastboot flash bl2 sd_fuse/hardkernel/bl2.bin.hardKernel
+
+d)tzsw.bin 安装
+
+$ sudo fastboot flash tzsw sd_fuse/hardkernel/tzsw.bin.hardKernel
+
+e)安装完成，使用fastboot重启 ODROID-XU3
+
+$ sudo fastboot reboot
+</code></pre><h5 id="5.编译android-kernel和android-platform所需工具链的配置"><a name="5.编译android-kernel和android-platform所需工具链的配置" href="#5.编译android-kernel和android-platform所需工具链的配置"></a>5.编译Android Kernel和Android Platform所需工具链的配置</h5><p>1）下载交叉编译工具链（<a href="http://dn.odroid.com/ODROID-XU/compiler/arm-eabi-4.6.tar.gz">Download</a>）。<br>2）将工具链解压到/opt/toolchains/目录下:  </p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ sudo mkdir -p /opt/toolchains
+$ sudo tar xvfz arm-eabi-4.6.tar.gz -C /opt/toolchains/
+&lt;/code&gt;&lt;/pre&gt;">$ sudo mkdir -p /opt/toolchains
+$ sudo tar xvfz arm-eabi-4.6.tar.gz -C /opt/toolchains/
+</code></pre><p>3）配置.bashrc文件：  </p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ vim ~/.bashrc
+export ARCH=arm
+export CROSS_COMPILE=arm-eabi-
+export PATH=/opt/toolchains/arm-eabi-4.6/bin:$PATH
+$ source ~/.bashrc
+&lt;/code&gt;&lt;/pre&gt;">$ vim ~/.bashrc
+export ARCH=arm
+export CROSS_COMPILE=arm-eabi-
+export PATH=/opt/toolchains/arm-eabi-4.6/bin:$PATH
+$ source ~/.bashrc
+</code></pre><p>4)测试工具链是否配置正确：</p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ arm-eabi-gcc -v
+&lt;/code&gt;&lt;/pre&gt;">$ arm-eabi-gcc -v
+</code></pre><h5 id="6.android-kernel下载"><a name="6.android-kernel下载" href="#6.android-kernel下载"></a>6.Android Kernel下载</h5><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ git clone --depth 1 https://github.com/hardkernel/linux.git -b odroidxu3-3.10.y-android
+$ cd linux
+&lt;/code&gt;&lt;/pre&gt;">$ git clone --depth 1 https://github.com/hardkernel/linux.git -b odroidxu3-3.10.y-android
+$ cd linux
+</code></pre><h5 id="7.android-platform下载"><a name="7.android-platform下载" href="#7.android-platform下载"></a>7.Android Platform下载</h5><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ mkdir &amp;lt;Android Platform Folder Name&amp;gt;
+$ cd &amp;lt;Android Platform Folder Name&amp;gt;
+$ repo init -u https://github.com/hardkernel/android.git -b 5422_4.4.4_master
+$ repo sync
+$ repo start 5422_4.4.4_master --all
+&lt;/code&gt;&lt;/pre&gt;">$ mkdir &lt;Android Platform Folder Name&gt;
+$ cd &lt;Android Platform Folder Name&gt;
+$ repo init -u https://github.com/hardkernel/android.git -b 5422_4.4.4_master
+$ repo sync
+$ repo start 5422_4.4.4_master --all
+</code></pre><h5 id="8.android-kernel编译"><a name="8.android-kernel编译" href="#8.android-kernel编译"></a>8.Android Kernel编译</h5><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ make odroidxu3_defconfig
+$ make -j8
+&lt;/code&gt;&lt;/pre&gt;">$ make odroidxu3_defconfig
+$ make -j8
+</code></pre><p>编译好的Linux kernel image名称为zImage-dtb，位置为：arch/arm/boot/zImage-dtb。</p><h5 id="9.android-platform编译"><a name="9.android-platform编译" href="#9.android-platform编译"></a>9.Android Platform编译</h5><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ ./build.sh odroidxu3
+&lt;/code&gt;&lt;/pre&gt;">$ ./build.sh odroidxu3
+</code></pre><p>编译好的镜像文件位置为：自己设置的输出目录（默认为out）/target/product/odroidxu3/update。</p><h5 id="10.安装"><a name="10.安装" href="#10.安装"></a>10.安装</h5><p>在进行安装内核和安卓平台之前，需要先安装minicom（串口通信工具）、fastboot(烧录工具)和adb（安卓调试工具）。工具安装完成后，即可连接板子和电脑（板子和电脑之间的通信需要使用minicom）。一接通电源就迅速点击“Enter”或者“space”两次，进入fastboot模式，在该模式的终端中输入"fastboot"命令，以等待烧录。重新在电脑上打开一个Linux shell终端，进行如下操作：
+1）内核镜像安装：</p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ sudo fastboot flash kernel &amp;lt;path/of/your/zImage-dtb&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;">$ sudo fastboot flash kernel &lt;path/of/your/zImage-dtb&gt;
+</code></pre><p>2）system.img, userdata.img, cache.img,ramdisk.img安装</p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ sudo fastboot flash system &amp;lt;path/of/your/system.img&amp;gt;
+$ sudo fastboot flash userdata &amp;lt;path/of/your/userdata.img&amp;gt;
+$ sudo fastboot flash cache &amp;lt;path/of/your/cache.img&amp;gt;
+$ sudo fastboot flash ramdisk &amp;lt;path/of/your/ramdisk.img&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;">$ sudo fastboot flash system &lt;path/of/your/system.img&gt;
+$ sudo fastboot flash userdata &lt;path/of/your/userdata.img&gt;
+$ sudo fastboot flash cache &lt;path/of/your/cache.img&gt;
+$ sudo fastboot flash ramdisk &lt;path/of/your/ramdisk.img&gt;
+</code></pre><h5 id="11.初始化分区表并重新启动系统"><a name="11.初始化分区表并重新启动系统" href="#11.初始化分区表并重新启动系统"></a>11.初始化分区表并重新启动系统</h5><pre><code data-origin="&lt;pre&gt;&lt;code&gt;$ sudo fastboot erase fat
+$ sudo fastboot reboot
+&lt;/code&gt;&lt;/pre&gt;">$ sudo fastboot erase fat
+$ sudo fastboot reboot
+</code></pre><h5 id="12.附录"><a name="12.附录" href="#12.附录"></a>12.附录</h5><ol>
+<li><a href="http://www.oschina.net/question/565065_115186?sort=time">minicom的安装方法</a></li>
+<li><a href="http://www.metsky.com/archives/740.html">adb和fastboot的安装方法</a></li>
+<li><a href="http://blog.csdn.net/aganlengzi/article/details/47185571">adb shell error: device not found 的解决方法</a></li>
+</ol><h5 id="==注意=="><a name="==注意==" href="#==注意=="></a><strong class="highlight">注意</strong></h5><p>1)ODROID-XU3将各种镜像烧录到SD卡以及主机运行的adb shell命令都是通过板载USB3.0进行的，而ODROID-XU3运行时的数据输出通过串口转USB传到电脑上（接通电源前运行<code>sudo minicom</code>命令即可完成ODROID-XU3与电脑主机的通信，ODROID-XU3上系统正常运行后会在主机终端上也显示一个adb shell命令终端，但是这个终端是在ODROID-XU3上的安卓系统运行并传送到主机shell终端上的）。<br>2)ODROID-XU3上的USB3.0可以用移动硬盘的数据线，但是必须插在主机的USB2.0端口上，否则会导致adb shell error: device not found错误（插在主机的USB3.0端口上就会发生该错误，这一点很是奇怪）。<br>3）不管哪部分镜像烧写后，只需要利用<code>$ sudo fastboot reboot</code>命令重启开发板即可。  </p><hr><ol class="footnotes"><li id="fn-f1"><p>图片引自<a href="http://blog.csdn.net/aganlengzi/article/details/50119419">http://blog.csdn.net/aganlengzi/article/details/50119419</a><a href="#fnref-f1">↩</a></p>
+</li></ol>
+  
+<h5 id="==补充=="><a name="==补充==" href="#==补充=="></a><strong class="highlight">补充</strong></h5><p>1)后期版本中ODROID-XU3已经将内核源码合并在Android repo中。可以使用如下命令进行选择性编译：<br>
+<code>./build.sh odroidxu3 kernel</code>:只编译内核;<br>
+<code>./build.sh odroidxu3 platform</code>:只编译Android
+平台;<br>
+<code>./build.sh odroidxu3 all</code> 或 <code>./build.sh odroidxu3</code>：将内核和Android平台都进行编译。<br>
+2)我将build.sh文件中的<code># make ARCH=arm $PRODUCT_BOARD"_defconfig"</code>这一句注释掉了，这样不允许build.sh每次都自动生成.config文件，这样我们就可以自定义编译配置文件。</p>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>

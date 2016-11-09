@@ -1,0 +1,323 @@
+---
+layout:     post
+title:      "JavaFX程序部署"
+subtitle:   "使用JavaFX开发桌面应用程序"
+date:       2016-05-06
+author:     "yuchen"
+header-img: "img/post-bg-odroid.jpg"
+tags:
+    - JavaFX
+    - Deploy
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>javafx-deploy.html</title>
+  <meta name="generator" content="Haroopad 0.13.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF);background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:5px -27px no-repeat #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:#FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:#EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:#75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:1px solid #1A3C6C;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin:0;max-width:none;min-height:0;outline:#112644 0;overflow-x:visible;overflow-y:visible;padding:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}.mermaid .label{color:#333}.node circle,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.edgePath .path{stroke:green;stroke-width:1.5px}.cluster rect{fill:#cdffb2;rx:40;stroke:#6eaa49;stroke-width:1px}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{stroke-width:1.5;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#333}.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:'trebuchet ms',verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:lightgrey;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:lightgrey;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}text{font-family:'trebuchet ms',verdana,arial;font-size:14px}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x;border:0;height:3px;padding:0}hr.underscore{border-top-style:dashed!important}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:url(../img/ajax.gif) center center no-repeat #fff}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}input.task-list-item{margin-left:-1.62em}.markdown{font-family:"Hiragino Sans GB","Microsoft YaHei",STHeiti,SimSun,"Lucida Grande","Lucida Sans Unicode","Lucida Sans",'Segoe UI',AppleSDGothicNeo-Medium,'Malgun Gothic',Verdana,Tahoma,sans-serif;padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-wrap:break-word}.markdown pre{border-radius:3px;word-wrap:break-word;border:1px solid #ccc;overflow:auto;padding:.5em}.markdown pre code{border:0;display:block}.markdown pre>code{font-family:Consolas,Inconsolata,Courier,monospace;font-weight:700;white-space:pre;margin:0}.markdown code{border-radius:3px;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown mark{color:#000;background-color:#fcf8e3}.markdown table{padding:0;border-collapse:collapse;border-spacing:0;margin-bottom:16px}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.solarized-light{padding:20px;color:#737373;font-size:15px;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;color:#dccf8f;background:url(/images/pojoaque.jpg) left top #181914;-webkit-text-size-adjust:none}.diff .hljs-header,.hljs-comment,.hljs-doctype,.hljs-javadoc,.lisp .hljs-string{color:#586e75;font-style:italic}.css .hljs-tag,.css .rule .hljs-keyword,.hljs-addition,.hljs-keyword,.hljs-list .hljs-keyword,.hljs-winutils,.javascript .hljs-title,.method,.nginx .hljs-title{color:#b64926}.hljs-command,.hljs-dartdoc,.hljs-hexcolor,.hljs-number,.hljs-phpdoc,.hljs-regexp,.hljs-string,.hljs-tag .hljs-value,.tex .hljs-formula{color:#468966}.hljs-built_in,.hljs-chunk,.hljs-decorator,.hljs-function .hljs-title,.hljs-id,.hljs-identifier,.hljs-localvars,.hljs-title{color:#ffb03b}.hljs-attribute,.hljs-class .hljs-title,.hljs-constant,.hljs-parent,.hljs-type,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number{color:#b58900}.css .hljs-attribute{color:#b89859}.css .hljs-hexcolor,.css .hljs-number{color:#dccf8f}.css .hljs-class{color:#d3a60c}.diff .hljs-change,.hljs-attr_selector,.hljs-cdata,.hljs-important,.hljs-pi,.hljs-pragma,.hljs-preprocessor,.hljs-shebang,.hljs-special,.hljs-subst,.hljs-symbol,.hljs-symbol .hljs-string{color:#cb4b16}.hljs-deletion{color:#dc322f}.tex .hljs-formula{background:#073642}.MathJax_Hover_Frame{border-radius:.25em;-webkit-border-radius:.25em;-moz-border-radius:.25em;-khtml-border-radius:.25em;box-shadow:0 0 15px #83A;-webkit-box-shadow:0 0 15px #83A;-moz-box-shadow:0 0 15px #83A;-khtml-box-shadow:0 0 15px #83A;border:1px solid #A6D!important;display:inline-block;position:absolute}.MathJax_Hover_Arrow{position:absolute;width:15px;height:11px;cursor:pointer}#MathJax_About{position:fixed;left:50%;width:auto;text-align:center;border:3px outset;padding:1em 2em;background-color:#DDD;color:#000;cursor:default;font-family:message-box;font-size:120%;font-style:normal;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;z-index:201;border-radius:15px;-webkit-border-radius:15px;-moz-border-radius:15px;-khtml-border-radius:15px;box-shadow:0 10px 20px gray;-webkit-box-shadow:0 10px 20px gray;-moz-box-shadow:0 10px 20px gray;-khtml-box-shadow:0 10px 20px gray;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}.MathJax_Menu{position:absolute;background-color:#fff;color:#000;width:auto;padding:2px;border:1px solid #CCC;margin:0;cursor:default;font:menu;text-align:left;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;z-index:201;box-shadow:0 10px 20px gray;-webkit-box-shadow:0 10px 20px gray;-moz-box-shadow:0 10px 20px gray;-khtml-box-shadow:0 10px 20px gray;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}.MathJax_MenuItem{padding:2px 2em;background:0 0}.MathJax_MenuArrow{position:absolute;right:.5em;color:#666}.MathJax_MenuActive .MathJax_MenuArrow{color:#fff}.MathJax_MenuArrow.RTL{left:.5em;right:auto}.MathJax_MenuCheck{position:absolute;left:.7em}.MathJax_MenuCheck.RTL{right:.7em;left:auto}.MathJax_MenuRadioCheck{position:absolute;left:1em}.MathJax_MenuRadioCheck.RTL{right:1em;left:auto}.MathJax_MenuLabel{padding:2px 2em 4px 1.33em;font-style:italic}.MathJax_MenuRule{border-top:1px solid #CCC;margin:4px 1px 0}.MathJax_MenuDisabled{color:GrayText}.MathJax_MenuActive{background-color:Highlight;color:HighlightText}.MathJax_Menu_Close{position:absolute;width:31px;height:31px;top:-15px;left:-15px}#MathJax_Zoom{position:absolute;background-color:#F0F0F0;overflow:auto;display:block;z-index:301;padding:.5em;border:1px solid #000;margin:0;font-weight:400;font-style:normal;text-align:left;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;box-shadow:5px 5px 15px #AAA;-webkit-box-shadow:5px 5px 15px #AAA;-moz-box-shadow:5px 5px 15px #AAA;-khtml-box-shadow:5px 5px 15px #AAA;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}#MathJax_ZoomOverlay{position:absolute;left:0;top:0;z-index:300;display:inline-block;width:100%;height:100%;border:0;padding:0;margin:0;background-color:#fff;opacity:0;filter:alpha(opacity=0)}#MathJax_ZoomFrame{position:relative;display:inline-block;height:0;width:0}#MathJax_ZoomEventTrap{position:absolute;left:0;top:0;z-index:302;display:inline-block;border:0;padding:0;margin:0;background-color:#fff;opacity:0;filter:alpha(opacity=0)}.MathJax_Preview{color:#888}#MathJax_Message{position:fixed;left:1px;bottom:2px;background-color:#E6E6E6;border:1px solid #959595;margin:0;padding:2px 8px;z-index:102;color:#000;font-size:80%;width:auto;white-space:nowrap}#MathJax_MSIE_Frame{position:absolute;top:0;left:0;width:0;z-index:101;border:0;margin:0;padding:0}.MathJax_Error{color:#C00;font-style:italic}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+<h2 id="javafx程序部署"><a name="javafx程序部署" href="#javafx程序部署"></a>JavaFX程序部署</h2><hr class="page"><h4 id="0.准备工作"><a name="0.准备工作" href="#0.准备工作"></a>0.准备工作</h4><p>安装 Inno Setup，为应用程序创建一个单独.exe文件的Windows安装器。生成的.exe执行用户级别的安装（无需管理员权限），也创建一个快捷方式（菜单和桌面）。</p><ul>
+<li>下载<a href="http://www.jrsoftware.org/isdl.php">Inno Setup 5</a>以后版本，安装Inno程序到你的计算机上。我们的Ant脚本将使用它自动生成安装器。</li><li>添加Inno安装路径到Path环境变量中。<br><img src="/images/posts/deploy01.png" alt="Path设置">  </li><li>安装完成后，需要重启Eclipse。</li></ul><h4 id="1.新建javafx工程"><a name="1.新建javafx工程" href="#1.新建javafx工程"></a>1.新建JavaFX工程</h4><ul>
+<li>AppDeploy工程项目内容如下：<br><img src="/images/posts/deploy00.png" alt="AppDeploy">  </li></ul><h4 id="2.编辑build.fxbuild文件"><a name="2.编辑build.fxbuild文件" href="#2.编辑build.fxbuild文件"></a>2.编辑build.fxbuild文件</h4><ul>
+<li>编辑如下(1)~(6)部分。<br><img src="/images/posts/deploy02.png" alt="编辑build.fxbuild">  </li><li>点击(7)部分”仅生成ant build.xml文件”。<ul>
+<li>出现一个”Not a JDK”对话框，选择”No”。</li><br><img src="/images/posts/deploy17.png" alt="Not a JDK"></ul>
+</li></ul><p>此时，工程项目内容如下：<br><img src="/images/posts/deploy03.png" alt="build.xml">  </p><h4 id="3.添加安装程序图标"><a name="3.添加安装程序图标" href="#3.添加安装程序图标"></a>3.添加安装程序图标</h4><ul>
+<li>在build目录下创建下面的子目录:<ul>
+<li>build/package/windows (只用于Windows)</li></ul>
+</li><li>将相关图标到windows目录中，现在工程项目内容如下：<br><img src="/images/posts/deploy04.png" alt="windows">  </li><li><mark>注意</mark>：图标的名称必须精确匹配build.fxbuild中指定的<strong>Application的标题名</strong>。<ul>
+<li>YourAppTitle.ico</li><li>YourAppTitle-setup-icon.bmp</li></ul>
+</li></ul><h4 id="4.添加资源文件"><a name="4.添加资源文件" href="#4.添加资源文件"></a>4.添加资源文件</h4><p>resources目录不能自动拷贝，必须手动添加它到build目录下:</p><ul>
+<li>在build目录下创建下面的子目录:<ul>
+<li>build/dist</li></ul>
+</li><li>拷贝resources目录（包含应用的图标）到build/dist。
+此时，工程项目的内容如下：<br><img src="/images/posts/deploy05.png" alt="dist">  </li></ul><h4 id="5.编辑build.xml"><a name="5.编辑build.xml" href="#5.编辑build.xml"></a>5.编辑build.xml</h4><p>e(fx)clipse没有告诉它包含其它资源，例如resources目录和上面添加的安装文件图标，必须手动编辑build.xml文件。
+打开build.xml文件，找到路径fxant。添加一行到${basedir}，使得安装器图标可用。</p><pre class="xml hljs"><code class="XML" data-origin="<pre><code class=&quot;XML&quot;>        &amp;lt;path id=&quot;fxant&quot;&amp;gt;
+            &amp;lt;filelist&amp;gt;
+                &amp;lt;file name=&quot;${java.home}\..\lib\ant-javafx.jar&quot;/&amp;gt;
+                &amp;lt;file name=&quot;${java.home}\lib\jfxrt.jar&quot;/&amp;gt;
+                &amp;lt;file name=&quot;${basedir}&quot;/&amp;gt;
+            &amp;lt;/filelist&amp;gt;
+        &amp;lt;/path&amp;gt;
+</code></pre>">        <span class="hljs-tag">&lt;<span class="hljs-title">path</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"fxant"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">filelist</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">file</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"${java.home}\..\lib\ant-javafx.jar"</span>/&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">file</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"${java.home}\lib\jfxrt.jar"</span>/&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">file</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"${basedir}"</span>/&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">filelist</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">path</span>&gt;</span>
+</code></pre><p>找到块fx:resources id=”appRes”，文件的更下面位置。为resources添加一行：</p><pre class="xml hljs"><code class="XML" data-origin="<pre><code class=&quot;XML&quot;>        &amp;lt;fx:resources id=&quot;appRes&quot;&amp;gt;
+            &amp;lt;fx:fileset dir=&quot;dist&quot; includes=&quot;AppDeploy.jar&quot;/&amp;gt;
+            &amp;lt;fx:fileset dir=&quot;dist&quot; includes=&quot;libs/*&quot;/&amp;gt;
+            &amp;lt;fx:fileset dir=&quot;dist&quot; includes=&quot;resources/**&quot;/&amp;gt;
+        &amp;lt;/fx:resources&amp;gt;
+</code></pre>">        <span class="hljs-tag">&lt;<span class="hljs-title">fx:resources</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"appRes"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">fx:fileset</span> <span class="hljs-attribute">dir</span>=<span class="hljs-value">"dist"</span> <span class="hljs-attribute">includes</span>=<span class="hljs-value">"AppDeploy.jar"</span>/&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">fx:fileset</span> <span class="hljs-attribute">dir</span>=<span class="hljs-value">"dist"</span> <span class="hljs-attribute">includes</span>=<span class="hljs-value">"libs/*"</span>/&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">fx:fileset</span> <span class="hljs-attribute">dir</span>=<span class="hljs-value">"dist"</span> <span class="hljs-attribute">includes</span>=<span class="hljs-value">"resources/**"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">fx:resources</span>&gt;</span>
+</code></pre><p>有时候，版本数不能添加到fx:application中，使得安装器总是缺省的版本1.0。为了修复它，手动添加版本号:</p><pre class="xml hljs"><code class="XML" data-origin="<pre><code class=&quot;XML&quot;>        &amp;lt;fx:application id=&quot;fxApplication&quot;
+            name=&quot;AppDeploy&quot;
+            mainClass=&quot;ch.makery.address.MainApp&quot;
+            version=&quot;1.6&quot;
+        /&amp;gt;
+</code></pre>">        <span class="hljs-tag">&lt;<span class="hljs-title">fx:application</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"fxApplication"</span>
+            <span class="hljs-attribute">name</span>=<span class="hljs-value">"AppDeploy"</span>
+            <span class="hljs-attribute">mainClass</span>=<span class="hljs-value">"ch.makery.address.MainApp"</span>
+            <span class="hljs-attribute">version</span>=<span class="hljs-value">"1.6"</span>
+        /&gt;</span>
+</code></pre><h4 id="6.运行build.xml"><a name="6.运行build.xml" href="#6.运行build.xml"></a>6.运行build.xml</h4><p>使用ant运行build.xml，右击 build.xml文件| Run As | Ant Build。  </p><ul>
+<li>命令运行如下：<br><img src="/images/posts/deploy06.png" alt="ant" title="Ant Build" style="width:600px;height:80px"><br>构建完成后，选择项目根目录，按F5刷新项目内容，此时工程项目内容如下：<br><img src="/images/posts/deploy07.png" alt="ant build"><br>文件夹bundles下的AppDeploy-1.6.exe即为Windows安装文件，此时的安装文件在安装时运行界面如下：<br><img src="/images/posts/deploy08.png" alt="app install"><br>可以看出，安装程序不允许用户选择安装目录，程序将默认安装在<code>C:\Users\**\AppData\Local\application name</code>目录下。</li></ul><h4 id="7.改变安装目录"><a name="7.改变安装目录" href="#7.改变安装目录"></a>7.改变安装目录</h4><ul>
+<li>查看刚才Ant Build运行时Eclipse的Console端输出内容：</li></ul><pre class="bash hljs"><code class="Bash" data-origin="<pre><code class=&quot;Bash&quot;>Buildfile: H:\EclipseWorkplace\AppDeploy\build\build.xml
+
+......
+
+使用以下位置的基础 JDK: G:\Java\jdk1.8.0_66\jre
+使用以下位置的基础 JDK: G:\Java\jdk1.8.0_66\jre
+Using custom package resource [application icon]  (loaded from package/windows/AppDeploy.ico)
+Icon File Name: C:\Users\**\AppData\Local\Temp\fxbundler8755168410396838924\windows\AppDeploy.ico
+Executable File Name: C:\Users\**\AppData\Local\Temp\fxbundler8755168410396838924\images\win-exe.image\AppDeploy\AppDeploy.exe
+  Config files are saved to C:\Users\**\AppData\Local\Temp\fxbundler8755168410396838924\windows. Use them to customize package.
+  Using default package resource [InnoSetup 项目文件]  (add package/windows/AppDeploy.iss to the class path to customize)
+  Using custom package resource [设置对话框图标]  (loaded from package/windows/AppDeploy-setup-icon.bmp)
+Using default package resource [要在填充应用程序映像之后运行的脚本]  (add package/windows/AppDeploy-post-image.wsf to the class path to customize)
+Inno Setup 5 Command-Line Compiler
+......
+
+Successful compile (66.859 sec). Resulting Setup program filename is:
+H:\EclipseWorkplace\AppDeploy\build\deploy\bundles\AppDeploy-1.6.exe
+安装程序 (.exe) 已保存到: H:\EclipseWorkplace\AppDeploy\build\deploy\bundles
+  配置文件已保存到C:\Users\**\AppData\Local\Temp\fxbundler8755168410396838924\windows。使用这些配置文件可定制程序包。
+BUILD SUCCESSFUL
+Total time: 1 minute 26 seconds
+</code></pre>">Buildfile: H:\EclipseWorkplace\AppDeploy\build\build.xml
+
+......
+
+使用以下位置的基础 JDK: G:\Java\jdk1.<span class="hljs-number">8.0</span>_66\jre
+使用以下位置的基础 JDK: G:\Java\jdk1.<span class="hljs-number">8.0</span>_66\jre
+Using custom package resource [application icon]  (loaded from package/windows/AppDeploy.ico)
+Icon File Name: C:\Users\**\AppData\Local\Temp\fxbundler8755168410396838924\windows\AppDeploy.ico
+Executable File Name: C:\Users\**\AppData\Local\Temp\fxbundler8755168410396838924\images\win-exe.image\AppDeploy\AppDeploy.exe
+  Config files are saved to C:\Users\**\AppData\Local\Temp\fxbundler8755168410396838924\windows. Use them to customize package.
+  Using default package resource [InnoSetup 项目文件]  (add package/windows/AppDeploy.iss to the class path to customize)
+  Using custom package resource [设置对话框图标]  (loaded from package/windows/AppDeploy-setup-icon.bmp)
+Using default package resource [要在填充应用程序映像之后运行的脚本]  (add package/windows/AppDeploy-post-image.wsf to the class path to customize)
+Inno Setup <span class="hljs-number">5</span> Command-Line Compiler
+......
+
+Successful compile (<span class="hljs-number">66.859</span> sec). Resulting Setup program filename is:
+H:\EclipseWorkplace\AppDeploy\build\deploy\bundles\AppDeploy-<span class="hljs-number">1.6</span>.exe
+安装程序 (.exe) 已保存到: H:\EclipseWorkplace\AppDeploy\build\deploy\bundles
+  配置文件已保存到C:\Users\**\AppData\Local\Temp\fxbundler8755168410396838924\windows。使用这些配置文件可定制程序包。
+BUILD SUCCESSFUL
+Total time: <span class="hljs-number">1</span> minute <span class="hljs-number">26</span> seconds
+</code></pre><p>其中，有一句<code>配置文件已保存到C:\Users\**\AppData\Local\Temp\fxbundler8755168410396838924\windows。使用这些配置文件可定制程序包。</code>打开<code>C:\Users\**\AppData\Local\Temp\fxbundler8755168410396838924\windows</code>文件夹，其内容如下：  </p><p><img src="/images/posts/deploy09.png" alt="app install">  </p><ul>
+<li><p>将上述文件夹中的AppDeploy.iss文件拷贝到<code>package/windows/</code>目录下。
+此时，工程项目的内容如下：<br><img src="/images/posts/deploy10.png" alt="app install">  </p>
+</li><li><p>修改AppDeploy.iss文件内容，以支持用户选择安装目录：</p>
+<ul>
+<li>修改的原内容如下：<pre class="makefile hljs"><code class="Makefile" data-origin="<pre><code class=&quot;Makefile&quot;>DefaultDirName={localappdata}\AppDeploy
+DisableStartupPrompt=Yes
+DisableDirPage=Yes
+DisableProgramGroupPage=Yes
+DisableReadyPage=Yes
+DisableFinishedPage=Yes
+DisableWelcomePage=Yes
+</code></pre>"><span class="hljs-constant">DefaultDirName</span>={localappdata}\AppDeploy
+<span class="hljs-constant">DisableStartupPrompt</span>=Yes
+<span class="hljs-constant">DisableDirPage</span>=Yes
+<span class="hljs-constant">DisableProgramGroupPage</span>=Yes
+<span class="hljs-constant">DisableReadyPage</span>=Yes
+<span class="hljs-constant">DisableFinishedPage</span>=Yes
+<span class="hljs-constant">DisableWelcomePage</span>=Yes
+</code></pre>
+</li><li>修改后内容为：<pre class="makefile hljs"><code class="Makefile" data-origin="<pre><code class=&quot;Makefile&quot;>DefaultDirName={pf}\AppDeploy
+DisableStartupPrompt=Yes
+DisableDirPage=No
+DisableProgramGroupPage=Yes
+DisableReadyPage=No
+DisableFinishedPage=No
+DisableWelcomePage=No
+</code></pre>"><span class="hljs-constant">DefaultDirName</span>={pf}\AppDeploy
+<span class="hljs-constant">DisableStartupPrompt</span>=Yes
+<span class="hljs-constant">DisableDirPage</span>=No
+<span class="hljs-constant">DisableProgramGroupPage</span>=Yes
+<span class="hljs-constant">DisableReadyPage</span>=No
+<span class="hljs-constant">DisableFinishedPage</span>=No
+<span class="hljs-constant">DisableWelcomePage</span>=No
+</code></pre>
+</li></ul>
+<ul>
+<li>上述含义：  <ul>
+<li>DefaultDirName={pf}\AppDeploy:默认安装目录设为C:\Program File\ApplicationName。</li><li>DisableDirPage=No：允许用户选择安装目录</li><li>DisableReadyPage=No：显示就绪安装界面</li><li>DisableFinishedPage=No：显示安装完成界面</li><li>DisableWelcomePage=No：显示安装程序欢迎界面</li></ul>
+</li></ul>
+</li><li><p>AppDeploy.iss文件完整内容如下：</p>
+</li></ul><pre class="makefile hljs"><code class="Makefile" data-origin="<pre><code class=&quot;Makefile&quot;>;This file will be executed next to the application bundle image
+;I.e. current directory will contain folder AppDeploy with application files
+[Setup]
+AppId={{fxApplication}}
+AppName=AppDeploy
+AppVersion=1.6
+AppVerName=AppDeploy 1.6
+AppPublisher=makery.ch
+AppComments=AppDeploy
+AppCopyright=Copyright (C) 2016
+;AppPublisherURL=http://java.com/
+;AppSupportURL=http://java.com/
+;AppUpdatesURL=http://java.com/
+DefaultDirName={pf}\AppDeploy
+DisableStartupPrompt=Yes
+DisableDirPage=No
+DisableProgramGroupPage=Yes
+DisableReadyPage=No
+DisableFinishedPage=No
+DisableWelcomePage=No
+DefaultGroupName=makery.ch
+;Optional License
+LicenseFile=
+;WinXP or above
+MinVersion=0,5.1 
+OutputBaseFilename=AppDeploy-1.6
+Compression=lzma
+SolidCompression=yes
+PrivilegesRequired=lowest
+SetupIconFile=AppDeploy\AppDeploy.ico
+UninstallDisplayIcon={app}\AppDeploy.ico
+UninstallDisplayName=AppDeploy
+WizardImageStretch=No
+WizardSmallImageFile=AppDeploy-setup-icon.bmp   
+ArchitecturesInstallIn64BitMode=x64
+
+
+[Languages]
+Name: &quot;english&quot;; MessagesFile: &quot;compiler:Default.isl&quot;
+
+[Files]
+Source: &quot;AppDeploy\AppDeploy.exe&quot;; DestDir: &quot;{app}&quot;; Flags: ignoreversion
+Source: &quot;AppDeploy\*&quot;; DestDir: &quot;{app}&quot;; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Icons]
+Name: &quot;{group}\AppDeploy&quot;; Filename: &quot;{app}\AppDeploy.exe&quot;; IconFilename: &quot;{app}\AppDeploy.ico&quot;; Check: returnTrue()
+Name: &quot;{commondesktop}\AppDeploy&quot;; Filename: &quot;{app}\AppDeploy.exe&quot;;  IconFilename: &quot;{app}\AppDeploy.ico&quot;; Check: returnFalse()
+
+
+[Run]
+Filename: &quot;{app}\AppDeploy.exe&quot;; Parameters: &quot;-Xappcds:generatecache&quot;; Check: returnFalse()
+Filename: &quot;{app}\AppDeploy.exe&quot;; Description: &quot;{cm:LaunchProgram,AppDeploy}&quot;; Flags: nowait postinstall skipifsilent; Check: returnTrue()
+Filename: &quot;{app}\AppDeploy.exe&quot;; Parameters: &quot;-install -svcName &quot;&quot;AppDeploy&quot;&quot; -svcDesc &quot;&quot;AppDeploy&quot;&quot; -mainExe &quot;&quot;AppDeploy.exe&quot;&quot;  &quot;; Check: returnFalse()
+
+[UninstallRun]
+Filename: &quot;{app}\AppDeploy.exe &quot;; Parameters: &quot;-uninstall -svcName AppDeploy -stopOnUninstall&quot;; Check: returnFalse()
+
+[Code]
+function returnTrue(): Boolean;
+begin
+  Result := True;
+end;
+
+function returnFalse(): Boolean;
+begin
+  Result := False;
+end;
+
+function InitializeSetup(): Boolean;
+begin
+// Possible future improvements:
+//   if version less or same =&amp;gt; just launch app
+//   if upgrade =&amp;gt; check if same app is running and wait for it to exit
+//   Add pack200/unpack200 support? 
+  Result := True;
+end;
+</code></pre>">;This file will be executed next to the application bundle image
+;I.e. current directory will contain folder AppDeploy with application files
+[Setup]
+<span class="hljs-constant">AppId</span>={{fxApplication}}
+<span class="hljs-constant">AppName</span>=AppDeploy
+<span class="hljs-constant">AppVersion</span>=1.6
+<span class="hljs-constant">AppVerName</span>=AppDeploy 1.6
+<span class="hljs-constant">AppPublisher</span>=makery.ch
+<span class="hljs-constant">AppComments</span>=AppDeploy
+<span class="hljs-constant">AppCopyright</span>=Copyright (C) 2016
+;AppPublisherURL=http://java.com/
+;AppSupportURL=http://java.com/
+;AppUpdatesURL=http://java.com/
+<span class="hljs-constant">DefaultDirName</span>={pf}\AppDeploy
+<span class="hljs-constant">DisableStartupPrompt</span>=Yes
+<span class="hljs-constant">DisableDirPage</span>=No
+<span class="hljs-constant">DisableProgramGroupPage</span>=Yes
+<span class="hljs-constant">DisableReadyPage</span>=No
+<span class="hljs-constant">DisableFinishedPage</span>=No
+<span class="hljs-constant">DisableWelcomePage</span>=No
+<span class="hljs-constant">DefaultGroupName</span>=makery.ch
+;Optional License
+<span class="hljs-constant">LicenseFile</span>=
+;WinXP or above
+<span class="hljs-constant">MinVersion</span>=0,5.1 
+<span class="hljs-constant">OutputBaseFilename</span>=AppDeploy-1.6
+<span class="hljs-constant">Compression</span>=lzma
+<span class="hljs-constant">SolidCompression</span>=yes
+<span class="hljs-constant">PrivilegesRequired</span>=lowest
+<span class="hljs-constant">SetupIconFile</span>=AppDeploy\AppDeploy.ico
+<span class="hljs-constant">UninstallDisplayIcon</span>={app}\AppDeploy.ico
+<span class="hljs-constant">UninstallDisplayName</span>=AppDeploy
+<span class="hljs-constant">WizardImageStretch</span>=No
+<span class="hljs-constant">WizardSmallImageFile</span>=AppDeploy-setup-icon.bmp   
+<span class="hljs-constant">ArchitecturesInstallIn64BitMode</span>=x64
+
+
+[Languages]
+Name: "english"; MessagesFile: "compiler:Default.isl"
+
+[Files]
+Source: "AppDeploy\AppDeploy.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "AppDeploy\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Icons]
+Name: "{group}\AppDeploy"; Filename: "{app}\AppDeploy.exe"; IconFilename: "{app}\AppDeploy.ico"; Check: returnTrue()
+Name: "{commondesktop}\AppDeploy"; Filename: "{app}\AppDeploy.exe";  IconFilename: "{app}\AppDeploy.ico"; Check: returnFalse()
+
+
+[Run]
+Filename: "{app}\AppDeploy.exe"; Parameters: "-Xappcds:generatecache"; Check: returnFalse()
+Filename: "{app}\AppDeploy.exe"; Description: "{cm:LaunchProgram,AppDeploy}"; Flags: nowait postinstall skipifsilent; Check: returnTrue()
+Filename: "{app}\AppDeploy.exe"; Parameters: "-install -svcName ""AppDeploy"" -svcDesc ""AppDeploy"" -mainExe ""AppDeploy.exe""  "; Check: returnFalse()
+
+[UninstallRun]
+Filename: "{app}\AppDeploy.exe "; Parameters: "-uninstall -svcName AppDeploy -stopOnUninstall"; Check: returnFalse()
+
+[Code]
+function returnTrue(): Boolean;
+begin
+  Result := True;
+end;
+
+function returnFalse(): Boolean;
+begin
+  Result := False;
+end;
+
+function InitializeSetup(): Boolean;
+begin
+// Possible future improvements:
+//   if version less or same =&gt; just launch app
+//   if upgrade =&gt; check if same app is running and wait for it to exit
+//   Add pack200/unpack200 support? 
+  Result := True;
+end;
+</code></pre><ul>
+<li>再次运行安装文件，显示如下：<br><img src="/images/posts/deploy11.png" alt="app install dir"><br><img src="/images/posts/deploy12.png" alt="app install dir"><br><img src="/images/posts/deploy13.png" alt="app install dir"><br><img src="/images/posts/deploy15.png" alt="app install dir">  <h4 id="8.**说明**："><a name="8.**说明**：" href="#8.**说明**："></a>8.<strong>说明</strong>：</h4>
+</li><li>存在一个默认设置: UsePreviousAppDir,既安装程序会将默认安装目录设置为上次安装目录，故在进行第二次安装前，需要先卸载之前的安装.  </li><li>软件安装时如果出现错误(即<code>重命名packager.dll错误</code>)，请选择<strong>中止</strong>，并注销计算机，然后尝试再次安装。  <ul>
+<li>可能出现的错误：<br><img src="/images/posts/deploy14.png" alt="app install error">  </li><li>也可以选择忽略，其实安装目录下仅仅缺少了packager.dll文件，将<a href="/resources/packager.dll">packager.dll</a>文件下载下来，拷贝到软件安装的根目录下即可。</li></ul>
+</li><li>所有用JavaFX开发的软件最好都安装在同一目录下，这样可以共用一些文件，如Java运行时等。但弊端是，卸载文件也将共用（仅有一个卸载文件），一旦卸载一个软件，该目录下的所有软件都会被卸载。</li></ul>
+<h4 id="参考资料"><a name="参考资料" href="#参考资料"></a>参考资料</h4><ul>
+<li><a href="http://code.makery.ch/library/javafx-8-tutorial/zh-cn/part7/">JavaFX 8 教程 - 第七部分：部署</a></li>
+<li><a href="http://stackoverflow.com/questions/28370655/javafx-self-installer-with-inno-setup-5-allow-user-to-change-install-directory">JavaFX Self Installer With Inno Setup 5</a></li>
+</ul>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>

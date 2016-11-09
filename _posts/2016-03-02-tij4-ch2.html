@@ -1,0 +1,277 @@
+---
+layout:     post
+title:      "Java编程思想（第四版）——一切都是对象"
+subtitle:   "对象的进一步学习与理解"
+date:       2016-03-02
+author:     "yuchen"
+header-img: "img/post-bg-java.jpg"
+tags:
+    - Java
+    - Object
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>ch2.html</title>
+  <meta name="generator" content="Haroopad 0.12.2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF) repeat scroll 0 0 transparent;background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:medium none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:medium none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:medium none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:none no-repeat scroll 5px -27px #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:none repeat scroll 0 0 #FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:none repeat scroll 0 0 #EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:none repeat scroll 0 0 #75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:#1A3C6C solid 1px;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-bottom-width:0;border-left-width:0;border-right-width:0;border-top-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;max-width:none;min-height:0;outline-color:#112644;outline-style:none;outline-width:0;overflow-x:visible;overflow-y:visible;padding-bottom:0;padding-left:0;padding-right:0;padding-top:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;border:0 none;color:#ccc;height:3px;padding:0}hr.underscore{border:0 none!important;height:30px;padding:0;-webkit-margin-before:0;-webkit-margin-after:0}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:#fff url(../img/ajax.gif) no-repeat center center}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}.markdown{padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-break:break-all;word-wrap:break-word}.markdown pre{border-radius:3px;word-break:break-all;word-wrap:break-word;overflow:auto}.markdown pre code{display:block}.markdown pre>code{border:1px solid #ccc;white-space:pre;padding:.5em;margin:0}.markdown code{border-radius:3px;word-break:break-all;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown table{padding:0;border-collapse:collapse;border-spacing:0}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.markdown em.underline{font-style:normal;text-decoration:underline}.markdown strong.highlight{color:#000;padding:0 5px;background-color:#fdffb6;-webkit-box-shadow:#fdffb6 0 0 5px;-moz-box-shadow:#fdffb6 0 0 5px;box-shadow:#fdffb6 0 0 5px}.solarized-light{padding:20px;color:#737373;font-size:15px;font-family:"Lucida Grande","Lucida Sans Unicode","Lucida Sans",AppleSDGothicNeo-Medium,'Segoe UI','Malgun Gothic',Verdana,Tahoma,sans-serif;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em;font-family:Consolas,Inconsolata,Courier,monospace}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;color:#dccf8f;background:url(./pojoaque.jpg) repeat scroll left top #181914;-webkit-text-size-adjust:none}.diff .hljs-header,.hljs-comment,.hljs-doctype,.hljs-javadoc,.hljs-template_comment,.lisp .hljs-string{color:#586e75;font-style:italic}.clojure .hljs-title,.css .hljs-tag,.css .rule .hljs-keyword,.hljs-addition,.hljs-keyword,.hljs-winutils,.javascript .hljs-title,.method,.nginx .hljs-title{color:#b64926}.hljs-command,.hljs-hexcolor,.hljs-number,.hljs-phpdoc,.hljs-regexp,.hljs-string,.hljs-tag .hljs-value,.tex .hljs-formula{color:#468966}.clojure .hljs-built_in,.hljs-built_in,.hljs-chunk,.hljs-decorator,.hljs-function .hljs-title,.hljs-id,.hljs-identifier,.hljs-localvars,.hljs-title,.lisp .hljs-title{color:#ffb03b}.hljs-attribute,.hljs-class .hljs-title,.hljs-constant,.hljs-parent,.hljs-type,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number{color:#b58900}.css .hljs-attribute{color:#b89859}.css .hljs-hexcolor,.css .hljs-number{color:#dccf8f}.css .hljs-class{color:#d3a60c}.diff .hljs-change,.hljs-attr_selector,.hljs-cdata,.hljs-important,.hljs-pi,.hljs-pragma,.hljs-preprocessor,.hljs-shebang,.hljs-special,.hljs-subst,.hljs-symbol,.hljs-symbol .hljs-string{color:#cb4b16}.hljs-deletion{color:#dc322f}.tex .hljs-formula{background:#073642}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+
+  <h2 id="java编程思想（第四版）学习笔记"><a name="java编程思想（第四版）学习笔记" href="#java编程思想（第四版）学习笔记"></a>Java编程思想（第四版）学习笔记</h2><h4 id="by-王震"><a name="by-王震" href="#by-王震"></a>By 王震 <a href="mailto:wzzju@mail.ustc.edu.cn">wzzju@mail.ustc.edu.cn</a></h4><hr class="page"><h3 id="第二章-一切都是对象"><a name="第二章-一切都是对象" href="#第二章-一切都是对象"></a>第二章 一切都是对象</h3><p>1.遥控器（引用）和电视机（对象）</p><p>2.安全做法：创建一个引用的同时便进行初始化。如：<code>String str = "asdf"</code>
+或<code>String str=new String("asdf");</code>。</p><p>3.Java中，对象引用存储在栈（stack）中，但是Java对象并不存储于其中。</p><p>4.堆（heap）用于存放所有的Java对象。</p><p>5.stack和heap都位于RAM区。</p><p>6.常量存储在代码内部。</p><p>7.特例：基本类型不用new来创建变量，而是创建一个并非是引用的“自动”变量，这个变量直接存储“值”，并置于栈中（这样会更加高效）。</p><p>8.Java的基本类型：</p><table>
+<thead>
+<tr>
+<th style="text-align:left">基本类型</th>
+<th style="text-align:center">大小</th>
+<th style="text-align:right">包装器类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:center">-</td>
+<td style="text-align:right">Boolean</td>
+</tr>
+<tr>
+<td style="text-align:left">char</td>
+<td style="text-align:center">16-bit</td>
+<td style="text-align:right">Character</td>
+</tr>
+<tr>
+<td style="text-align:left">byte</td>
+<td style="text-align:center">8 bits</td>
+<td style="text-align:right">Byte</td>
+</tr>
+<tr>
+<td style="text-align:left">short</td>
+<td style="text-align:center">16 bits</td>
+<td style="text-align:right">Short</td>
+</tr>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:center">32 bits</td>
+<td style="text-align:right">Integer</td>
+</tr>
+<tr>
+<td style="text-align:left">long</td>
+<td style="text-align:center">64 bits</td>
+<td style="text-align:right">Long</td>
+</tr>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:center">32 bits</td>
+<td style="text-align:right">Float</td>
+</tr>
+<tr>
+<td style="text-align:left">double</td>
+<td style="text-align:center">64 bits</td>
+<td style="text-align:right">Double</td>
+</tr>
+<tr>
+<td style="text-align:left">void</td>
+<td style="text-align:center">-</td>
+<td style="text-align:right">Void</td>
+</tr>
+</tbody>
+</table><p>9.所有数值类型都有正负号，故不要去寻找无符号的数值类型。
+注意：char的取值为<code>Unicode 0</code>到<code>Unicode 2^16^-1</code>。</p><p>10.boolean类型所占存储空间的大小没有明确指定，仅定义为能够取字面值true或false。</p><p>11.基本类型具有的包装器类，使得可以在堆中创建一个非基本对象，用来表示对应的基本类型。</p><p>12.Java提供了两个用于高精度计算的类：BigInteger和BigDecimal。虽然它们大体上属于“包装器类”的范畴，但是二者都没有对应的基本类型。必须以方法调用方式取代运算符方式来实现运算操作<strong class="highlight">（能用作于int或float的操作，也同样能作用于BigInteger或BigDecimal）</strong>，运算速度较慢，即以速度换取精度。BigInteger支持任意精度的整数，BigDecimal支持任意精度的定点数。</p><p>13.Java确保数组会被初始化，而且不能在它的范围之外被访问。当创建一个数组对象时，实际上就是创建了一个引用数组，并且每一个引用都会自动被初始化为null。一旦Java看到null，就知道这个引用还没有被指向某个对象。在使用任何引用前，必须为其指定一个对象；如果试图使用一个还是null的引用，在运行时将会报错。</p><blockquote>
+<p>Java还可以创建用来存放基本数据类型的数组。同样，编译器也能确保这种数组的初始化，因为它会将这种数组所占的内存全部置零。</p>
+</blockquote><p>14.在C和C++中下述代码合法，但是在Java中却不能这样写：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;{
+    int x = 12;
+    {
+        int x = 96;//illegal in Java，因为Java设计者认为这样做会导致程序混乱
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;">{
+    <span class="hljs-keyword">int</span> x = <span class="hljs-number">12</span>;
+    {
+        <span class="hljs-keyword">int</span> x = <span class="hljs-number">96</span>;<span class="hljs-comment">//illegal in Java，因为Java设计者认为这样做会导致程序混乱</span>
+    }
+}
+</code></pre><p>然而，Java中类变量和局部变量可以同名，如下所示：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;public class Test {
+    int x = 12;
+    public static void main(String[] args) {
+        int x = 96;//legal in Java
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> </span>{
+    <span class="hljs-keyword">int</span> x = <span class="hljs-number">12</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+        <span class="hljs-keyword">int</span> x = <span class="hljs-number">96</span>;<span class="hljs-comment">//legal in Java</span>
+    }
+}
+</code></pre><p>15.对象的作用域：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;{
+  String s = new String(&quot;a string&quot;);
+  //end of scope
+}
+&lt;/code&gt;&lt;/pre&gt;">{
+  String s = <span class="hljs-keyword">new</span> String(<span class="hljs-string">"a string"</span>);
+  <span class="hljs-comment">//end of scope</span>
+}
+</code></pre><p>上述代码中，引用s在作用域终点就消失了。然而，s指向的String对象仍继续占据内存空间。虽然如此，但是在这段代码中，我们无法在这个作用域之外访问这个对象，因为对它唯一的引用已经超出了作用域的范围。在程序执行过程中，需要传递和复制对象引用，以便继续使用对象。是谁证明，由new创建的对象，只要你需要，就会一直保留下去。Java有一个<strong>垃圾回收器</strong>，用来监视用new创建的所有对象，并辨别那些不会再被引用的对象，之后释放这些对象的内存空间，以便供其他新的对象使用。</p><p>16.类包括两种类型的元素：字段和方法。如果字段是对某个对象的引用，那么必须初始化该引用，以便使其与一个实际的对象（使用new来实现）相关联。若类的某个成员是基本数据类型，即使没有进行初始化，Java也会确保它获得一个默认值，如下表所示：</p><table>
+<thead>
+<tr>
+<th style="text-align:left">基本类型</th>
+<th style="text-align:center">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">char</td>
+<td style="text-align:center">‘\u0000’(null)</td>
+</tr>
+<tr>
+<td style="text-align:left">byte</td>
+<td style="text-align:center">(byte)0</td>
+</tr>
+<tr>
+<td style="text-align:left">short</td>
+<td style="text-align:center">(short)0</td>
+</tr>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:left">long</td>
+<td style="text-align:center">0L</td>
+</tr>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:center">0.0f</td>
+</tr>
+<tr>
+<td style="text-align:left">fouble</td>
+<td style="text-align:center">0.0d</td>
+</tr>
+</tbody>
+</table><p>注意，当变量是类的成员时，Java才确保给定其默认值，以确保那些基本类型的成员变量得到初始化，防止产生错误。然而，上述的初始化的方法并不适用于<em>局部变量</em>（即并非某个类的字段），因此在某个方法中定义有<code>int x ;</code>,那么变量x得到的可能是任意值（与<code>C</code>和<code>C++</code>中一样），而不会被自动初始化为零。若使用一个未初始化的局部变量，Java编译时会返回一个错误（而<code>C</code>和<code>C++</code>C++编译器中对此只是给予警告）。</p><p>17.面向对象的程序设计通常简单地归纳为<em class="underline">“向对象发送消息”</em>，在<code>int x = a.f()</code>中消息是f()，对象是a。</p><p>18.Java中传递对象，实际上传递的是引用。Java消除了所谓的“向前引用”问题，<em class="underline">即可以先使用类，后定义类</em>。</p><p>19.static提供对象共享数据，引用static变量（方法）有两种方式，通过一个对象去定位它，也可通过其类名直接引用，而对非静态成员则必须通过对象去引用。static数据和static方法，亦可称为类数据和类方法。</p><blockquote>
+<p>一个static字段对每个类来说都只有一份存储空间，而非static字段则是对每个对象有一个存储空间，但是如果static用于某个方法，差别却没有那么大。</p>
+</blockquote><p>20.javadoc只能为public和protected成员进行文档注释。所有javadoc命令都只能在<code>/**</code>注释中出现，结束于<code>*/</code>。使用javadoc的方式主要有两种：嵌入HTML或使用“文档标签”。</p><p>21.独立文档标签是一些以“@”字符开头的命令，且要置于注释行的最前面（但是不算前导“*”之后的最前面）。而”行内文档标签”则可以出现在javadoc注释中的任何地方，它们也是以“@”字符开头，但是要括在花括号内。共有三种类型的注释文档（类注释、域注释和方法注释），分别对应于注释位置后面的三种元素：类、域和方法。</p><p>22.一些可用于代码的javadoc标签：
+<strong class="highlight">1）@see</strong></p><blockquote>
+<p>@see:引用其他类的文档</p>
+<blockquote>
+<p>example:
+@see classname
+@see fully-qualified-classname
+@see fully-qualified-classname#method-name</p>
+</blockquote>
+</blockquote><p>注意：使用“@see”，文档中会出现“See Also”超链接文本</p><p><strong class="highlight">2）@{@link package.class#member label}</strong></p><blockquote>
+<p>该标签与@see极其类似，只是它用于行内，并且是用”label”作为超链接文本而不是“See Also”。</p>
+</blockquote><p><strong class="highlight">3）@docRoot</strong></p><blockquote>
+<p>该标签产生到文档根目录的相对路径，用于文档树页面的显示超链接。</p>
+</blockquote><p><strong class="highlight">4）@inheritDoc</strong></p><blockquote>
+<p>该标签从当前这个类的最直接的基类中继承相关文档到当前的文档注释中。</p>
+</blockquote><p><strong class="highlight">5）@version</strong></p><blockquote>
+<p>格式如下：
+@version version-information
+“version-information”可以是任何你认为适合包含在版本说明中的重要信息。
+如果javadoc命令行使用了“-version”标记，那么就会从生成的HTML文档中特别提取出版本信息。</p>
+</blockquote><p><strong class="highlight">6）@author</strong></p><blockquote>
+<p>格式如下：
+@author author-information
+“author-information”是你的姓名，但是也可以包括电子邮件地址或其他任何适宜的信息。
+如果javadoc命令行使用了“-author”标记，那么就会从生成的HTML文档中特别提取出作者信息。
+可以使用多个标签以便列出所有作者，但是它们必须是连续放置。</p>
+</blockquote><p><strong class="highlight">7）since</strong></p><blockquote>
+<p>该标签允许你指定程序代码最早使用的版本，可以在HTML Java文档中看到它被用来指定所用的JDK版本的情况。</p>
+</blockquote><p><strong class="highlight">8）@param</strong></p><blockquote>
+<p>该标签用于方法文档，格式如下：
+@param parameter-name description
+其中，<strong>parameter-name</strong>是方法的参数列表中的标识符，<strong>description</strong>是可以延续数行的文本，终止于新的文档标签出现之前。可以使用任意多个这种标签，大约每一个参数都有一个这样的标签。</p>
+</blockquote><p><strong class="highlight">9）@return</strong></p><blockquote>
+<p>该标签用于方法文档，格式如下：
+@return description
+其中，<strong>description</strong>用来描述返回值的含义，可以延续数行。</p>
+</blockquote><p><strong class="highlight">10）@throws</strong></p><blockquote>
+<p>异常标签，格式如下：
+@throws fully-qualified-calss-name description
+其中，<strong>fully-qualified-calss-name</strong>给出一个异常类的无歧义的名字，而该异常类在别处定义。<strong>description</strong>告诉你为什么此特殊类型的异常会在方法调用中出现，可延续数行。</p>
+</blockquote><p><strong class="highlight">11）@deprecated</strong></p><blockquote>
+<p>该标签用于指出一些旧特性已由新特性所取代，建议用户不要再使用这些旧特性，因为在不久的将来它们可能会被删除。如果使用一个标记为@deprecated的方法，则会引起编译器发出警告。</p>
+<blockquote>
+<p>在Java SE5中，Javadoc标签@deprecated已经被@Deprecated注解所替代。</p>
+</blockquote>
+</blockquote><p>23.文档示例</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;//:edu/ustc/home/HelloDate.java
+package edu.ustc.home;
+
+import java.util.*;
+
+/**
+ * The first Thinking in Java example program.
+ * Displays a string and today's date.
+ * @author yuchen
+ * @author home.ustc.edu.cn/~wzzju
+ * @version 4.0
+ *
+ */
+public class HelloDate {
+    /**
+     * Entry point to a class &amp;amp;  aplicatio.
+     * @param args array of string arguments
+     * @throws exceptions No exceptions thrown
+     */
+    public static void main(String[] args) {
+        System.out.println(&quot;Hello,it's: &quot;);
+        System.out.println(new Date());
+    }/*Output:(55% match)
+    Hello,it's:
+    Tue Mar 01 11:04:30 CST 2016
+    *///:~
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-comment">//:edu/ustc/home/HelloDate.java</span>
+<span class="hljs-keyword">package</span> edu.ustc.home;
+
+<span class="hljs-keyword">import</span> java.util.*;
+
+<span class="hljs-javadoc">/**
+ * The first Thinking in Java example program.
+ * Displays a string and today's date.
+ *<span class="hljs-javadoctag"> @author</span> yuchen
+ *<span class="hljs-javadoctag"> @author</span> home.ustc.edu.cn/~wzzju
+ *<span class="hljs-javadoctag"> @version</span> 4.0
+ *
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloDate</span> </span>{
+    <span class="hljs-javadoc">/**
+     * Entry point to a class &amp;  aplicatio.
+     *<span class="hljs-javadoctag"> @param</span> args array of string arguments
+     *<span class="hljs-javadoctag"> @throws</span> exceptions No exceptions thrown
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+        System.out.println(<span class="hljs-string">"Hello,it's: "</span>);
+        System.out.println(<span class="hljs-keyword">new</span> Date());
+    }<span class="hljs-comment">/*Output:(55% match)
+    Hello,it's:
+    Tue Mar 01 11:04:30 CST 2016
+    */</span><span class="hljs-comment">//:~</span>
+}
+</code></pre><p>注：第一行采用Thinking in Java作者的方法，用一个”:”作为特殊记号说明这是包含源文件名的注释行。该行包含文件的路径信息，随后是文件名。最后一行的”///:~”标志源代码清单的结束。</p><p>24.Java编程语言编码约定中，代码风格是这样规定的：类名的首字母要大写；如果类名由几个单词构成，那么把它们并在一起（也即是说，不要用下划线分隔名字），其中每个内部单词的首字母都采用大写形式。如：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;class AllTheColorsOfTheRainbow{//...
+&lt;/code&gt;&lt;/pre&gt;">class AllTheColorsOfTheRainbow{<span class="hljs-comment">//...</span>
+</code></pre><p>这种风格有时被称为“驼峰风格”。几乎其他所有内容——方法、字段（成员变量）以及对象引用名称等，公认的风格与类风格一样，只是标识符的第一个字母采用小写。如：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;class AllTheColorsOfTheRainbow{
+    int anIntegerRepresentingColors;
+    void changeTheHueOfTheColor(int newHue){
+    //...
+    }
+    //...
+}
+&lt;/code&gt;&lt;/pre&gt;">class AllTheColorsOfTheRainbow{
+    <span class="hljs-keyword">int</span> anIntegerRepresentingColors;
+    <span class="hljs-keyword">void</span> changeTheHueOfTheColor(<span class="hljs-keyword">int</span> newHue){
+    <span class="hljs-comment">//...</span>
+    }
+    <span class="hljs-comment">//...</span>
+}
+</code></pre><p>当然，用户必须键入所有这些长名字，并且不能输错，因此一定与格外仔细。</p>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>

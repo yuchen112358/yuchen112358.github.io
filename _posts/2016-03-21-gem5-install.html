@@ -1,0 +1,161 @@
+---
+layout:     post
+title:      "在Ubuntu14.04上安装GEM5"
+date:       2016-03-21
+author:     "yuchen"
+header-img: "img/post-bg-odroid.jpg"
+tags:
+    - GEM5
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>gem5-install.html</title>
+  <meta name="generator" content="Haroopad 0.12.2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF) repeat scroll 0 0 transparent;background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:medium none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:medium none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:medium none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:none no-repeat scroll 5px -27px #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:none repeat scroll 0 0 #FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:none repeat scroll 0 0 #EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:none repeat scroll 0 0 #75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:#1A3C6C solid 1px;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-bottom-width:0;border-left-width:0;border-right-width:0;border-top-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;max-width:none;min-height:0;outline-color:#112644;outline-style:none;outline-width:0;overflow-x:visible;overflow-y:visible;padding-bottom:0;padding-left:0;padding-right:0;padding-top:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;border:0 none;color:#ccc;height:3px;padding:0}hr.underscore{border:0 none!important;height:30px;padding:0;-webkit-margin-before:0;-webkit-margin-after:0}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:#fff url(../img/ajax.gif) no-repeat center center}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}.markdown{padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-break:break-all;word-wrap:break-word}.markdown pre{border-radius:3px;word-break:break-all;word-wrap:break-word;overflow:auto}.markdown pre code{display:block}.markdown pre>code{border:1px solid #ccc;white-space:pre;padding:.5em;margin:0}.markdown code{border-radius:3px;word-break:break-all;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown table{padding:0;border-collapse:collapse;border-spacing:0}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.markdown em.underline{font-style:normal;text-decoration:underline}.markdown strong.highlight{color:#000;padding:0 5px;background-color:#fdffb6;-webkit-box-shadow:#fdffb6 0 0 5px;-moz-box-shadow:#fdffb6 0 0 5px;box-shadow:#fdffb6 0 0 5px}.solarized-light{padding:20px;color:#737373;font-size:15px;font-family:"Lucida Grande","Lucida Sans Unicode","Lucida Sans",AppleSDGothicNeo-Medium,'Segoe UI','Malgun Gothic',Verdana,Tahoma,sans-serif;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em;font-family:Consolas,Inconsolata,Courier,monospace}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;color:#dccf8f;background:url(./pojoaque.jpg) repeat scroll left top #181914;-webkit-text-size-adjust:none}.diff .hljs-header,.hljs-comment,.hljs-doctype,.hljs-javadoc,.hljs-template_comment,.lisp .hljs-string{color:#586e75;font-style:italic}.clojure .hljs-title,.css .hljs-tag,.css .rule .hljs-keyword,.hljs-addition,.hljs-keyword,.hljs-winutils,.javascript .hljs-title,.method,.nginx .hljs-title{color:#b64926}.hljs-command,.hljs-hexcolor,.hljs-number,.hljs-phpdoc,.hljs-regexp,.hljs-string,.hljs-tag .hljs-value,.tex .hljs-formula{color:#468966}.clojure .hljs-built_in,.hljs-built_in,.hljs-chunk,.hljs-decorator,.hljs-function .hljs-title,.hljs-id,.hljs-identifier,.hljs-localvars,.hljs-title,.lisp .hljs-title{color:#ffb03b}.hljs-attribute,.hljs-class .hljs-title,.hljs-constant,.hljs-parent,.hljs-type,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number{color:#b58900}.css .hljs-attribute{color:#b89859}.css .hljs-hexcolor,.css .hljs-number{color:#dccf8f}.css .hljs-class{color:#d3a60c}.diff .hljs-change,.hljs-attr_selector,.hljs-cdata,.hljs-important,.hljs-pi,.hljs-pragma,.hljs-preprocessor,.hljs-shebang,.hljs-special,.hljs-subst,.hljs-symbol,.hljs-symbol .hljs-string{color:#cb4b16}.hljs-deletion{color:#dc322f}.tex .hljs-formula{background:#073642}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+
+  <h3 id="gem5在ubuntu14.04下安装"><a name="gem5在ubuntu14.04下安装" href="#gem5在ubuntu14.04下安装"></a>GEM5在ubuntu14.04下安装</h3><h5 id="1.下载gem5_stable"><a name="1.下载gem5_stable" href="#1.下载gem5_stable"></a>1.下载gem5_stable</h5><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;sudo apt-get install mercurial  #安装mercurial工具包
+hg clone http://repo.gem5.org/gem5-stable  #下载gem5-stable版
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-built_in">sudo</span> apt-get install mercurial  <span class="hljs-comment">#安装mercurial工具包</span>
+hg clone http://repo.gem5.org/gem5-stable  <span class="hljs-comment">#下载gem5-stable版</span>
+</code></pre><h5 id="2.安装python"><a name="2.安装python" href="#2.安装python"></a>2.安装Python</h5><p>因为SCons（编译GEM5的工具）是用Python编写的，在使用SCons之前安装好Python。Python的版本应该为2.7.5+ 。
+因为本人之前已经安装过python了，故在此无需安装。</p><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;python -V
+# Python 2.7.6
+&lt;/code&gt;&lt;/pre&gt;">python -V
+<span class="hljs-comment"># Python 2.7.6</span>
+</code></pre><h5 id="3.安装scons"><a name="3.安装scons" href="#3.安装scons"></a>3.安装scons</h5><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;sudo apt-get install scons #安装scons
+scons -v                   #查看版本
+#SCons by Steven Knight et al.:
+#    script: v2.3.0, 2013/03/03 09:48:35, by garyo on reepicheep
+#    engine: v2.3.0, 2013/03/03 09:48:35, by garyo on reepicheep
+#    engine path: ['/usr/lib/scons/SCons']
+#Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 #The SCons Foundation
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-built_in">sudo</span> apt-get install scons <span class="hljs-comment">#安装scons</span>
+scons -v                   <span class="hljs-comment">#查看版本</span>
+<span class="hljs-comment">#SCons by Steven Knight et al.:</span>
+<span class="hljs-comment">#    script: v2.3.0, 2013/03/03 09:48:35, by garyo on reepicheep</span>
+<span class="hljs-comment">#    engine: v2.3.0, 2013/03/03 09:48:35, by garyo on reepicheep</span>
+<span class="hljs-comment">#    engine path: ['/usr/lib/scons/SCons']</span>
+<span class="hljs-comment">#Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 #The SCons Foundation</span>
+</code></pre><h5 id="4.确保g++版本为4.6+"><a name="4.确保g++版本为4.6+" href="#4.确保g++版本为4.6+"></a>4.确保g++版本为4.6+</h5><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;sudo apt-get install gcc-4.6
+sudo apt-get install g++-4.6
+sudo rm -rf /usr/bin/gcc
+sudo ln -s /usr/bin/gcc-4.6 /usr/bin/gcc
+gcc -v
+sudo rm -rf /usr/bin/g++
+sudo ln -s /usr/bin/g++-4.6 /usr/bin/g++
+gcc -v
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-built_in">sudo</span> apt-get install gcc-<span class="hljs-number">4.6</span>
+<span class="hljs-built_in">sudo</span> apt-get install g++-<span class="hljs-number">4.6</span>
+<span class="hljs-built_in">sudo</span> rm -rf /usr/bin/gcc
+<span class="hljs-built_in">sudo</span> ln <span class="hljs-operator">-s</span> /usr/bin/gcc-<span class="hljs-number">4.6</span> /usr/bin/gcc
+gcc -v
+<span class="hljs-built_in">sudo</span> rm -rf /usr/bin/g++
+<span class="hljs-built_in">sudo</span> ln <span class="hljs-operator">-s</span> /usr/bin/g++-<span class="hljs-number">4.6</span> /usr/bin/g++
+gcc -v
+</code></pre><h5 id="5.安装swig"><a name="5.安装swig" href="#5.安装swig"></a>5.安装swig</h5><p>swig下载网址：<a href="https://sourceforge.net/projects/swig/files/swig/"></a><a href="http://www.swig.org/download.html">http://www.swig.org/download.html</a>
+下载swig2.0.7安装包，不要输入命令sudo apt-get install swig否则gem5编译后，运行hello时会报错。</p><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;tar -zxvf swig-2.0.7.tar.gz #解压
+cd ./swig-2.0.7
+./configure --without-pcre
+make
+sudo make install
+&lt;/code&gt;&lt;/pre&gt;">tar -zxvf swig-<span class="hljs-number">2.0</span>.<span class="hljs-number">7</span>.tar.gz <span class="hljs-comment">#解压</span>
+<span class="hljs-built_in">cd</span> ./swig-<span class="hljs-number">2.0</span>.<span class="hljs-number">7</span>
+./configure --without-pcre
+make
+<span class="hljs-built_in">sudo</span> make install
+</code></pre><p>可以用<code>swig -version</code>查看swig版本。</p><h5 id="6、安装python-dev"><a name="6、安装python-dev" href="#6、安装python-dev"></a>6、安装python-dev</h5><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;sudo apt-get install python-dev
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-built_in">sudo</span> apt-get install python-dev
+</code></pre><h5 id="7.安装zlib"><a name="7.安装zlib" href="#7.安装zlib"></a>7.安装zlib</h5><p>安装zlib<a href="http://www.zlib.net/">最近的版本</a>
+将zlib-1.2.8.tar.gz解压到gem5_stable目录下</p><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;cd gem5-stable
+tar -zxvf ../tools-gem5/zlib-1.2.8.tar.gz
+cd zlib-1.2.8
+./configure
+sudo make install
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-built_in">cd</span> gem5-stable
+tar -zxvf ../tools-gem5/zlib-<span class="hljs-number">1.2</span>.<span class="hljs-number">8</span>.tar.gz
+<span class="hljs-built_in">cd</span> zlib-<span class="hljs-number">1.2</span>.<span class="hljs-number">8</span>
+./configure
+<span class="hljs-built_in">sudo</span> make install
+</code></pre><h5 id="8.安装m4"><a name="8.安装m4" href="#8.安装m4"></a>8.安装M4</h5><p>m4：宏处理器。<a href="http://www.gnu.org/software/m4/"></a><a href="http://www.gnu.org/software/m4/">http://www.gnu.org/software/m4/</a></p><p>将m4-1.4.17.tar.gz到gem5_stable目录下<br><strong class="highlight">备注</strong>：一不小心下载了m4-1.4.1.tar.gz，发现最后编译并没有出错orz。。。</p><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;cd gem5-stable
+tar -zxvf ../tools-gem5/m4-1.4.17.tar.gz
+cd m4-1.4.17
+./configure
+sudo make install
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-built_in">cd</span> gem5-stable
+tar -zxvf ../tools-gem5/m4-<span class="hljs-number">1.4</span>.<span class="hljs-number">17</span>.tar.gz
+<span class="hljs-built_in">cd</span> m4-<span class="hljs-number">1.4</span>.<span class="hljs-number">17</span>
+./configure
+<span class="hljs-built_in">sudo</span> make install
+</code></pre><h5 id="9.安装protobuf"><a name="9.安装protobuf" href="#9.安装protobuf"></a>9.安装protobuf</h5><p>安装2.5版本,下载地址：<a href="http://protobuf.googlecode.com/files/protobuf-2.5.0.zip"></a><a href="http://protobuf.googlecode.com/files/protobuf-2.5.0.zip">http://protobuf.googlecode.com/files/protobuf-2.5.0.zip</a></p><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;unzip protobuf-2.5.0.zip
+cd protobuf-2.5.0
+./configure
+make
+make check
+sudo make install
+&lt;/code&gt;&lt;/pre&gt;">unzip protobuf-<span class="hljs-number">2.5</span>.<span class="hljs-number">0</span>.zip
+<span class="hljs-built_in">cd</span> protobuf-<span class="hljs-number">2.5</span>.<span class="hljs-number">0</span>
+./configure
+make
+make check
+<span class="hljs-built_in">sudo</span> make install
+</code></pre><h5 id="10.安装libprotobuf-dev"><a name="10.安装libprotobuf-dev" href="#10.安装libprotobuf-dev"></a>10.安装libprotobuf-dev</h5><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;sudo apt-get install libprotobuf-dev
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-built_in">sudo</span> apt-get install libprotobuf-dev
+</code></pre><h5 id="11.安装libgoogle-perftools-dev"><a name="11.安装libgoogle-perftools-dev" href="#11.安装libgoogle-perftools-dev"></a>11.安装libgoogle-perftools-dev</h5><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;sudo apt-get install libgoogle-perftools-dev
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-built_in">sudo</span> apt-get install libgoogle-perftools-dev
+</code></pre><h5 id="12.编译gem5："><a name="12.编译gem5：" href="#12.编译gem5："></a>12.编译gem5：</h5><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;cd gem5-stable
+mkdir build
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-built_in">cd</span> gem5-stable
+mkdir build
+</code></pre><p>指定编译的选项，及目标文件:</p><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;scons build/ALPHA/gem5.opt
+&lt;/code&gt;&lt;/pre&gt;">scons build/ALPHA/gem5.opt
+</code></pre><p><strong class="highlight">如果出现如下错误：</strong><br>错误：can’t find Python.h header in [‘/usr/include/python2.7’]<br>解决：<code>sudo apt-get install python-dev</code></p><h5 id="13.测试"><a name="13.测试" href="#13.测试"></a>13.测试</h5><p>在gem5目录下输入命令：</p><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;./build/ALPHA/gem5.opt ./configs/example/se.py -c tests/test-progs/hello/bin/alpha/linux/hello
+&lt;/code&gt;&lt;/pre&gt;">./build/ALPHA/gem5.opt ./configs/example/se.py -c tests/test-progs/hello/bin/alpha/linux/hello
+</code></pre><p>运行结果如下：</p><pre><code data-origin="&lt;pre&gt;&lt;code&gt;gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 compiled Mar 21 2016 16:31:22
+gem5 started Mar 21 2016 16:33:42
+gem5 executing on yuchen-PC
+command line: ./build/ALPHA/gem5.opt ./configs/example/se.py -c tests/test-progs/hello/bin/alpha/linux/hello
+
+/work/gem5/gem5-stable/configs/common/CacheConfig.py:48: SyntaxWarning: import * only allowed at module level
+  def config_cache(options, system):
+Global frequency set at 1000000000000 ticks per second
+warn: DRAM device capacity (8192 Mbytes) does not match the address range assigned (512 Mbytes)
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+**** REAL SIMULATION ****
+info: Entering event queue @ 0.  Starting simulation...
+info: Increasing stack size by one page.
+Hello world!
+Exiting @ tick 3233000 because target called exit()
+&lt;/code&gt;&lt;/pre&gt;">gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 compiled Mar 21 2016 16:31:22
+gem5 started Mar 21 2016 16:33:42
+gem5 executing on yuchen-PC
+command line: ./build/ALPHA/gem5.opt ./configs/example/se.py -c tests/test-progs/hello/bin/alpha/linux/hello
+
+/work/gem5/gem5-stable/configs/common/CacheConfig.py:48: SyntaxWarning: import * only allowed at module level
+  def config_cache(options, system):
+Global frequency set at 1000000000000 ticks per second
+warn: DRAM device capacity (8192 Mbytes) does not match the address range assigned (512 Mbytes)
+0: system.remote_gdb.listener: listening for remote gdb #0 on port 7000
+**** REAL SIMULATION ****
+info: Entering event queue @ 0.  Starting simulation...
+info: Increasing stack size by one page.
+Hello world!
+Exiting @ tick 3233000 because target called exit()
+</code></pre><p><strong>安装成功！</strong></p><h5 id="14.一些注意点"><a name="14.一些注意点" href="#14.一些注意点"></a>14.一些注意点</h5><p>如果protobuf有错误，可以移除以前的版本。</p><pre><code class="bash hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Bash&quot;&gt;sudo apt-get autoremove libprotobuf-dev
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-built_in">sudo</span> apt-get autoremove libprotobuf-dev
+</code></pre>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>

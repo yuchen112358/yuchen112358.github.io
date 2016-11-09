@@ -1,0 +1,179 @@
+---
+layout:     post
+title:      "Java编程思想（第四版）——操作符"
+subtitle:   "操作符的学习"
+date:       2016-03-08
+author:     "yuchen"
+header-img: "img/post-bg-java.jpg"
+tags:
+    - Java
+    - Operators
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>ch3.html</title>
+  <meta name="generator" content="Haroopad 0.12.2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF) repeat scroll 0 0 transparent;background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:medium none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:medium none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:medium none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:none no-repeat scroll 5px -27px #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:none repeat scroll 0 0 #FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:none repeat scroll 0 0 #EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:none repeat scroll 0 0 #75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:#1A3C6C solid 1px;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-bottom-width:0;border-left-width:0;border-right-width:0;border-top-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;max-width:none;min-height:0;outline-color:#112644;outline-style:none;outline-width:0;overflow-x:visible;overflow-y:visible;padding-bottom:0;padding-left:0;padding-right:0;padding-top:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;border:0 none;color:#ccc;height:3px;padding:0}hr.underscore{border:0 none!important;height:30px;padding:0;-webkit-margin-before:0;-webkit-margin-after:0}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:#fff url(../img/ajax.gif) no-repeat center center}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}.markdown{padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-break:break-all;word-wrap:break-word}.markdown pre{border-radius:3px;word-break:break-all;word-wrap:break-word;overflow:auto}.markdown pre code{display:block}.markdown pre>code{border:1px solid #ccc;white-space:pre;padding:.5em;margin:0}.markdown code{border-radius:3px;word-break:break-all;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown table{padding:0;border-collapse:collapse;border-spacing:0}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.markdown em.underline{font-style:normal;text-decoration:underline}.markdown strong.highlight{color:#000;padding:0 5px;background-color:#fdffb6;-webkit-box-shadow:#fdffb6 0 0 5px;-moz-box-shadow:#fdffb6 0 0 5px;box-shadow:#fdffb6 0 0 5px}.solarized-light{padding:20px;color:#737373;font-size:15px;font-family:"Lucida Grande","Lucida Sans Unicode","Lucida Sans",AppleSDGothicNeo-Medium,'Segoe UI','Malgun Gothic',Verdana,Tahoma,sans-serif;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em;font-family:Consolas,Inconsolata,Courier,monospace}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;color:#dccf8f;background:url(./pojoaque.jpg) repeat scroll left top #181914;-webkit-text-size-adjust:none}.diff .hljs-header,.hljs-comment,.hljs-doctype,.hljs-javadoc,.hljs-template_comment,.lisp .hljs-string{color:#586e75;font-style:italic}.clojure .hljs-title,.css .hljs-tag,.css .rule .hljs-keyword,.hljs-addition,.hljs-keyword,.hljs-winutils,.javascript .hljs-title,.method,.nginx .hljs-title{color:#b64926}.hljs-command,.hljs-hexcolor,.hljs-number,.hljs-phpdoc,.hljs-regexp,.hljs-string,.hljs-tag .hljs-value,.tex .hljs-formula{color:#468966}.clojure .hljs-built_in,.hljs-built_in,.hljs-chunk,.hljs-decorator,.hljs-function .hljs-title,.hljs-id,.hljs-identifier,.hljs-localvars,.hljs-title,.lisp .hljs-title{color:#ffb03b}.hljs-attribute,.hljs-class .hljs-title,.hljs-constant,.hljs-parent,.hljs-type,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number{color:#b58900}.css .hljs-attribute{color:#b89859}.css .hljs-hexcolor,.css .hljs-number{color:#dccf8f}.css .hljs-class{color:#d3a60c}.diff .hljs-change,.hljs-attr_selector,.hljs-cdata,.hljs-important,.hljs-pi,.hljs-pragma,.hljs-preprocessor,.hljs-shebang,.hljs-special,.hljs-subst,.hljs-symbol,.hljs-symbol .hljs-string{color:#cb4b16}.hljs-deletion{color:#dc322f}.tex .hljs-formula{background:#073642}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+
+  <h2 id="java编程思想（第四版）学习笔记"><a name="java编程思想（第四版）学习笔记" href="#java编程思想（第四版）学习笔记"></a>Java编程思想（第四版）学习笔记</h2><h4 id="by-王震"><a name="by-王震" href="#by-王震"></a>By 王震 <a href="mailto:wzzju@mail.ustc.edu.cn">wzzju@mail.ustc.edu.cn</a></h4><hr class="page"><h3 id="第三章-操作符"><a name="第三章-操作符" href="#第三章-操作符"></a>第三章 操作符</h3><h5 id="1\.静态导入（static-import)"><a name="1\.静态导入（static-import)" href="#1\.静态导入（static-import)"></a>1.静态导入（static import)</h5><p>格式如下：<br><strong>import static com.</strong>…<strong>.ClassName.*</strong> ;</p><p>此处多了个static关键字，并且在类名ClassName后面多了个 .* ，意思是导入这个类里的所有静态方法和静态字段（属性）。当然，也可以只导入某个静态方法，只要把 .* 换成静态方法名就行了。然后在这个类中，就可以直接用方法名调用静态方法，而不必用ClassName.方法名的方式来调用。这种方法的好处就是可以简化一些操作，例如打印操作System.out.println(…);就可以将其写入一个静态方法print(…)，在使用时直接print(…)就可以了。 但是这种方法建议在有很多重复调用的时候使用，如果仅有一到两次调用，不如直接写来的方便。</p><p>示例如下：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;//: net/mindview/util/Print.java
+// Print methods that can be used without
+// qualifiers, using Java SE5 static imports:
+package edu.ustc.home.util;
+import java.io.*;
+
+public class Print {
+  // Print with a newline:
+  public static void print(Object obj) {
+    System.out.println(obj);
+  }
+  // Print a newline by itself:
+  public static void print() {
+    System.out.println();
+  }
+  // Print with no line break:
+  public static void printnb(Object obj) {
+    System.out.print(obj);
+  }
+  // The new Java SE5 printf() (from C):
+  public static PrintStream
+  printf(String format, Object... args) {
+    return System.out.printf(format, args);
+  }
+} ///:~
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-comment">//: net/mindview/util/Print.java</span>
+<span class="hljs-comment">// Print methods that can be used without</span>
+<span class="hljs-comment">// qualifiers, using Java SE5 static imports:</span>
+<span class="hljs-keyword">package</span> edu.ustc.home.util;
+<span class="hljs-keyword">import</span> java.io.*;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Print</span> </span>{
+  <span class="hljs-comment">// Print with a newline:</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">print</span>(Object obj) {
+    System.out.println(obj);
+  }
+  <span class="hljs-comment">// Print a newline by itself:</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">print</span>() {
+    System.out.println();
+  }
+  <span class="hljs-comment">// Print with no line break:</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printnb</span>(Object obj) {
+    System.out.print(obj);
+  }
+  <span class="hljs-comment">// The new Java SE5 printf() (from C):</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> PrintStream
+  <span class="hljs-title">printf</span>(String format, Object... args) {
+    <span class="hljs-keyword">return</span> System.out.printf(format, args);
+  }
+} <span class="hljs-comment">///:~</span>
+</code></pre><p>使用上述代码：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;import static net.mindview.util.Print.*;
+
+public class A {
+  public static void main(String[] args) {
+    print(&quot;Hello,static import!&quot;);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> net.mindview.util.Print.*;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> </span>{
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+    print(<span class="hljs-string">"Hello,static import!"</span>);
+  }
+}
+</code></pre><h5 id="2\.random-类的使用："><a name="2\.random-类的使用：" href="#2\.random-类的使用："></a>2.Random 类的使用：</h5><blockquote>
+<ol>
+<li>要生成随机数，可以先创建一个Random类的对象，若在创建的过程中没有传递任何参数，那么Java就会将当前时间作为随机数生成器的种子，并由此在程序每次执行时都会产生不同的随机数；  </li>
+<li>若想让程序每次执行时都产生相同的随机数（以使得输出可验证），可通过在创建Random对象时提供种子（用于数生成器的初始化值，随机数生成器对于特定的种子值总是产生相同的随机数序列）。
+示例：<pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;Random rand = new Random(47);//每次运行结果相同
+Random randDif = new Random();//每次运行结果不同
+int i;
+// Choose value from 1 to 100:
+//rand.nextInt(100)设置了所产随机数的上限为100，而其下限为0，为避免除零，应该进行加1操作。
+i = rand.nextInt(100) + 1;
+float u; // Applies to doubles, too
+//chosen (approximately) uniformly from the range 0.0f (inclusive) to 1.0f (exclusive)
+u = rand.nextFloat();
+long l;
+l = rand.nextLong();
+double d;
+//chosen (approximately) uniformly from the range 0.0d (inclusive) to 1.0d (exclusive)
+d = rand.nextDouble();
+&lt;/code&gt;&lt;/pre&gt;">Random rand = <span class="hljs-keyword">new</span> Random(<span class="hljs-number">47</span>);<span class="hljs-comment">//每次运行结果相同</span>
+Random randDif = <span class="hljs-keyword">new</span> Random();<span class="hljs-comment">//每次运行结果不同</span>
+<span class="hljs-keyword">int</span> i;
+<span class="hljs-comment">// Choose value from 1 to 100:</span>
+<span class="hljs-comment">//rand.nextInt(100)设置了所产随机数的上限为100，而其下限为0，为避免除零，应该进行加1操作。</span>
+i = rand.nextInt(<span class="hljs-number">100</span>) + <span class="hljs-number">1</span>;
+<span class="hljs-keyword">float</span> u; <span class="hljs-comment">// Applies to doubles, too</span>
+<span class="hljs-comment">//chosen (approximately) uniformly from the range 0.0f (inclusive) to 1.0f (exclusive)</span>
+u = rand.nextFloat();
+<span class="hljs-keyword">long</span> l;
+l = rand.nextLong();
+<span class="hljs-keyword">double</span> d;
+<span class="hljs-comment">//chosen (approximately) uniformly from the range 0.0d (inclusive) to 1.0d (exclusive)</span>
+d = rand.nextDouble();
+</code></pre>
+</li>
+</ol>
+</blockquote><h5 id="3\.一元减号用于转变数据的符号，而一元加号只是为了与一元减号相对应，但是它唯一的作用仅仅是将较小数据类型的操作数提升为int。"><a name="3\.一元减号用于转变数据的符号，而一元加号只是为了与一元减号相对应，但是它唯一的作用仅仅是将较小数据类型的操作数提升为int。" href="#3\.一元减号用于转变数据的符号，而一元加号只是为了与一元减号相对应，但是它唯一的作用仅仅是将较小数据类型的操作数提升为int。"></a>3.一元减号用于转变数据的符号，而一元加号只是为了与一元减号相对应，但是它唯一的作用仅仅是将较小数据类型的操作数提升为int。</h5><h5 id="4\.++和--说明"><a name="4\.++和--说明" href="#4\.++和--说明"></a>4.++和—说明</h5><p>对于前缀形式（++i和—i），在执行完运算后才得到值；对于后缀形式(i++和i—)，则是在执行运算之前就得到值。</p><h5 id="5\.关系操作符"><a name="5\.关系操作符" href="#5\.关系操作符"></a>5.关系操作符</h5><p>关系操作符中，等于和不等于适用于所有基本数据类型，而其他比较符不适用于boolean类型，因为boolean值只能为true或false，“大于”和“小于”没有实际意义。</p><blockquote>
+<p>==和!=也适用于所有对象,但是它们比较的是对象的引用。要比较两个对象的实际内容，应该使用所有对象都适用的特殊方法<strong class="highlight">equals()</strong>。但是该方法不适用于基本类型，基本类型直接使用==和!=即可。</p>
+<blockquote>
+<p>注意实现自己的类时，若想使得该类的两个对象的内容可以作比较运算，应该覆盖自己设计类中的equals()方法，因为equals()的默认行为是比较对象的引用。</p>
+</blockquote>
+</blockquote><h6 id="6\.逻辑操作符"><a name="6\.逻辑操作符" href="#6\.逻辑操作符"></a>6.逻辑操作符</h6><p>“&amp;&amp;”、“||”、“!”操作只可应用于布尔值，与C和C++不同的是：不可以将一个非布尔值当做布尔值在逻辑表达式中使用。</p><h6 id="7\.关于二进制"><a name="7\.关于二进制" href="#7\.关于二进制"></a>7.关于二进制</h6><p>在C、C++或Java中，二进制数没有直接常量表示方法。但是，通过Integer和Long的静态方法toBinaryString()可以很容易地实现二进制形式输出。</p><h6 id="8\.指数计数法"><a name="8\.指数计数法" href="#8\.指数计数法"></a>8.指数计数法</h6><p><strong class="highlight">“e”</strong>代表10的幂次，如1.39e-43f表示1.39x10<sup>-43</sup>，编译器将指数字面量当成double处理，所以在指数常量后最好加上后缀”d”和”f”。</p><h6 id="9\.按位操作符(只可用来操作整数基本数据类型中的单个“比特位”)"><a name="9\.按位操作符(只可用来操作整数基本数据类型中的单个“比特位”)" href="#9\.按位操作符(只可用来操作整数基本数据类型中的单个“比特位”)"></a>9.按位操作符(只可用来操作整数基本数据类型中的单个“比特位”)</h6><p><code>&amp;、|、^、~</code>分别为按位“与”、按位“或”、按位“异或”和按位“非”，“~”是一元操作符，所以不可与“=”联合使用，其他三个可以。</p><blockquote>
+<p>我们可将布尔类型作为一种单比特值对待，并且可对布尔类型执行按位“与”、按位“或”和按位“异或”运算，但不能执行按位“非”。对于布尔值，按位操作符具有与逻辑操作符相同的效果，只是它们不会中途“短路”。此外，针对布尔值进行的按位运算为我们新增了一个“异或”逻辑操作符，它并未包括在“逻辑”操作符的列表中。</p>
+</blockquote><h5 id="10\.移位操作符（只可用来处理整数基本数据类型中的二进制“位”）"><a name="10\.移位操作符（只可用来处理整数基本数据类型中的二进制“位”）" href="#10\.移位操作符（只可用来处理整数基本数据类型中的二进制“位”）"></a>10.移位操作符（只可用来处理整数基本数据类型中的二进制“位”）</h5><blockquote>
+<ol>
+<li><code>&lt;&lt;</code>，左移位操作符，低位补零；  </li>
+<li><code>&gt;&gt;</code>，右移位操作符，“有符号”右移位操作符使用“符号扩展”：若符号为正，则高位补零；若符号为负，则高位补1；  </li>
+<li><code>&gt;&gt;&gt;</code>，“无符号”右移位操作符，使用“零扩展”：无论正负，都在高位补零。这一操作符是C或C++中所没有的。  </li>
+</ol>
+</blockquote><h5 id="11.三元操作符if-else"><a name="11.三元操作符if-else" href="#11.三元操作符if-else"></a>11.三元操作符if-else</h5><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;boolean-exp ? value0 : value1
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">boolean</span>-exp ? value0 : value1
+</code></pre><h5 id="12.字符串操作符+和+=（字符串连接符）"><a name="12.字符串操作符+和+=（字符串连接符）" href="#12.字符串操作符+和+=（字符串连接符）"></a>12.字符串操作符+和+=（字符串连接符）</h5><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;package io.github.wzzju; /* Added by Eclipse.py */
+import static io.github.wzzju.util.Print.*;
+public class StringOperators {
+  public static void main(String[] args) {
+    int x = 0, y = 1, z = 2;
+    String s = &quot;x, y, z &quot;;
+    print(s + x + y + z);//输出结果是x, y, z 012
+    print(x + y + z + s);//输出结果是3x, y, z 
+    print(x + &quot; &quot; + s); // Converts x to a String
+    s += &quot;(summed) = &quot;; // Concatenation operator
+    print(s + (x + y + z));
+    print(&quot;&quot; + x); // Shorthand for Integer.toString()
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">package</span> io.github.wzzju; <span class="hljs-comment">/* Added by Eclipse.py */</span>
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> io.github.wzzju.util.Print.*;
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StringOperators</span> </span>{
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+    <span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>, y = <span class="hljs-number">1</span>, z = <span class="hljs-number">2</span>;
+    String s = <span class="hljs-string">"x, y, z "</span>;
+    print(s + x + y + z);<span class="hljs-comment">//输出结果是x, y, z 012</span>
+    print(x + y + z + s);<span class="hljs-comment">//输出结果是3x, y, z </span>
+    print(x + <span class="hljs-string">" "</span> + s); <span class="hljs-comment">// Converts x to a String</span>
+    s += <span class="hljs-string">"(summed) = "</span>; <span class="hljs-comment">// Concatenation operator</span>
+    print(s + (x + y + z));
+    print(<span class="hljs-string">""</span> + x); <span class="hljs-comment">// Shorthand for Integer.toString()</span>
+  }
+}
+</code></pre><h5 id="13.使用操作符常犯的错误"><a name="13.使用操作符常犯的错误" href="#13.使用操作符常犯的错误"></a>13.使用操作符常犯的错误</h5><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;while(x = y){
+//...
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">while</span>(x = y){
+<span class="hljs-comment">//...</span>
+}
+</code></pre><p>上述代码中只要x,y不都为布尔值，在Java中就不会编译通过，因为Java不会自动将int数值转换为布尔值。Java编译器不会允许我们随便把一种类型当做另外一种类型来用。</p><h5 id="14.关于类型转换"><a name="14.关于类型转换" href="#14.关于类型转换"></a>14.关于类型转换</h5><ul>
+<li>窄化转换（narrowing conversion），必须显示进行类型转换。</li>
+<li>扩展转换（widening conversion），不必显示进行类型转换。</li>
+</ul><p><strong class="highlight">注意:</strong>Java允许我们把任何基本数据类型转换为别的基本数据类型，但布尔型除外，因为布尔型根本不允许进行任何类型的转换处理。<br>将float或double转型为整型值时，总是对该数字执行结尾。如果想要得到四舍五入的结果，就需要使用java.lang.Math中的round()方法，由于round()是java.lang的一部分，因此使用它时不需要额外导入。<br>对基本数据类型执行算术运算或按位运算，只要类型比int小（即char、byte或者short），在运算之前这些值会自动转换成int。  </p><h6 id="15.java没有sizeof"><a name="15.java没有sizeof" href="#15.java没有sizeof"></a>15.Java没有sizeof</h6><p>sizeof在c/c++中存在主要是为了解决移植问题的，但是在Java中所有数据类型在所有机器中的大小都是相同的，所有不需要sizeof()操作符来解决移植问题。</p><h5 id="16.关于布尔型值"><a name="16.关于布尔型值" href="#16.关于布尔型值"></a>16.关于布尔型值</h5><p>能够对布尔型值进行的运算非常有限。我们只能赋予true和false值，并测试它的真假，而不腻对布尔值进行其他任何运算（如加、减等）。</p><h5 id="17.关于溢出"><a name="17.关于溢出" href="#17.关于溢出"></a>17.关于溢出</h5><p>两个较大的int值相乘可能会溢出，但是编译器不会给出任何出错或警告的信息。</p>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>

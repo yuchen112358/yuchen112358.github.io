@@ -1,0 +1,950 @@
+---
+layout:     post
+title:      "SESC源码阅读——System Call"
+date:       2016-05-07
+author:     "yuchen"
+header-img: "img/post-bg-odroid.jpg"
+tags:
+    - SESC
+    - System Call
+---
+<!DO
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>sesc-src-read-5.html</title>
+  <meta name="generator" content="Haroopad 0.13.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF);background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:5px -27px no-repeat #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:#FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:#EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:#75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:1px solid #1A3C6C;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin:0;max-width:none;min-height:0;outline:#112644 0;overflow-x:visible;overflow-y:visible;padding:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}.mermaid .label{color:#333}.node circle,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.edgePath .path{stroke:green;stroke-width:1.5px}.cluster rect{fill:#cdffb2;rx:40;stroke:#6eaa49;stroke-width:1px}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{stroke-width:1.5;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#333}.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:'trebuchet ms',verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:lightgrey;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:lightgrey;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}text{font-family:'trebuchet ms',verdana,arial;font-size:14px}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x;border:0;height:3px;padding:0}hr.underscore{border-top-style:dashed!important}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:url(../img/ajax.gif) center center no-repeat #fff}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}input.task-list-item{margin-left:-1.62em}.markdown{font-family:"Hiragino Sans GB","Microsoft YaHei",STHeiti,SimSun,"Lucida Grande","Lucida Sans Unicode","Lucida Sans",'Segoe UI',AppleSDGothicNeo-Medium,'Malgun Gothic',Verdana,Tahoma,sans-serif;padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-wrap:break-word}.markdown pre{border-radius:3px;word-wrap:break-word;border:1px solid #ccc;overflow:auto;padding:.5em}.markdown pre code{border:0;display:block}.markdown pre>code{font-family:Consolas,Inconsolata,Courier,monospace;font-weight:700;white-space:pre;margin:0}.markdown code{border-radius:3px;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown mark{color:#000;background-color:#fcf8e3}.markdown table{padding:0;border-collapse:collapse;border-spacing:0;margin-bottom:16px}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.solarized-light{padding:20px;color:#737373;font-size:15px;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;background:#fff;color:#000;-webkit-text-size-adjust:none}.hljs-comment,.hljs-javadoc{color:#006a00}.hljs-keyword,.hljs-literal,.nginx .hljs-title{color:#aa0d91}.hljs-list .hljs-title,.hljs-request,.hljs-status,.hljs-tag .hljs-title,.hljs-winutils,.http .hljs-title,.method,.setting .hljs-value,.tex .hljs-command{color:#008}.hljs-envvar,.tex .hljs-special{color:#660}.hljs-string{color:#c41a16}.apache .hljs-cbracket,.hljs-attr_selector,.hljs-cdata,.hljs-date,.hljs-filter .hljs-argument,.hljs-regexp,.hljs-tag .hljs-value{color:#080}.coffeescript .hljs-attribute,.css .hljs-function,.hljs-decorator,.hljs-function .hljs-title,.hljs-hexcolor,.hljs-number,.hljs-pi,.hljs-prompt,.hljs-rules .hljs-value,.hljs-shebang,.hljs-sub .hljs-identifier,.hljs-symbol,.hljs-symbol .hljs-string,.hljs-tag,.hljs-tag .hljs-keyword,.ini .hljs-title{color:#1c00cf}.clojure .hljs-attribute,.hljs-built_in,.hljs-class .hljs-id,.hljs-class .hljs-title,.hljs-dartdoc,.hljs-doctype,.hljs-javadoctag,.hljs-params,.hljs-phpdoc,.hljs-tag .hljs-attribute,.hljs-type,.hljs-typename,.hljs-yardoctag,.setting,.smalltalk .hljs-class{color:#5c2699}.hljs-variable{color:#3f6e74}.css .hljs-tag,.hljs-pseudo,.hljs-rules .hljs-property,.hljs-subst{color:#000}.css .hljs-class,.css .hljs-id{color:#9b703f}.hljs-value .hljs-important{color:#f70;font-weight:700}.hljs-rules .hljs-keyword{color:#c5af75}.apache .hljs-sqbracket,.hljs-annotation,.nginx .hljs-built_in{color:#9b859d}.hljs-pragma,.hljs-preprocessor,.hljs-preprocessor *{color:#643820}.tex .hljs-formula{background-color:#eee;font-style:italic}.diff .hljs-header,.hljs-chunk{color:gray;font-weight:700}.diff .hljs-change{background-color:#bccff9}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-comment .hljs-yardoctag{font-weight:700}.method .hljs-id{color:#000}.MathJax_Hover_Frame{border-radius:.25em;-webkit-border-radius:.25em;-moz-border-radius:.25em;-khtml-border-radius:.25em;box-shadow:0 0 15px #83A;-webkit-box-shadow:0 0 15px #83A;-moz-box-shadow:0 0 15px #83A;-khtml-box-shadow:0 0 15px #83A;border:1px solid #A6D!important;display:inline-block;position:absolute}.MathJax_Hover_Arrow{position:absolute;width:15px;height:11px;cursor:pointer}#MathJax_About{position:fixed;left:50%;width:auto;text-align:center;border:3px outset;padding:1em 2em;background-color:#DDD;color:#000;cursor:default;font-family:message-box;font-size:120%;font-style:normal;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;z-index:201;border-radius:15px;-webkit-border-radius:15px;-moz-border-radius:15px;-khtml-border-radius:15px;box-shadow:0 10px 20px gray;-webkit-box-shadow:0 10px 20px gray;-moz-box-shadow:0 10px 20px gray;-khtml-box-shadow:0 10px 20px gray;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}.MathJax_Menu{position:absolute;background-color:#fff;color:#000;width:auto;padding:2px;border:1px solid #CCC;margin:0;cursor:default;font:menu;text-align:left;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;z-index:201;box-shadow:0 10px 20px gray;-webkit-box-shadow:0 10px 20px gray;-moz-box-shadow:0 10px 20px gray;-khtml-box-shadow:0 10px 20px gray;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}.MathJax_MenuItem{padding:2px 2em;background:0 0}.MathJax_MenuArrow{position:absolute;right:.5em;color:#666}.MathJax_MenuActive .MathJax_MenuArrow{color:#fff}.MathJax_MenuArrow.RTL{left:.5em;right:auto}.MathJax_MenuCheck{position:absolute;left:.7em}.MathJax_MenuCheck.RTL{right:.7em;left:auto}.MathJax_MenuRadioCheck{position:absolute;left:1em}.MathJax_MenuRadioCheck.RTL{right:1em;left:auto}.MathJax_MenuLabel{padding:2px 2em 4px 1.33em;font-style:italic}.MathJax_MenuRule{border-top:1px solid #CCC;margin:4px 1px 0}.MathJax_MenuDisabled{color:GrayText}.MathJax_MenuActive{background-color:Highlight;color:HighlightText}.MathJax_Menu_Close{position:absolute;width:31px;height:31px;top:-15px;left:-15px}#MathJax_Zoom{position:absolute;background-color:#F0F0F0;overflow:auto;display:block;z-index:301;padding:.5em;border:1px solid #000;margin:0;font-weight:400;font-style:normal;text-align:left;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;box-shadow:5px 5px 15px #AAA;-webkit-box-shadow:5px 5px 15px #AAA;-moz-box-shadow:5px 5px 15px #AAA;-khtml-box-shadow:5px 5px 15px #AAA;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}#MathJax_ZoomOverlay{position:absolute;left:0;top:0;z-index:300;display:inline-block;width:100%;height:100%;border:0;padding:0;margin:0;background-color:#fff;opacity:0;filter:alpha(opacity=0)}#MathJax_ZoomFrame{position:relative;display:inline-block;height:0;width:0}#MathJax_ZoomEventTrap{position:absolute;left:0;top:0;z-index:302;display:inline-block;border:0;padding:0;margin:0;background-color:#fff;opacity:0;filter:alpha(opacity=0)}.MathJax_Preview{color:#888}#MathJax_Message{position:fixed;left:1px;bottom:2px;background-color:#E6E6E6;border:1px solid #959595;margin:0;padding:2px 8px;z-index:102;color:#000;font-size:80%;width:auto;white-space:nowrap}#MathJax_MSIE_Frame{position:absolute;top:0;left:0;width:0;z-index:101;border:0;margin:0;padding:0}.MathJax_Error{color:#C00;font-style:italic}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+<h2 id="sesc源码阅读——system-call"><a name="sesc源码阅读——system-call" href="#sesc源码阅读——system-call"></a>SESC源码阅读——System Call</h2><hr class="page"><h4 id="6.system-call"><a name="6.system-call" href="#6.system-call"></a>6.System Call</h4><p>因为SESC不提供一个操作系统，所以SESC必须代表应用程序陷入系统调用并执行系统调用。对于每一个标准的系统调用，SESC将其转换为一个MINT函数。完整的系统调用及其对应的MINT函数如下：</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libmint/Subst.cpp
+/* NOTE:
+ *
+ * It is NOT necessary to add underscores (_+) or libc_ at the
+ * beginning of the function name. To avoid replication, noun_strcmp
+ * eats all the underscores and libc_ that it finds.
+ *
+ * Ex: mmap would match for mmap, _mmap, __mmap, __libc_mmap ....
+ *
+ */
+
+func_desc_t Func_subst[] = {
+  // char *name               PFPI func;
+  {&quot;ulimit&quot;,                  mint_ulimit,                     1, OpExposed},
+  {&quot;execl&quot;,                   mint_execl,                      1, OpExposed},
+  {&quot;execle&quot;,                  mint_execle,                     1, OpExposed},
+  {&quot;execlp&quot;,                  mint_execlp,                     1, OpExposed},
+  {&quot;execv&quot;,                   mint_execv,                      1, OpExposed},
+  {&quot;execve&quot;,                  mint_execve,                     1, OpExposed},
+  {&quot;execvp&quot;,                  mint_execvp,                     1, OpExposed},
+  {&quot;mmap&quot;,                    mint_mmap,                       1, OpUndoable},
+  {&quot;open64&quot;,                  mint_open,                       1, OpUndoable}, 
+  {&quot;open&quot;,                    mint_open,                       1, OpUndoable},
+  {&quot;close&quot;,                   mint_close,                      1, OpUndoable},
+  {&quot;read&quot;,                    mint_read,                       1, OpUndoable},
+  {&quot;write&quot;,                   mint_write,                      1, OpUndoable},
+  {&quot;readv&quot;,                   mint_readv,                      1, OpExposed},
+  {&quot;writev&quot;,                  mint_writev,                     1, OpExposed},
+  {&quot;creat&quot;,                   mint_creat,                      1, OpExposed},
+  {&quot;link&quot;,                    mint_link,                       1, OpExposed},
+  {&quot;unlink&quot;,                  mint_unlink,                     1, OpExposed},
+  {&quot;rename&quot;,                  mint_rename,                     1, OpExposed},
+  {&quot;chdir&quot;,                   mint_chdir,                      1, OpExposed},
+  {&quot;chmod&quot;,                   mint_chmod,                      1, OpExposed},
+  {&quot;fchmod&quot;,                  mint_fchmod,                     1, OpExposed},
+  {&quot;chown&quot;,                   mint_chown,                      1, OpExposed},
+  {&quot;fchown&quot;,                  mint_fchown,                     1, OpExposed},
+  {&quot;lseek64&quot;,                 mint_lseek64,                    1, OpExposed},
+  {&quot;lseek&quot;,                   mint_lseek,                      1, OpExposed},
+  {&quot;access&quot;,                  mint_access,                     1, OpInternal},
+  {&quot;stat64&quot;,                  mint_stat64,                     1, OpExposed},
+  {&quot;lstat64&quot;,                 mint_lstat64,                    1, OpExposed},
+  {&quot;fstat64&quot;,                 mint_fstat64,                    1, OpExposed},
+  {&quot;xstat64&quot;,                 mint_xstat64,                    1, OpExposed},
+  {&quot;fxstat64&quot;,                mint_fxstat64,                   1, OpInternal},
+  {&quot;stat&quot;,                    mint_stat,                       1, OpExposed},
+  {&quot;lstat&quot;,                   mint_lstat,                      1, OpExposed},
+  {&quot;fstat&quot;,                   mint_fstat,                      1, OpExposed},
+  {&quot;xstat&quot;,                   mint_xstat,                      1, OpExposed},
+  {&quot;dup&quot;,                     mint_dup,                        1, OpExposed},
+  {&quot;pipe&quot;,                    mint_pipe,                       1, OpExposed},
+  {&quot;symlink&quot;,                 mint_symlink,                    1, OpExposed},
+  {&quot;readlink&quot;,                mint_readlink,                   1, OpExposed},
+  {&quot;umask&quot;,                   mint_umask,                      1, OpExposed},
+  {&quot;getuid&quot;,                  mint_getuid,                     0, OpInternal},
+  {&quot;geteuid&quot;,                 mint_geteuid,                    0, OpInternal},
+  {&quot;getgid&quot;,                  mint_getgid,                     0, OpInternal},
+  {&quot;getegid&quot;,                 mint_getegid,                    0, OpInternal},
+  {&quot;gethostname&quot;,             mint_gethostname,                1, OpExposed},
+  {&quot;getdomainname&quot;,           mint_getdomainname,              1, OpExposed},
+  {&quot;setdomainname&quot;,           mint_setdomainname,              1, OpExposed},
+  {&quot;socket&quot;,                  mint_socket,                     1, OpExposed},
+  {&quot;connect&quot;,                 mint_connect,                    1, OpExposed},
+  {&quot;send&quot;,                    mint_send,                       1, OpExposed},
+  {&quot;sendto&quot;,                  mint_sendto,                     1, OpExposed},
+  {&quot;sendmsg&quot;,                 mint_sendmsg,                    1, OpExposed},
+  {&quot;recv&quot;,                    mint_recv,                       1, OpExposed},
+  {&quot;recvfrom&quot;,                mint_recvfrom,                   1, OpExposed},
+  {&quot;recvmsg&quot;,                 mint_recvmsg,                    1, OpExposed},
+  {&quot;getsockopt&quot;,              mint_getsockopt,                 1, OpExposed},
+  {&quot;setsockopt&quot;,              mint_setsockopt,                 1, OpExposed},
+  {&quot;select&quot;,                  mint_select,                     1, OpExposed},
+  {&quot;cachectl&quot;,                mint_null_func,                  1, OpExposed},
+  {&quot;oserror&quot;,                 mint_oserror,                    0, OpExposed},
+  {&quot;setoserror&quot;,              mint_setoserror,                 0, OpExposed},
+  {&quot;perror&quot;,                  mint_perror,                     1, OpExposed},
+  {&quot;times&quot;,                   mint_times,                      1, OpUndoable},
+  {&quot;getdtablesize&quot;,           mint_getdtablesize,              1, OpExposed},
+  {&quot;syssgi&quot;,                  mint_syssgi,                     1, OpExposed},
+  {&quot;time&quot;,                    mint_time,                       1, OpExposed},
+  {&quot;munmap&quot;,                  mint_munmap,                     1, OpUndoable},
+  {&quot;malloc&quot;,                  mint_malloc,                     1, OpUndoable},
+  {&quot;calloc&quot;,                  mint_calloc,                     1, OpUndoable},
+  {&quot;free&quot;,                    mint_free,                       1, OpUndoable},
+  {&quot;cfree&quot;,                   mint_free,                       1, OpUndoable},
+  {&quot;realloc&quot;,                 mint_realloc,                    1, OpExposed},
+  {&quot;getpid&quot;,                  mint_getpid,                     1, OpInternal},
+  {&quot;getppid&quot;,                 mint_getppid,                    1, OpExposed},
+  {&quot;clock&quot;,                   mint_clock,                      1, OpExposed},
+  {&quot;gettimeofday&quot;,            mint_gettimeofday,               1, OpExposed},
+  {&quot;sysmp&quot;,                   mint_sysmp,                      1, OpExposed},
+  {&quot;getdents&quot;,                mint_getdents,                   1, OpExposed},
+  {&quot;_getdents&quot;,               mint_getdents,                   1, OpExposed},
+  {&quot;sproc&quot;,                   mint_notimplemented,             1, OpExposed},
+  {&quot;sprocsp&quot;,                 mint_notimplemented,             1, OpExposed},
+  {&quot;m_fork&quot;,                  mint_notimplemented,             1, OpExposed},
+  {&quot;m_next&quot;,                  mint_notimplemented,             1, OpExposed},
+  {&quot;m_set_procs&quot;,             mint_notimplemented,             1, OpExposed},
+  {&quot;m_get_numprocs&quot;,          mint_notimplemented,             1, OpExposed},
+  {&quot;m_get_myid&quot;,              mint_notimplemented,             1, OpExposed},
+  {&quot;m_kill_procs&quot;,            mint_notimplemented,             1, OpExposed},
+  {&quot;m_parc_procs&quot;,            mint_notimplemented,             1, OpExposed},
+  {&quot;m_rele_procs&quot;,            mint_notimplemented,             1, OpExposed},
+  {&quot;m_sync&quot;,                  mint_notimplemented,             1, OpExposed},
+  {&quot;m_lock&quot;,                  mint_notimplemented,             1, OpExposed},
+  {&quot;m_unlock&quot;,                mint_notimplemented,             1, OpExposed},
+  {&quot;fork&quot;,                    mint_notimplemented,             1, OpExposed},
+  {&quot;wait&quot;,                    mint_notimplemented,             1, OpExposed},
+  {&quot;wait3&quot;,                   mint_notimplemented,             1, OpExposed},
+  {&quot;waitpid&quot;,                 mint_notimplemented,             1, OpExposed},
+  {&quot;pthread_create&quot;,          mint_notimplemented,             1, OpExposed},
+  {&quot;pthread_lock&quot;,            mint_notimplemented,             1, OpExposed},
+  /* wait must generate a yield because it might block */
+  {&quot;isatty&quot;,                  mint_isatty,                     1, OpInternal},
+  {&quot;ioctl&quot;,                   mint_ioctl,                      1, OpExposed},
+  {&quot;prctl&quot;,                   mint_prctl,                      1, OpExposed},
+  {&quot;fcntl64&quot;,                 mint_fcntl,                      1, OpInternal},
+  {&quot;fcntl&quot;,                   mint_fcntl,                      1, OpInternal},
+  {&quot;cerror64&quot;,                mint_cerror,                     1, OpExposed},
+  {&quot;cerror&quot;,                  mint_cerror,                     1, OpExposed},
+#if (defined TASKSCALAR) &amp;amp; (! defined ATOMIC)
+  {&quot;abort&quot;,                   mint_rexit,                      1, OpExposed},
+  {&quot;exit&quot;,                    mint_rexit,                      1, OpExposed},
+#else
+  {&quot;abort&quot;,                   mint_exit,                       1, OpExposed},
+/* {&quot;exit&quot;,                    mint_exit,                       1, OpClass(OpUndoable,OpAtStart)}, */
+#endif
+  {&quot;sesc_fetch_op&quot;,           mint_sesc_fetch_op,              1, OpExposed},
+  {&quot;sesc_unlock_op&quot;,          mint_sesc_unlock_op,             1, OpExposed},
+  {&quot;sesc_spawn&quot;,              mint_sesc_spawn,                 1, OpNoReplay},
+  {&quot;sesc_spawn_&quot;,             mint_sesc_spawn,                 1, OpNoReplay},
+  {&quot;sesc_sysconf&quot;,            mint_sesc_sysconf,               1, OpExposed},
+  {&quot;sesc_sysconf_&quot;,           mint_sesc_sysconf,               1, OpExposed},
+  {&quot;sesc_self&quot;,               mint_getpid,                     1, OpInternal},
+  {&quot;sesc_self_&quot;,              mint_getpid,                     1, OpInternal},
+  {&quot;sesc_exit&quot;,               mint_exit,                       1, OpExposed},
+  {&quot;sesc_exit_&quot;,              mint_exit,                       1, OpExposed},
+  {&quot;sesc_finish&quot;,             mint_finish,                     1, OpExposed},
+  {&quot;sesc_yield&quot;,              mint_sesc_yield,                 1, OpExposed},
+  {&quot;sesc_yield_&quot;,             mint_sesc_yield,                 1, OpExposed},
+  {&quot;sesc_suspend&quot;,            mint_sesc_suspend,               1, OpExposed},
+  {&quot;sesc_suspend_&quot;,           mint_sesc_suspend,               1, OpExposed},
+  {&quot;sesc_resume&quot;,             mint_sesc_resume,                1, OpExposed},
+  {&quot;sesc_resume_&quot;,            mint_sesc_resume,                1, OpExposed},
+  {&quot;sesc_simulation_mark&quot;,    mint_sesc_simulation_mark,       1, OpExposed},
+  {&quot;sesc_simulation_mark_id&quot;, mint_sesc_simulation_mark_id,    1, OpExposed},
+  {&quot;sesc_fast_sim_begin&quot;,     mint_sesc_fast_sim_begin,        1, OpExposed},
+  {&quot;sesc_fast_sim_begin_&quot;,    mint_sesc_fast_sim_begin,        1, OpExposed},
+  {&quot;sesc_fast_sim_end&quot;,       mint_sesc_fast_sim_end,          1, OpExposed},
+  {&quot;sesc_fast_sim_end_&quot;,      mint_sesc_fast_sim_end,          1, OpExposed},
+  {&quot;sesc_preevent&quot;,           mint_sesc_preevent,              1, OpExposed},
+  {&quot;sesc_preevent_&quot;,          mint_sesc_preevent,              1, OpExposed},
+  {&quot;sesc_postevent&quot;,          mint_sesc_postevent,             1, OpExposed},
+  {&quot;sesc_postevent_&quot;,         mint_sesc_postevent,             1, OpExposed},
+  {&quot;sesc_memfence&quot;,           mint_sesc_memfence,              1, OpExposed},
+  {&quot;sesc_memfence_&quot;,          mint_sesc_memfence,              1, OpExposed},
+  {&quot;sesc_acquire&quot;,            mint_sesc_acquire,               1, OpExposed},
+  {&quot;sesc_acquire_&quot;,           mint_sesc_acquire,               1, OpExposed},
+  {&quot;sesc_release&quot;,            mint_sesc_release,               1, OpExposed},
+  {&quot;sesc_release_&quot;,           mint_sesc_release,               1, OpExposed},
+  {&quot;sesc_wait&quot;,               mint_sesc_wait,                  1, OpClass(OpUndoable,OpAtStart)},
+  {&quot;sesc_pseudoreset&quot;,        mint_sesc_pseudoreset,           1, OpExposed},
+  //  {&quot;printf&quot;,                      mint_printf,                     1, OpExposed},
+  //  {&quot;IO_printf&quot;,                   mint_printf,                     1, OpExposed},
+  {&quot;sesc_get_num_cpus&quot;,       mint_sesc_get_num_cpus,          0, OpInternal},
+#if (defined TLS)
+  //  {&quot;sesc_begin_epochs&quot;,       mint_sesc_begin_epochs,          0, OpExposed},
+  {&quot;sesc_future_epoch&quot;,       mint_sesc_future_epoch,          0, OpExposed},
+  {&quot;sesc_future_epoch_jump&quot;,  mint_sesc_future_epoch_jump,     0, OpExposed},
+  {&quot;sesc_commit_epoch&quot;,       mint_sesc_commit_epoch,          0, OpExposed},
+  {&quot;sesc_change_epoch&quot;,       mint_sesc_change_epoch,          0, OpInternal},
+  //  {&quot;sesc_end_epochs&quot;,         mint_sesc_end_epochs,            0, OpExposed},
+#endif
+#ifdef TASKSCALAR
+  {&quot;sesc_fork_successor&quot;,     mint_sesc_fork_successor,        0, OpExposed},
+  {&quot;sesc_prof_fork_successor&quot;,mint_sesc_prof_fork_successor,   0, OpExposed},
+  {&quot;sesc_commit&quot;,             mint_sesc_commit,                0, OpExposed},
+  {&quot;sesc_prof_commit&quot;,        mint_sesc_prof_commit,           0, OpExposed},
+  {&quot;sesc_become_safe&quot;,        mint_sesc_become_safe,           0, OpExposed},
+  {&quot;sesc_is_safe&quot;,            mint_sesc_is_safe,               0, OpExposed},
+  {&quot;sesc_is_versioned&quot;,       mint_do_nothing,                 0, OpExposed},
+  {&quot;sesc_begin_versioning&quot;,   mint_do_nothing,                 0, OpExposed},
+#endif
+#ifdef SESC_LOCKPROFILE
+  {&quot;sesc_startlock&quot;,          mint_sesc_startlock,             0, OpExposed},
+  {&quot;sesc_endlock&quot;,            mint_sesc_endlock,               0, OpExposed},
+  {&quot;sesc_startlock2&quot;,         mint_sesc_startlock2,            0, OpExposed},
+  {&quot;sesc_endlock2&quot;,           mint_sesc_endlock2,              0, OpExposed},
+#endif
+#ifdef VALUEPRED
+  {&quot;sesc_get_last_value&quot;,     mint_sesc_get_last_value,        0, OpExposed}, 
+  {&quot;sesc_put_last_value&quot;,     mint_sesc_put_last_value,        0, OpExposed}, 
+  {&quot;sesc_get_stride_value&quot;,   mint_sesc_get_stride_value,      0, OpExposed}, 
+  {&quot;sesc_put_stride_value&quot;,   mint_sesc_put_stride_value,      0, OpExposed}, 
+  {&quot;sesc_get_incr_value&quot;,     mint_sesc_get_incr_value,        0, OpExposed}, 
+  {&quot;sesc_put_incr_value&quot;,     mint_sesc_put_incr_value,        0, OpExposed}, 
+  {&quot;sesc_verify_value&quot;,       mint_sesc_verify_value,          0, OpExposed}, 
+#endif
+  {&quot;uname&quot;,                   mint_uname,                      1, OpInternal},
+  {&quot;getrlimit&quot;,               mint_getrlimit,                  1, OpExposed},
+  {&quot;setrlimit&quot;,               mint_do_nothing,                 1, OpExposed},
+  {&quot;getrusage&quot;,               mint_getrusage,                  1, OpExposed},
+  {&quot;syscall_fstat64&quot;,         mint_fstat64,                    1, OpExposed},
+  {&quot;syscall_fstat&quot;,           mint_fstat,                      1, OpExposed},
+  {&quot;syscall_stat64&quot;,          mint_stat64,                     1, OpExposed},
+  {&quot;syscall_stat&quot;,            mint_stat,                       1, OpExposed},
+  {&quot;syscall_lstat64&quot;,         mint_lstat64,                    1, OpExposed},
+  {&quot;syscall_lstat&quot;,           mint_lstat,                      1, OpExposed},
+  {&quot;syscall_getcwd&quot;,          mint_getcwd,                     1, OpExposed},
+  {&quot;assert_fail&quot;,             mint_assert_fail,                1, OpExposed},
+  {&quot;sigaction&quot;,               mint_do_nothing,                 1, OpInternal},
+  {&quot;ftruncate64&quot;,             mint_do_nothing,                 1, OpExposed},
+  {&quot;rmdir&quot;,                   mint_rmdir,                      1, OpExposed},
+  {&quot;fxstat&quot;,                  mint_fxstat64,                   1, OpExposed},
+  { NULL,                     NULL,                            1, OpExposed}
+};
+</code></pre>"><span class="hljs-comment">//src/libmint/Subst.cpp</span>
+<span class="hljs-comment">/* NOTE:
+ *
+ * It is NOT necessary to add underscores (_+) or libc_ at the
+ * beginning of the function name. To avoid replication, noun_strcmp
+ * eats all the underscores and libc_ that it finds.
+ *
+ * Ex: mmap would match for mmap, _mmap, __mmap, __libc_mmap ....
+ *
+ */</span>
+
+func_desc_t Func_subst[] = {
+  <span class="hljs-comment">// char *name               PFPI func;</span>
+  {<span class="hljs-string">"ulimit"</span>,                  mint_ulimit,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"execl"</span>,                   mint_execl,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"execle"</span>,                  mint_execle,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"execlp"</span>,                  mint_execlp,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"execv"</span>,                   mint_execv,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"execve"</span>,                  mint_execve,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"execvp"</span>,                  mint_execvp,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"mmap"</span>,                    mint_mmap,                       <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"open64"</span>,                  mint_open,                       <span class="hljs-number">1</span>, OpUndoable}, 
+  {<span class="hljs-string">"open"</span>,                    mint_open,                       <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"close"</span>,                   mint_close,                      <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"read"</span>,                    mint_read,                       <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"write"</span>,                   mint_write,                      <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"readv"</span>,                   mint_readv,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"writev"</span>,                  mint_writev,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"creat"</span>,                   mint_creat,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"link"</span>,                    mint_link,                       <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"unlink"</span>,                  mint_unlink,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"rename"</span>,                  mint_rename,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"chdir"</span>,                   mint_chdir,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"chmod"</span>,                   mint_chmod,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"fchmod"</span>,                  mint_fchmod,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"chown"</span>,                   mint_chown,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"fchown"</span>,                  mint_fchown,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"lseek64"</span>,                 mint_lseek64,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"lseek"</span>,                   mint_lseek,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"access"</span>,                  mint_access,                     <span class="hljs-number">1</span>, OpInternal},
+  {<span class="hljs-string">"stat64"</span>,                  mint_stat64,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"lstat64"</span>,                 mint_lstat64,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"fstat64"</span>,                 mint_fstat64,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"xstat64"</span>,                 mint_xstat64,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"fxstat64"</span>,                mint_fxstat64,                   <span class="hljs-number">1</span>, OpInternal},
+  {<span class="hljs-string">"stat"</span>,                    mint_stat,                       <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"lstat"</span>,                   mint_lstat,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"fstat"</span>,                   mint_fstat,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"xstat"</span>,                   mint_xstat,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"dup"</span>,                     mint_dup,                        <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"pipe"</span>,                    mint_pipe,                       <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"symlink"</span>,                 mint_symlink,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"readlink"</span>,                mint_readlink,                   <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"umask"</span>,                   mint_umask,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"getuid"</span>,                  mint_getuid,                     <span class="hljs-number">0</span>, OpInternal},
+  {<span class="hljs-string">"geteuid"</span>,                 mint_geteuid,                    <span class="hljs-number">0</span>, OpInternal},
+  {<span class="hljs-string">"getgid"</span>,                  mint_getgid,                     <span class="hljs-number">0</span>, OpInternal},
+  {<span class="hljs-string">"getegid"</span>,                 mint_getegid,                    <span class="hljs-number">0</span>, OpInternal},
+  {<span class="hljs-string">"gethostname"</span>,             mint_gethostname,                <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"getdomainname"</span>,           mint_getdomainname,              <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"setdomainname"</span>,           mint_setdomainname,              <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"socket"</span>,                  mint_socket,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"connect"</span>,                 mint_connect,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"send"</span>,                    mint_send,                       <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sendto"</span>,                  mint_sendto,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sendmsg"</span>,                 mint_sendmsg,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"recv"</span>,                    mint_recv,                       <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"recvfrom"</span>,                mint_recvfrom,                   <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"recvmsg"</span>,                 mint_recvmsg,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"getsockopt"</span>,              mint_getsockopt,                 <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"setsockopt"</span>,              mint_setsockopt,                 <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"select"</span>,                  mint_select,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"cachectl"</span>,                mint_null_func,                  <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"oserror"</span>,                 mint_oserror,                    <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"setoserror"</span>,              mint_setoserror,                 <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"perror"</span>,                  mint_perror,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"times"</span>,                   mint_times,                      <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"getdtablesize"</span>,           mint_getdtablesize,              <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"syssgi"</span>,                  mint_syssgi,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"time"</span>,                    mint_time,                       <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"munmap"</span>,                  mint_munmap,                     <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"malloc"</span>,                  mint_malloc,                     <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"calloc"</span>,                  mint_calloc,                     <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"free"</span>,                    mint_free,                       <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"cfree"</span>,                   mint_free,                       <span class="hljs-number">1</span>, OpUndoable},
+  {<span class="hljs-string">"realloc"</span>,                 mint_realloc,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"getpid"</span>,                  mint_getpid,                     <span class="hljs-number">1</span>, OpInternal},
+  {<span class="hljs-string">"getppid"</span>,                 mint_getppid,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"clock"</span>,                   mint_clock,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"gettimeofday"</span>,            mint_gettimeofday,               <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sysmp"</span>,                   mint_sysmp,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"getdents"</span>,                mint_getdents,                   <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"_getdents"</span>,               mint_getdents,                   <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sproc"</span>,                   mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sprocsp"</span>,                 mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_fork"</span>,                  mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_next"</span>,                  mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_set_procs"</span>,             mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_get_numprocs"</span>,          mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_get_myid"</span>,              mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_kill_procs"</span>,            mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_parc_procs"</span>,            mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_rele_procs"</span>,            mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_sync"</span>,                  mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_lock"</span>,                  mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"m_unlock"</span>,                mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"fork"</span>,                    mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"wait"</span>,                    mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"wait3"</span>,                   mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"waitpid"</span>,                 mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"pthread_create"</span>,          mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"pthread_lock"</span>,            mint_notimplemented,             <span class="hljs-number">1</span>, OpExposed},
+  <span class="hljs-comment">/* wait must generate a yield because it might block */</span>
+  {<span class="hljs-string">"isatty"</span>,                  mint_isatty,                     <span class="hljs-number">1</span>, OpInternal},
+  {<span class="hljs-string">"ioctl"</span>,                   mint_ioctl,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"prctl"</span>,                   mint_prctl,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"fcntl64"</span>,                 mint_fcntl,                      <span class="hljs-number">1</span>, OpInternal},
+  {<span class="hljs-string">"fcntl"</span>,                   mint_fcntl,                      <span class="hljs-number">1</span>, OpInternal},
+  {<span class="hljs-string">"cerror64"</span>,                mint_cerror,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"cerror"</span>,                  mint_cerror,                     <span class="hljs-number">1</span>, OpExposed},
+#<span class="hljs-keyword">if</span> (defined TASKSCALAR) &amp; (! defined ATOMIC)
+  {<span class="hljs-string">"abort"</span>,                   mint_rexit,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"exit"</span>,                    mint_rexit,                      <span class="hljs-number">1</span>, OpExposed},
+#<span class="hljs-keyword">else</span>
+  {<span class="hljs-string">"abort"</span>,                   mint_exit,                       <span class="hljs-number">1</span>, OpExposed},
+<span class="hljs-comment">/* {"exit",                    mint_exit,                       1, OpClass(OpUndoable,OpAtStart)}, */</span>
+#endif
+  {<span class="hljs-string">"sesc_fetch_op"</span>,           mint_sesc_fetch_op,              <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_unlock_op"</span>,          mint_sesc_unlock_op,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_spawn"</span>,              mint_sesc_spawn,                 <span class="hljs-number">1</span>, OpNoReplay},
+  {<span class="hljs-string">"sesc_spawn_"</span>,             mint_sesc_spawn,                 <span class="hljs-number">1</span>, OpNoReplay},
+  {<span class="hljs-string">"sesc_sysconf"</span>,            mint_sesc_sysconf,               <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_sysconf_"</span>,           mint_sesc_sysconf,               <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_self"</span>,               mint_getpid,                     <span class="hljs-number">1</span>, OpInternal},
+  {<span class="hljs-string">"sesc_self_"</span>,              mint_getpid,                     <span class="hljs-number">1</span>, OpInternal},
+  {<span class="hljs-string">"sesc_exit"</span>,               mint_exit,                       <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_exit_"</span>,              mint_exit,                       <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_finish"</span>,             mint_finish,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_yield"</span>,              mint_sesc_yield,                 <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_yield_"</span>,             mint_sesc_yield,                 <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_suspend"</span>,            mint_sesc_suspend,               <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_suspend_"</span>,           mint_sesc_suspend,               <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_resume"</span>,             mint_sesc_resume,                <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_resume_"</span>,            mint_sesc_resume,                <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_simulation_mark"</span>,    mint_sesc_simulation_mark,       <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_simulation_mark_id"</span>, mint_sesc_simulation_mark_id,    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_fast_sim_begin"</span>,     mint_sesc_fast_sim_begin,        <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_fast_sim_begin_"</span>,    mint_sesc_fast_sim_begin,        <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_fast_sim_end"</span>,       mint_sesc_fast_sim_end,          <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_fast_sim_end_"</span>,      mint_sesc_fast_sim_end,          <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_preevent"</span>,           mint_sesc_preevent,              <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_preevent_"</span>,          mint_sesc_preevent,              <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_postevent"</span>,          mint_sesc_postevent,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_postevent_"</span>,         mint_sesc_postevent,             <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_memfence"</span>,           mint_sesc_memfence,              <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_memfence_"</span>,          mint_sesc_memfence,              <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_acquire"</span>,            mint_sesc_acquire,               <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_acquire_"</span>,           mint_sesc_acquire,               <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_release"</span>,            mint_sesc_release,               <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_release_"</span>,           mint_sesc_release,               <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sesc_wait"</span>,               mint_sesc_wait,                  <span class="hljs-number">1</span>, OpClass(OpUndoable,OpAtStart)},
+  {<span class="hljs-string">"sesc_pseudoreset"</span>,        mint_sesc_pseudoreset,           <span class="hljs-number">1</span>, OpExposed},
+  <span class="hljs-comment">//  {"printf",                      mint_printf,                     1, OpExposed},</span>
+  <span class="hljs-comment">//  {"IO_printf",                   mint_printf,                     1, OpExposed},</span>
+  {<span class="hljs-string">"sesc_get_num_cpus"</span>,       mint_sesc_get_num_cpus,          <span class="hljs-number">0</span>, OpInternal},
+#<span class="hljs-keyword">if</span> (defined TLS)
+  <span class="hljs-comment">//  {"sesc_begin_epochs",       mint_sesc_begin_epochs,          0, OpExposed},</span>
+  {<span class="hljs-string">"sesc_future_epoch"</span>,       mint_sesc_future_epoch,          <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_future_epoch_jump"</span>,  mint_sesc_future_epoch_jump,     <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_commit_epoch"</span>,       mint_sesc_commit_epoch,          <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_change_epoch"</span>,       mint_sesc_change_epoch,          <span class="hljs-number">0</span>, OpInternal},
+  <span class="hljs-comment">//  {"sesc_end_epochs",         mint_sesc_end_epochs,            0, OpExposed},</span>
+#endif
+#ifdef TASKSCALAR
+  {<span class="hljs-string">"sesc_fork_successor"</span>,     mint_sesc_fork_successor,        <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_prof_fork_successor"</span>,mint_sesc_prof_fork_successor,   <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_commit"</span>,             mint_sesc_commit,                <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_prof_commit"</span>,        mint_sesc_prof_commit,           <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_become_safe"</span>,        mint_sesc_become_safe,           <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_is_safe"</span>,            mint_sesc_is_safe,               <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_is_versioned"</span>,       mint_do_nothing,                 <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_begin_versioning"</span>,   mint_do_nothing,                 <span class="hljs-number">0</span>, OpExposed},
+#endif
+#ifdef SESC_LOCKPROFILE
+  {<span class="hljs-string">"sesc_startlock"</span>,          mint_sesc_startlock,             <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_endlock"</span>,            mint_sesc_endlock,               <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_startlock2"</span>,         mint_sesc_startlock2,            <span class="hljs-number">0</span>, OpExposed},
+  {<span class="hljs-string">"sesc_endlock2"</span>,           mint_sesc_endlock2,              <span class="hljs-number">0</span>, OpExposed},
+#endif
+#ifdef VALUEPRED
+  {<span class="hljs-string">"sesc_get_last_value"</span>,     mint_sesc_get_last_value,        <span class="hljs-number">0</span>, OpExposed}, 
+  {<span class="hljs-string">"sesc_put_last_value"</span>,     mint_sesc_put_last_value,        <span class="hljs-number">0</span>, OpExposed}, 
+  {<span class="hljs-string">"sesc_get_stride_value"</span>,   mint_sesc_get_stride_value,      <span class="hljs-number">0</span>, OpExposed}, 
+  {<span class="hljs-string">"sesc_put_stride_value"</span>,   mint_sesc_put_stride_value,      <span class="hljs-number">0</span>, OpExposed}, 
+  {<span class="hljs-string">"sesc_get_incr_value"</span>,     mint_sesc_get_incr_value,        <span class="hljs-number">0</span>, OpExposed}, 
+  {<span class="hljs-string">"sesc_put_incr_value"</span>,     mint_sesc_put_incr_value,        <span class="hljs-number">0</span>, OpExposed}, 
+  {<span class="hljs-string">"sesc_verify_value"</span>,       mint_sesc_verify_value,          <span class="hljs-number">0</span>, OpExposed}, 
+#endif
+  {<span class="hljs-string">"uname"</span>,                   mint_uname,                      <span class="hljs-number">1</span>, OpInternal},
+  {<span class="hljs-string">"getrlimit"</span>,               mint_getrlimit,                  <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"setrlimit"</span>,               mint_do_nothing,                 <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"getrusage"</span>,               mint_getrusage,                  <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"syscall_fstat64"</span>,         mint_fstat64,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"syscall_fstat"</span>,           mint_fstat,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"syscall_stat64"</span>,          mint_stat64,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"syscall_stat"</span>,            mint_stat,                       <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"syscall_lstat64"</span>,         mint_lstat64,                    <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"syscall_lstat"</span>,           mint_lstat,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"syscall_getcwd"</span>,          mint_getcwd,                     <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"assert_fail"</span>,             mint_assert_fail,                <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"sigaction"</span>,               mint_do_nothing,                 <span class="hljs-number">1</span>, OpInternal},
+  {<span class="hljs-string">"ftruncate64"</span>,             mint_do_nothing,                 <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"rmdir"</span>,                   mint_rmdir,                      <span class="hljs-number">1</span>, OpExposed},
+  {<span class="hljs-string">"fxstat"</span>,                  mint_fxstat64,                   <span class="hljs-number">1</span>, OpExposed},
+  { NULL,                     NULL,                            <span class="hljs-number">1</span>, OpExposed}
+};
+</code></pre><p>MINT模拟器模拟大部分系统调用。然而，有一些系统调用其不能模拟，如fork()和sproc()，这些系统调用需要和操作系统打交道，因为新产生的进程将被怎样调度是不清楚的。因为SESC不提供一个操作系统，libapp即模拟了上述需要需操作系统打交道的系统调用。</p><h5 id="6.1-thread-api"><a name="6.1-thread-api" href="#6.1-thread-api"></a>6.1 Thread API</h5><p>Thread API定义在<code>src/libapp/Sescapi.h</code>文件中。</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libapp/Sescapi.h
+  void sesc_init(void);
+  int32_t  sesc_get_num_cpus(void);
+  void sesc_sysconf(int32_t tid, int32_t flags);
+  int32_t  sesc_spawn(void (*start_routine) (void *), void *arg, int32_t flags);
+  int32_t  sesc_self(void);
+  int32_t  sesc_suspend(int32_t tid);
+  int32_t  sesc_resume(int32_t tid);
+  int32_t  sesc_yield(int32_t tid);
+  void sesc_exit(int32_t err);
+  void sesc_finish(void);  /* Finish the whole simulation */
+  void sesc_wait(void);
+</code></pre>"><span class="hljs-comment">//src/libapp/Sescapi.h</span>
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_init</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+  <span class="hljs-function">int32_t  <span class="hljs-title">sesc_get_num_cpus</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_sysconf</span><span class="hljs-params">(int32_t tid, int32_t flags)</span></span>;
+  <span class="hljs-function">int32_t  <span class="hljs-title">sesc_spawn</span><span class="hljs-params">(<span class="hljs-keyword">void</span> (*start_routine)</span> <span class="hljs-params">(<span class="hljs-keyword">void</span> *)</span>, <span class="hljs-keyword">void</span> *arg, int32_t flags)</span>;
+  <span class="hljs-function">int32_t  <span class="hljs-title">sesc_self</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+  <span class="hljs-function">int32_t  <span class="hljs-title">sesc_suspend</span><span class="hljs-params">(int32_t tid)</span></span>;
+  <span class="hljs-function">int32_t  <span class="hljs-title">sesc_resume</span><span class="hljs-params">(int32_t tid)</span></span>;
+  <span class="hljs-function">int32_t  <span class="hljs-title">sesc_yield</span><span class="hljs-params">(int32_t tid)</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_exit</span><span class="hljs-params">(int32_t err)</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_finish</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;  <span class="hljs-comment">/* Finish the whole simulation */</span>
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_wait</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+</code></pre><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>•    void sesc_init(): Initializes the library and spawns the internal scheduler thread and transforms the single execution unit of the current process into a thread. It must be the first function call of the thread API that is called from an application.
+
+•    sesc_spawn(void (*start routine) (void *),void *arg,long flags): Creates a new thread of control that executes concurrently with the calling thread. The new thread calls the function start routine passing arg to it as the first argument. It returns an unique thread ID. For more information about the flags, please check sescapi.h.(重要)
+
+•    void sesc_wait(). Blocks until one of the child threads have finished. If there are no child threads, it returns automatically. Unlike traditional wait() calls, it does not return the pid of the thread that finished.
+
+•    void sesc_self(). Returns the current thread ID.
+
+•    int sesc_suspend(int pid). Suspends a thread whose pid is equal to the argument. The thread is transitioned to suspended state and it is removed from the instruction execution loop. The function returns true on success and false on errors. If the calling thread is the only one in running state, the simulation concludes.(重要)
+
+•    int sesc_resume(int pid). Resumes a thread in suspended state by moving it to a running queue. A resumed thread is usually assigned to the same CPU that it was running on before it was suspended in order to minimize the number of cache misses. However, the flags specified in thread creation can change this policy. The function returns true on success and false on errors.(重要)
+
+•    int sesc_yied(int pid). Explicitly yields execution control to the thread whose pid is passed as a parameter. If pid = -1, any thread can be dispatched. The function returns true when it succeeds or false when the pid specifies an invalid or not yet ready thread.(重要)
+
+•    void sesc_exit(). Terminates the current thread.
+</code></pre>">•    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_init</span><span class="hljs-params">()</span>: Initializes the library and spawns the internal scheduler thread and transforms the single execution unit of the current process into a thread. It must be the first function call of the thread API that is called from an application.
+
+•    <span class="hljs-title">sesc_spawn</span><span class="hljs-params">(<span class="hljs-keyword">void</span> (*start routine)</span> <span class="hljs-params">(<span class="hljs-keyword">void</span> *)</span>,<span class="hljs-keyword">void</span> *arg,<span class="hljs-keyword">long</span> flags): Creates a new thread of control that executes concurrently with the calling thread. The new thread calls the function start routine passing arg to it as the first argument. It returns an unique thread ID. For more information about the flags, please check sescapi.h.<span class="hljs-params">(重要)</span>
+
+•    <span class="hljs-keyword">void</span> <span class="hljs-title">sesc_wait</span><span class="hljs-params">()</span>. Blocks until one of the child threads have finished. If there are no child threads, it returns automatically. Unlike traditional <span class="hljs-title">wait</span><span class="hljs-params">()</span> calls, it does not return the pid of the thread that finished.
+
+•    <span class="hljs-keyword">void</span> <span class="hljs-title">sesc_self</span><span class="hljs-params">()</span>. Returns the current thread ID.
+
+•    <span class="hljs-keyword">int</span> <span class="hljs-title">sesc_suspend</span><span class="hljs-params">(<span class="hljs-keyword">int</span> pid)</span>. Suspends a thread whose pid is equal to the argument. The thread is transitioned to suspended state and it is removed from the instruction execution loop. The function returns <span class="hljs-keyword">true</span> on success and <span class="hljs-keyword">false</span> on errors. If the calling thread is the only one in running state, the simulation concludes.<span class="hljs-params">(重要)</span>
+
+•    <span class="hljs-keyword">int</span> <span class="hljs-title">sesc_resume</span><span class="hljs-params">(<span class="hljs-keyword">int</span> pid)</span>. Resumes a thread in suspended state by moving it to a running queue. A resumed thread is usually assigned to the same CPU that it was running on before it was suspended in order to minimize the number of cache misses. However, the flags specified in thread creation can change <span class="hljs-keyword">this</span> policy. The function returns <span class="hljs-keyword">true</span> on success and <span class="hljs-keyword">false</span> on errors.<span class="hljs-params">(重要)</span>
+
+•    <span class="hljs-keyword">int</span> <span class="hljs-title">sesc_yied</span><span class="hljs-params">(<span class="hljs-keyword">int</span> pid)</span>. Explicitly yields execution control to the thread whose pid is passed as a parameter. If pid </span>= -<span class="hljs-number">1</span>, any thread can be dispatched. The function returns <span class="hljs-keyword">true</span> when it succeeds or <span class="hljs-keyword">false</span> when the pid specifies an invalid or not yet ready thread.(重要)
+
+•    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_exit</span><span class="hljs-params">()</span>. Terminates the current thread.
+</span></code></pre><ul>
+<li>举例如下：</li></ul><pre class="swift hljs"><code class="Swift" data-origin="<pre><code class=&quot;Swift&quot;>//src/
+
+/*
+ * Flags specification:
+ *
+ * flags are used in sesc_spawn and sesc_sysconf. Both cases share the
+ * same flags structure, but some flag parameters are valid in some
+ * cases.
+ *
+ * Since the pid has only 16 bits and flags are 32 bits, the lower 16
+ * bits are a parameter to the flags.
+ */
+
+/* The created thread is not a allowed to migrate between CPUs on
+ * context switchs.
+ */
+#define SESC_FLAG_NOMIGRATE  0x10000
+
+/* The tid parameter (the lower 16 bits) indicate in which CPU this
+ * thread is going to be mapped. If the flag SESC_SPAWN_NOMIGRATE is
+ * also provided, the thread would always be executed in the same
+ * CPU. (unless sesc_sysconf is modifies the flags status)
+ */
+#define SESC_FLAG_MAP        0x20000
+
+#define SESC_FLAG_FMASK      0x8fff0000
+#define SESC_FLAG_DMASK      0xffff
+
+/* Example of utilization:
+ *
+ * tid = sesc_spawn(func,0,SESC_FLAG_NOMIGRATE|SESC_FLAG_MAP|7);
+ * This would map the thread in the processor 7 for ever.
+ *
+ * sesc_sysconf(tid,SESC_FLAG_NOMIGRATE|SESC_FLAG_MAP|2);
+ * Moves the previous thread (tid) to the processor 2
+ *
+ * sesc_sysconf(tid,SESC_FLAG_MAP|2); 
+ * Keeps the thread tid in the same processor, but it is allowed to
+ * migrate in the next context switch.
+ *
+ * tid = sesc_spawn(func,0,0);
+ * Creates a thread and maps it to the processor an iddle processor if
+ * possible.
+ *
+ * tid = sesc_spawn(func,0,SESC_FLAG_NOMIGRATE);
+ * The same that the previous, but once assigned to a processor, it
+ * never migrates.
+ *
+ */
+</code></pre>"><span class="hljs-comment">//src/</span>
+
+<span class="hljs-comment">/*
+ * Flags specification:
+ *
+ * flags are used in sesc_spawn and sesc_sysconf. Both cases share the
+ * same flags structure, but some flag parameters are valid in some
+ * cases.
+ *
+ * Since the pid has only 16 bits and flags are 32 bits, the lower 16
+ * bits are a parameter to the flags.
+ */</span>
+
+<span class="hljs-comment">/* The created thread is not a allowed to migrate between CPUs on
+ * context switchs.
+ */</span>
+#define <span class="hljs-type">SESC_FLAG_NOMIGRATE</span>  <span class="hljs-number">0x10000</span>
+
+<span class="hljs-comment">/* The tid parameter (the lower 16 bits) indicate in which CPU this
+ * thread is going to be mapped. If the flag SESC_SPAWN_NOMIGRATE is
+ * also provided, the thread would always be executed in the same
+ * CPU. (unless sesc_sysconf is modifies the flags status)
+ */</span>
+#define <span class="hljs-type">SESC_FLAG_MAP</span>        <span class="hljs-number">0x20000</span>
+
+#define <span class="hljs-type">SESC_FLAG_FMASK</span>      <span class="hljs-number">0x8fff0000</span>
+#define <span class="hljs-type">SESC_FLAG_DMASK</span>      <span class="hljs-number">0xffff</span>
+
+<span class="hljs-comment">/* Example of utilization:
+ *
+ * tid = sesc_spawn(func,0,SESC_FLAG_NOMIGRATE|SESC_FLAG_MAP|7);
+ * This would map the thread in the processor 7 for ever.
+ *
+ * sesc_sysconf(tid,SESC_FLAG_NOMIGRATE|SESC_FLAG_MAP|2);
+ * Moves the previous thread (tid) to the processor 2
+ *
+ * sesc_sysconf(tid,SESC_FLAG_MAP|2); 
+ * Keeps the thread tid in the same processor, but it is allowed to
+ * migrate in the next context switch.
+ *
+ * tid = sesc_spawn(func,0,0);
+ * Creates a thread and maps it to the processor an iddle processor if
+ * possible.
+ *
+ * tid = sesc_spawn(func,0,SESC_FLAG_NOMIGRATE);
+ * The same that the previous, but once assigned to a processor, it
+ * never migrates.
+ *
+ */</span>
+</code></pre><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//关于进程迁移
+//void RunningProcs::switchOut(CPU_t id, ProcessId *proc)/迁出
+//void RunningProcs::switchIn(CPU_t id, ProcessId *proc)/迁入
+ void xuStats::doMigrate(int *curr, int *dst){     //migrate threads from curr to dst.
+
+    int        cpuId;
+    ProcessId  *proc;
+    nMigrate++;
+
+    for(int pid = 1; pid &amp;lt; xu_nThread; pid++){  //switch out
+        if(curr[pid] != dst[pid] &amp;amp;&amp;amp; !is_Done[pid]){ //thread i need to be migrated form core_curr[i] to core_dst[i]
+            cpuId      = curr[pid];
+            proc       = ProcessId::getProcessId(pid);
+            osSim-&amp;gt;cpus.switchOut(cpuId, proc); //switch out proc  from cpuId
+                outputDataThread(cpuId);             //output cpuid's data 
+            is_Free[cpuId] = true;
+        }
+    }
+    for(int pid = 1; pid &amp;lt; xu_nThread ; pid++){  //switch in
+        if(curr[pid] != dst[pid]){      //thread i need to be migrated form core_curr[i] to core_dst[i]
+            curr[pid] = dst[pid];   // update thread-&amp;gt;cpu
+            cpuId = curr[pid];
+            if( !is_Done[pid]){
+                proc       = ProcessId::getProcessId(pid);
+                osSim-&amp;gt;cpus.switchIn(cpuId, proc);
+                is_Free[cpuId] = false;
+                saveDataContext(cpuId);
+            }
+            arc_sigma[cpuId] = pid;  // update cpu -&amp;gt; thread
+        }
+    }
+}
+</code></pre>"><span class="hljs-comment">//关于进程迁移</span>
+<span class="hljs-comment">//void RunningProcs::switchOut(CPU_t id, ProcessId *proc)/迁出</span>
+<span class="hljs-comment">//void RunningProcs::switchIn(CPU_t id, ProcessId *proc)/迁入</span>
+ <span class="hljs-keyword">void</span> xuStats::doMigrate(<span class="hljs-keyword">int</span> *curr, <span class="hljs-keyword">int</span> *dst){     <span class="hljs-comment">//migrate threads from curr to dst.</span>
+
+    <span class="hljs-keyword">int</span>        cpuId;
+    ProcessId  *proc;
+    nMigrate++;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> pid = <span class="hljs-number">1</span>; pid &lt; xu_nThread; pid++){  <span class="hljs-comment">//switch out</span>
+        <span class="hljs-keyword">if</span>(curr[pid] != dst[pid] &amp;&amp; !is_Done[pid]){ <span class="hljs-comment">//thread i need to be migrated form core_curr[i] to core_dst[i]</span>
+            cpuId      = curr[pid];
+            proc       = ProcessId::getProcessId(pid);
+            osSim-&gt;cpus.switchOut(cpuId, proc); <span class="hljs-comment">//switch out proc  from cpuId</span>
+                outputDataThread(cpuId);             <span class="hljs-comment">//output cpuid's data </span>
+            is_Free[cpuId] = <span class="hljs-keyword">true</span>;
+        }
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> pid = <span class="hljs-number">1</span>; pid &lt; xu_nThread ; pid++){  <span class="hljs-comment">//switch in</span>
+        <span class="hljs-keyword">if</span>(curr[pid] != dst[pid]){      <span class="hljs-comment">//thread i need to be migrated form core_curr[i] to core_dst[i]</span>
+            curr[pid] = dst[pid];   <span class="hljs-comment">// update thread-&gt;cpu</span>
+            cpuId = curr[pid];
+            <span class="hljs-keyword">if</span>( !is_Done[pid]){
+                proc       = ProcessId::getProcessId(pid);
+                osSim-&gt;cpus.switchIn(cpuId, proc);
+                is_Free[cpuId] = <span class="hljs-keyword">false</span>;
+                saveDataContext(cpuId);
+            }
+            arc_sigma[cpuId] = pid;  <span class="hljs-comment">// update cpu -&gt; thread</span>
+        }
+    }
+}
+</code></pre><ul>
+<li>与迁入/迁出相关的SESC源码</li></ul><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/RunningProcs.cpp
+void RunningProcs::switchIn(CPU_t id, ProcessId *proc)
+{
+  GProcessor *core=getProcessor(id);
+
+  workingListAdd(core);
+
+  proc-&amp;gt;switchIn(id);
+#ifdef TS_STALL  
+  core-&amp;gt;setStallUntil(globalClock+5);
+#endif  
+  core-&amp;gt;switchIn(proc-&amp;gt;getPid()); // Must be the last thing because it can generate a switch
+}
+
+void RunningProcs::switchOut(CPU_t id, ProcessId *proc) 
+{
+  GProcessor *core=getProcessor(id);
+  Pid_t pid = proc-&amp;gt;getPid();
+
+  proc-&amp;gt;switchOut(core-&amp;gt;getAndClearnGradInsts(pid),
+                  core-&amp;gt;getAndClearnWPathInsts(pid));
+
+  core-&amp;gt;switchOut(pid);
+
+  workingListRemove(core);
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/RunningProcs.cpp</span>
+<span class="hljs-keyword">void</span> RunningProcs::switchIn(CPU_t id, ProcessId *proc)
+{
+  GProcessor *core=getProcessor(id);
+
+  workingListAdd(core);
+
+  proc-&gt;switchIn(id);
+#ifdef TS_STALL  
+  core-&gt;setStallUntil(globalClock+<span class="hljs-number">5</span>);
+#endif  
+  core-&gt;switchIn(proc-&gt;getPid()); <span class="hljs-comment">// Must be the last thing because it can generate a switch</span>
+}
+
+<span class="hljs-keyword">void</span> RunningProcs::switchOut(CPU_t id, ProcessId *proc) 
+{
+  GProcessor *core=getProcessor(id);
+  Pid_t pid = proc-&gt;getPid();
+
+  proc-&gt;switchOut(core-&gt;getAndClearnGradInsts(pid),
+                  core-&gt;getAndClearnWPathInsts(pid));
+
+  core-&gt;switchOut(pid);
+
+  workingListRemove(core);
+}
+</code></pre><ul>
+<li>与调度相关的SESC源码</li></ul><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/RunningProcs.cpp
+void RunningProcs::makeRunnable(ProcessId *proc)
+{
+  // The process must be in the InvalidState
+  I(proc-&amp;gt;getState()==InvalidState);
+  // Now the process is runnable (but still not running)
+  ProcessId *victimProc=proc-&amp;gt;becomeReady();
+  // Get the CPU where the process would like to run
+  CPU_t cpu=proc-&amp;gt;getCPU();
+  // If there is a preferred CPU, try to schedule there
+  if(cpu&amp;gt;=0){
+    // Get the GProcessor of the CPU
+    GProcessor *core=getProcessor(cpu);
+    // Are there available flows on this CPU
+    if(core-&amp;gt;availableFlows()){
+      // There is an available flow, grab it
+      switchIn(cpu,proc);
+      return;
+    }
+  }
+  // Could not run the process on the cpu it wanted
+  // If the process is not pinned to that processor, try to find another cpu
+  if(!proc-&amp;gt;isPinned()){
+    // Find an available processor
+    GProcessor *core=getAvailableProcessor();
+    // If available processor found, run there
+    if(core){
+      switchIn(core-&amp;gt;getId(),proc);
+      return;
+    }
+  }
+  // Could not run on an available processor
+  // If there is a process to evict, switch it out and switch the new one in its place
+  if(victimProc){
+    I(victimProc-&amp;gt;getState()==RunningState);
+    // get the processor where victim process is running
+    cpu=victimProc-&amp;gt;getCPU();
+    switchOut(cpu, victimProc);
+    switchIn(cpu,proc);
+    victimProc-&amp;gt;becomeNonReady();
+    makeRunnable(victimProc);
+  }
+  // No free processor, no process to evict
+  // The new process has to wait its turn 
+}
+
+void RunningProcs::makeNonRunnable(ProcessId *proc)
+{
+  // It should still be running or ready
+  I((proc-&amp;gt;getState()==RunningState)||(proc-&amp;gt;getState()==ReadyState));
+  // If it is still running, remove it from the processor
+  if(proc-&amp;gt;getState()==RunningState){
+    // Find the CPU where it is running
+    CPU_t cpu=proc-&amp;gt;getCPU();
+    // Remove it from there
+    switchOut(cpu, proc);
+    // Set the state to InvalidState to make the process non-runnable
+    proc-&amp;gt;becomeNonReady();
+    // Find another process to run on this cpu
+    ProcessId *newProc=ProcessId::queueGet(cpu);
+    // If a process has been found, switch it in
+    if(newProc){
+      switchIn(cpu,newProc);
+    }
+  }else{
+    // Just set the state to InvalidState to make it non-runnable
+    proc-&amp;gt;becomeNonReady();
+  }
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/RunningProcs.cpp</span>
+<span class="hljs-keyword">void</span> RunningProcs::makeRunnable(ProcessId *proc)
+{
+  <span class="hljs-comment">// The process must be in the InvalidState</span>
+  I(proc-&gt;getState()==InvalidState);
+  <span class="hljs-comment">// Now the process is runnable (but still not running)</span>
+  ProcessId *victimProc=proc-&gt;becomeReady();
+  <span class="hljs-comment">// Get the CPU where the process would like to run</span>
+  CPU_t cpu=proc-&gt;getCPU();
+  <span class="hljs-comment">// If there is a preferred CPU, try to schedule there</span>
+  <span class="hljs-keyword">if</span>(cpu&gt;=<span class="hljs-number">0</span>){
+    <span class="hljs-comment">// Get the GProcessor of the CPU</span>
+    GProcessor *core=getProcessor(cpu);
+    <span class="hljs-comment">// Are there available flows on this CPU</span>
+    <span class="hljs-keyword">if</span>(core-&gt;availableFlows()){
+      <span class="hljs-comment">// There is an available flow, grab it</span>
+      switchIn(cpu,proc);
+      <span class="hljs-keyword">return</span>;
+    }
+  }
+  <span class="hljs-comment">// Could not run the process on the cpu it wanted</span>
+  <span class="hljs-comment">// If the process is not pinned to that processor, try to find another cpu</span>
+  <span class="hljs-keyword">if</span>(!proc-&gt;isPinned()){
+    <span class="hljs-comment">// Find an available processor</span>
+    GProcessor *core=getAvailableProcessor();
+    <span class="hljs-comment">// If available processor found, run there</span>
+    <span class="hljs-keyword">if</span>(core){
+      switchIn(core-&gt;getId(),proc);
+      <span class="hljs-keyword">return</span>;
+    }
+  }
+  <span class="hljs-comment">// Could not run on an available processor</span>
+  <span class="hljs-comment">// If there is a process to evict, switch it out and switch the new one in its place</span>
+  <span class="hljs-keyword">if</span>(victimProc){
+    I(victimProc-&gt;getState()==RunningState);
+    <span class="hljs-comment">// get the processor where victim process is running</span>
+    cpu=victimProc-&gt;getCPU();
+    switchOut(cpu, victimProc);
+    switchIn(cpu,proc);
+    victimProc-&gt;becomeNonReady();
+    makeRunnable(victimProc);
+  }
+  <span class="hljs-comment">// No free processor, no process to evict</span>
+  <span class="hljs-comment">// The new process has to wait its turn </span>
+}
+
+<span class="hljs-keyword">void</span> RunningProcs::makeNonRunnable(ProcessId *proc)
+{
+  <span class="hljs-comment">// It should still be running or ready</span>
+  I((proc-&gt;getState()==RunningState)||(proc-&gt;getState()==ReadyState));
+  <span class="hljs-comment">// If it is still running, remove it from the processor</span>
+  <span class="hljs-keyword">if</span>(proc-&gt;getState()==RunningState){
+    <span class="hljs-comment">// Find the CPU where it is running</span>
+    CPU_t cpu=proc-&gt;getCPU();
+    <span class="hljs-comment">// Remove it from there</span>
+    switchOut(cpu, proc);
+    <span class="hljs-comment">// Set the state to InvalidState to make the process non-runnable</span>
+    proc-&gt;becomeNonReady();
+    <span class="hljs-comment">// Find another process to run on this cpu</span>
+    ProcessId *newProc=ProcessId::queueGet(cpu);
+    <span class="hljs-comment">// If a process has been found, switch it in</span>
+    <span class="hljs-keyword">if</span>(newProc){
+      switchIn(cpu,newProc);
+    }
+  }<span class="hljs-keyword">else</span>{
+    <span class="hljs-comment">// Just set the state to InvalidState to make it non-runnable</span>
+    proc-&gt;becomeNonReady();
+  }
+}
+</code></pre><h5 id="6.2-synchronization-api"><a name="6.2-synchronization-api" href="#6.2-synchronization-api"></a>6.2 Synchronization API</h5><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libapp/Sescapi.h
+#ifndef SESCAPI_NATIVE
+  /*
+   * LOCK/UNLOCK operation
+   * a simple spin lock
+   */
+  void sesc_lock_init(slock_t * lock);
+  void sesc_lock(slock_t * lock);
+  void sesc_unlock(slock_t * lock);
+#endif
+
+  /*
+   * Barrier 
+   * a two-phase centralized barrier
+   */
+  void sesc_barrier_init(sbarrier_t *barr);
+  void sesc_barrier(sbarrier_t *barr, int32_t num_proc);
+
+  /*
+   * Semaphore
+   * busy-wait semaphore
+   */
+  void sesc_sema_init(ssema_t *sema, int32_t initValue);
+  void sesc_psema(ssema_t *sema);
+  void sesc_vsema(ssema_t *sema);
+</code></pre>"><span class="hljs-comment">//src/libapp/Sescapi.h</span>
+#ifndef SESCAPI_NATIVE
+  <span class="hljs-comment">/*
+   * LOCK/UNLOCK operation
+   * a simple spin lock
+   */</span>
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_lock_init</span><span class="hljs-params">(slock_t * lock)</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_lock</span><span class="hljs-params">(slock_t * lock)</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_unlock</span><span class="hljs-params">(slock_t * lock)</span></span>;
+#endif
+
+  <span class="hljs-comment">/*
+   * Barrier 
+   * a two-phase centralized barrier
+   */</span>
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_barrier_init</span><span class="hljs-params">(sbarrier_t *barr)</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_barrier</span><span class="hljs-params">(sbarrier_t *barr, int32_t num_proc)</span></span>;
+
+  <span class="hljs-comment">/*
+   * Semaphore
+   * busy-wait semaphore
+   */</span>
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_sema_init</span><span class="hljs-params">(ssema_t *sema, int32_t initValue)</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_psema</span><span class="hljs-params">(ssema_t *sema)</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_vsema</span><span class="hljs-params">(ssema_t *sema)</span></span>;
+</code></pre><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>•    void sesc_lock_init(slock t *lock): Initializes the lock lock.
+
+•    void sesc_lock(slock t *lock): Acquires the lock lock.
+
+•    void sesc_unlock(slock t *lock): Releases the lock lock.
+
+Other synchronization primitives supported by SESC are barriers and semaphores:
+•    void sesc barrier_init(sbarrier t *barr): Initializes a barrier barr.
+
+•    void sesc_barrier(sbarrier t *barr, long num proc): Executes a barrier barr.
+
+•    void sesc_sema_init(ssema t *sema, int initValue): Initializes the semaphore sema.
+
+•    void sesc_psema(ssema t *sema): Signals the semaphore sema.
+
+•    void sesc_vsema(ssema t *sema): Waits for the signal for the semaphore sema.
+</code></pre>">•    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sesc_lock_init</span><span class="hljs-params">(slock t *lock)</span>: Initializes the lock lock.
+
+•    <span class="hljs-keyword">void</span> <span class="hljs-title">sesc_lock</span><span class="hljs-params">(slock t *lock)</span>: Acquires the lock lock.
+
+•    <span class="hljs-keyword">void</span> <span class="hljs-title">sesc_unlock</span><span class="hljs-params">(slock t *lock)</span>: Releases the lock lock.
+
+Other synchronization primitives supported by SESC are barriers and semaphores:
+•    <span class="hljs-keyword">void</span> sesc <span class="hljs-title">barrier_init</span><span class="hljs-params">(sbarrier t *barr)</span>: Initializes a barrier barr.
+
+•    <span class="hljs-keyword">void</span> <span class="hljs-title">sesc_barrier</span><span class="hljs-params">(sbarrier t *barr, <span class="hljs-keyword">long</span> num proc)</span>: Executes a barrier barr.
+
+•    <span class="hljs-keyword">void</span> <span class="hljs-title">sesc_sema_init</span><span class="hljs-params">(ssema t *sema, <span class="hljs-keyword">int</span> initValue)</span>: Initializes the semaphore sema.
+
+•    <span class="hljs-keyword">void</span> <span class="hljs-title">sesc_psema</span><span class="hljs-params">(ssema t *sema)</span>: Signals the semaphore sema.
+
+•    <span class="hljs-keyword">void</span> <span class="hljs-title">sesc_vsema</span><span class="hljs-params">(ssema t *sema)</span>: Waits <span class="hljs-keyword">for</span> the signal <span class="hljs-keyword">for</span> the semaphore sema.
+</span></code></pre>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>

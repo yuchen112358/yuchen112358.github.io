@@ -1,0 +1,447 @@
+---
+layout:     post
+title:      "Java编程思想（第四版）——初始化与清理(2)"
+subtitle:   "初始化与清理的深入学习与理解（2）"
+date:       2016-04-14
+author:     "yuchen"
+header-img: "img/post-bg-java.jpg"
+tags:
+    - Java
+    - Initialization & Cleanup 
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>ch5-2.html</title>
+  <meta name="generator" content="Haroopad 0.12.2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF) repeat scroll 0 0 transparent;background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:medium none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:medium none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:medium none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:none no-repeat scroll 5px -27px #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:none repeat scroll 0 0 #FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:none repeat scroll 0 0 #EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:none repeat scroll 0 0 #75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:#1A3C6C solid 1px;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-bottom-width:0;border-left-width:0;border-right-width:0;border-top-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;max-width:none;min-height:0;outline-color:#112644;outline-style:none;outline-width:0;overflow-x:visible;overflow-y:visible;padding-bottom:0;padding-left:0;padding-right:0;padding-top:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;border:0 none;color:#ccc;height:3px;padding:0}hr.underscore{border:0 none!important;height:30px;padding:0;-webkit-margin-before:0;-webkit-margin-after:0}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:#fff url(../img/ajax.gif) no-repeat center center}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}.markdown{padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-break:break-all;word-wrap:break-word}.markdown pre{border-radius:3px;word-break:break-all;word-wrap:break-word;overflow:auto}.markdown pre code{display:block}.markdown pre>code{border:1px solid #ccc;white-space:pre;padding:.5em;margin:0}.markdown code{border-radius:3px;word-break:break-all;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown table{padding:0;border-collapse:collapse;border-spacing:0}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.markdown em.underline{font-style:normal;text-decoration:underline}.markdown strong.highlight{color:#000;padding:0 5px;background-color:#fdffb6;-webkit-box-shadow:#fdffb6 0 0 5px;-moz-box-shadow:#fdffb6 0 0 5px;box-shadow:#fdffb6 0 0 5px}.solarized-light{padding:20px;color:#737373;font-size:15px;font-family:"Lucida Grande","Lucida Sans Unicode","Lucida Sans",AppleSDGothicNeo-Medium,'Segoe UI','Malgun Gothic',Verdana,Tahoma,sans-serif;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em;font-family:Consolas,Inconsolata,Courier,monospace}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;color:#dccf8f;background:url(/images/pojoaque.jpg) repeat scroll left top #181914;-webkit-text-size-adjust:none}.diff .hljs-header,.hljs-comment,.hljs-doctype,.hljs-javadoc,.hljs-template_comment,.lisp .hljs-string{color:#586e75;font-style:italic}.clojure .hljs-title,.css .hljs-tag,.css .rule .hljs-keyword,.hljs-addition,.hljs-keyword,.hljs-winutils,.javascript .hljs-title,.method,.nginx .hljs-title{color:#b64926}.hljs-command,.hljs-hexcolor,.hljs-number,.hljs-phpdoc,.hljs-regexp,.hljs-string,.hljs-tag .hljs-value,.tex .hljs-formula{color:#468966}.clojure .hljs-built_in,.hljs-built_in,.hljs-chunk,.hljs-decorator,.hljs-function .hljs-title,.hljs-id,.hljs-identifier,.hljs-localvars,.hljs-title,.lisp .hljs-title{color:#ffb03b}.hljs-attribute,.hljs-class .hljs-title,.hljs-constant,.hljs-parent,.hljs-type,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number{color:#b58900}.css .hljs-attribute{color:#b89859}.css .hljs-hexcolor,.css .hljs-number{color:#dccf8f}.css .hljs-class{color:#d3a60c}.diff .hljs-change,.hljs-attr_selector,.hljs-cdata,.hljs-important,.hljs-pi,.hljs-pragma,.hljs-preprocessor,.hljs-shebang,.hljs-special,.hljs-subst,.hljs-symbol,.hljs-symbol .hljs-string{color:#cb4b16}.hljs-deletion{color:#dc322f}.tex .hljs-formula{background:#073642}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+
+  <h2 id="java编程思想（第四版）学习笔记"><a name="java编程思想（第四版）学习笔记" href="#java编程思想（第四版）学习笔记"></a>Java编程思想（第四版）学习笔记</h2><hr class="page"><h3 id="第五章-初始化与清理(2)"><a name="第五章-初始化与清理(2)" href="#第五章-初始化与清理(2)"></a>第五章 初始化与清理(2)</h3><h5 id="1.成员初始化"><a name="1.成员初始化" href="#1.成员初始化"></a>1.成员初始化</h5><ul>
+<li>Java尽力保证：所有变量在使用前都能得到恰当的初始化。</li>
+<li>对于方法的局部变量，Java以编译时错误的形式来贯彻这种保证。</li>
+<li>对于类的成员变量：<table>
+<thead>
+<tr>
+<th style="text-align:left">Data type</th>
+<th style="text-align:center">Initial value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">char</td>
+<td style="text-align:center">值为0，输出为空白</td>
+</tr>
+<tr>
+<td style="text-align:left">byte</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:left">short</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:left">long</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:center">0.0</td>
+</tr>
+<tr>
+<td style="text-align:left">double</td>
+<td style="text-align:center">0.0</td>
+</tr>
+<tr>
+<td style="text-align:left">对象引用</td>
+<td style="text-align:center">null</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul><h5 id="2.定义时初始化"><a name="2.定义时初始化" href="#2.定义时初始化"></a>2.定义时初始化</h5><ul>
+<li><p>最直接的办法：在定义类成员变量的地方为其赋值(在C++里不能这样做)。</p>
+<ul>
+<li><p>上述方法同样适用于非基本类型的对象，如下：</p>
+<pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;class Depth{
+  //...
+}
+
+public class Measurement{
+  Depth d = new Depth();
+  int i = f();
+  int j = g(i);
+  int f(){return 11;}
+  int g(int n){return n*10;}
+  //...
+}
+&lt;/code&gt;&lt;/pre&gt;">class Depth{
+  <span class="hljs-comment">//...</span>
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Measurement</span></span>{
+  Depth d = <span class="hljs-keyword">new</span> Depth();
+  <span class="hljs-keyword">int</span> i = f();
+  <span class="hljs-keyword">int</span> j = g(i);
+  <span class="hljs-keyword">int</span> f(){<span class="hljs-keyword">return</span> <span class="hljs-number">11</span>;}
+  <span class="hljs-keyword">int</span> g(<span class="hljs-keyword">int</span> n){<span class="hljs-keyword">return</span> n*<span class="hljs-number">10</span>;}
+  <span class="hljs-comment">//...</span>
+}
+</code></pre>
+<p><strong class="highlight">注意：</strong><br>1.若是没有为d指定初始值就尝试使用它，会出现运行时错误，产生异常。<br>2.也可以通过调用某个方法来提供初值。<br>3.上述初始化方法的限制：所定义类的每个对象都会具有相同的初值，不灵活。  </p>
+</li>
+</ul>
+</li>
+</ul><h5 id="3.构造器初始化"><a name="3.构造器初始化" href="#3.构造器初始化"></a>3.构造器初始化</h5><ul>
+<li>可以使用构造器进行初始化。在运行时，可以调用方法或执行某些动作来确定初值，这为编程带来了更大的灵活性。<pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;//: initialization/Counter.java
+package initialization; /* Added by Eclipse.py */
+public class Counter {
+int i;
+Counter() { i = 7; }
+// ...
+} ///:~
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-comment">//: initialization/Counter.java</span>
+<span class="hljs-keyword">package</span> initialization; <span class="hljs-comment">/* Added by Eclipse.py */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span> </span>{
+<span class="hljs-keyword">int</span> i;
+Counter() { i = <span class="hljs-number">7</span>; }
+<span class="hljs-comment">// ...</span>
+} <span class="hljs-comment">///:~</span>
+</code></pre>
+<strong class="highlight">注意:</strong><br>无法阻止字段初始化的进行，它将在构造器被调用前发生。（上述，i首先被置为0，然后变成7。）对于所有基本类型和对象引用，包含定义时已经指定初值的变量，这种情况都成立。  </li>
+<li><strong>对象创建的过程总结如下：</strong>
+<img src="/images/posts/tij_init00.png" alt="对象创建过程"><br><strong class="highlight">注意:</strong><br>1.初始化的顺序是先静态对象（若它们尚未因前面的对象创建过程而被初始化），而后是”非静态”对象。<br>2.调用一个类的静态方法或访问一个类的静态域，会导致其所有的静态成员变量都会初始化（若它们尚未因前面的对象创建过程而被初始化），但是”非静态”成员变量不会被创建（”非静态”对象只有使用new操作时才会被创建）。<br>3.调用一个类的静态方法时，会先初始化所有静态成员变量，再执行该静态函数。  </li>
+</ul><p>示例如下：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;package io.github.wzzju;
+import static io.github.wzzju.util.Print.*;
+
+class Bowl {
+  Bowl(int marker) {
+    print(&quot;Bowl(&quot; + marker + &quot;)&quot;);
+  }
+}
+
+public class StaticInitialization {
+  public static void main(String[] args) {
+    print(&quot;Creating new Bowl in main&quot;);
+    new Bowl(66);
+//    new StaticInitialization();
+  }
+  static Bowl bowl1 = new Bowl(1);
+  Bowl bowl3 = new Bowl(33);
+  static Bowl bowl2 = new Bowl(2);
+}/*output:
+Bowl(1)
+Bowl(2)
+Creating new Bowl in main
+Bowl(66)
+*/
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">package</span> io.github.wzzju;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> io.github.wzzju.util.Print.*;
+
+class Bowl {
+  Bowl(<span class="hljs-keyword">int</span> marker) {
+    print(<span class="hljs-string">"Bowl("</span> + marker + <span class="hljs-string">")"</span>);
+  }
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StaticInitialization</span> </span>{
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+    print(<span class="hljs-string">"Creating new Bowl in main"</span>);
+    <span class="hljs-keyword">new</span> Bowl(<span class="hljs-number">66</span>);
+<span class="hljs-comment">//    new StaticInitialization();</span>
+  }
+  <span class="hljs-keyword">static</span> Bowl bowl1 = <span class="hljs-keyword">new</span> Bowl(<span class="hljs-number">1</span>);
+  Bowl bowl3 = <span class="hljs-keyword">new</span> Bowl(<span class="hljs-number">33</span>);
+  <span class="hljs-keyword">static</span> Bowl bowl2 = <span class="hljs-keyword">new</span> Bowl(<span class="hljs-number">2</span>);
+}<span class="hljs-comment">/*output:
+Bowl(1)
+Bowl(2)
+Creating new Bowl in main
+Bowl(66)
+*/</span>
+</code></pre><p>程序运行时，先初始化bowl1，再初始化bowl2，而bowl3不会被初始化，因为程序启动仅仅调用了静态函数main，没有使用new创建该类。最后执行main函数中的语句。将<code>//    new StaticInitialization();</code>行的注释去掉，运行结果如下：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;/*output:
+Bowl(1)
+Bowl(2)
+Creating new Bowl in main
+Bowl(66)
+Bowl(33)//bowl3被初始化
+*/
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-comment">/*output:
+Bowl(1)
+Bowl(2)
+Creating new Bowl in main
+Bowl(66)
+Bowl(33)//bowl3被初始化
+*/</span>
+</code></pre><p>从上述结果亦可以看出，若类中的静态对象因前面的对象创建过程（或对静态函数/静态域的访问过程）而被初始化，则不会被再次初始化。</p><ul>
+<li><p>显示的静态初始化<br>静态子句(静态块)如下：</p>
+<pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;//: initialization/Spoon.java
+package initialization; /* Added by Eclipse.py */
+public class Spoon {
+static int i;
+static double d;
+static {
+  i = 47;
+  d = 3.6;
+}
+} ///:~
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-comment">//: initialization/Spoon.java</span>
+<span class="hljs-keyword">package</span> initialization; <span class="hljs-comment">/* Added by Eclipse.py */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Spoon</span> </span>{
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> i;
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">double</span> d;
+<span class="hljs-keyword">static</span> {
+  i = <span class="hljs-number">47</span>;
+  d = <span class="hljs-number">3.6</span>;
+}
+} <span class="hljs-comment">///:~</span>
+</code></pre>
+<p>与其他静态初始化动作一样，这段代码仅执行一次：当首次生成这个类的一个对象时，或者首次访问属于这个类的静态数据成员时（即便从未生成过那个类的对象）。</p>
+</li>
+<li><p>非静态实例初始化<br>以下模式用于初始化每个对象的非静态变量：</p>
+<pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;public class Mugs {
+Mug mug1;
+Mug mug2;
+{
+  mug1 = new Mug(1);
+  mug2 = new Mug(2);
+  print(&quot;mug1 &amp;amp; mug2 initialized&quot;);
+}
+Mugs() {
+  print(&quot;Mugs()&quot;);
+}
+Mugs(int i) {
+  print(&quot;Mugs(int)&quot;);
+}
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Mugs</span> </span>{
+Mug mug1;
+Mug mug2;
+{
+  mug1 = <span class="hljs-keyword">new</span> Mug(<span class="hljs-number">1</span>);
+  mug2 = <span class="hljs-keyword">new</span> Mug(<span class="hljs-number">2</span>);
+  print(<span class="hljs-string">"mug1 &amp; mug2 initialized"</span>);
+}
+Mugs() {
+  print(<span class="hljs-string">"Mugs()"</span>);
+}
+Mugs(<span class="hljs-keyword">int</span> i) {
+  print(<span class="hljs-string">"Mugs(int)"</span>);
+}
+}
+</code></pre>
+<p>上述模式可以保证无论调用哪个显示构造器，某些操作都会发生（<code>{}</code>内的初始化操作）。实例初始化子句是在构造器之前执行的。</p>
+</li>
+</ul><h5 id="4.数组初始化"><a name="4.数组初始化" href="#4.数组初始化"></a>4.数组初始化</h5><ul>
+<li><code>int[] a1;</code>或<code>int a1[];</code>定义了一个数组的引用。在定义的时候不允许指定数组的大小。</li>
+<li>对于数组，初始化动作可以出现在代码的任何地方，但也可以使用一种特殊的初始化表达方式，它必须在创建数组的地方出现。如：<code>int[] a1 = {1,2,3,4};</code>。</li>
+<li>数组元素下标从0开始，最大下标数是length-1。</li>
+<li>在Java中，一旦对数组的访问下标过界，就会出现运行时错误（即异常）。</li>
+<li>可以直接用new在数组里创建元素。尽管创建的是基本类型数组。new仍然可以工作（不能用new创建单个的基本类型）。</li>
+<li>如果可能，尽量在数组定义的同时进行初始化，如<code>int[] a = new int[10];</code>(第一种初始化方法，不灵活，只能用于定义处)。<br><strong>注意</strong>：使用第一种方法初始化之后，每个数组元素都被初始化为类型所对应的零值(若为非基本类型的数组，则每个数组元素值为null，此时要对每个数组元素使用new操作赋值)。<br>第二种数组初始化方法：   <pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;Integer[] a = {
+    new Integer(1),
+    new Integer(2),
+    3, // Autoboxing
+  };
+&lt;/code&gt;&lt;/pre&gt;">Integer[] a = {
+    <span class="hljs-keyword">new</span> Integer(<span class="hljs-number">1</span>),
+    <span class="hljs-keyword">new</span> Integer(<span class="hljs-number">2</span>),
+    <span class="hljs-number">3</span>, <span class="hljs-comment">// Autoboxing</span>
+  };
+</code></pre>
+第三种初始化方法：<pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;  Integer[] b = new Integer[]{
+    new Integer(1),
+    new Integer(2),
+    3, // Autoboxing
+  };
+&lt;/code&gt;&lt;/pre&gt;">  Integer[] b = <span class="hljs-keyword">new</span> Integer[]{
+    <span class="hljs-keyword">new</span> Integer(<span class="hljs-number">1</span>),
+    <span class="hljs-keyword">new</span> Integer(<span class="hljs-number">2</span>),
+    <span class="hljs-number">3</span>, <span class="hljs-comment">// Autoboxing</span>
+  };
+</code></pre>
+<strong class="highlight">在第二、第三种初始化方法中，初始化列表的最后一个逗号都是可选的。</strong></li>
+</ul><h5 id="5.可变参数列表"><a name="5.可变参数列表" href="#5.可变参数列表"></a>5.可变参数列表</h5><p>形式如下：<br><code>static void print(Object... args){}</code><br><code>static void print(int required,String... args){}</code><br>示例代码：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;class A {}
+public class NewVarArgs {
+  static void printArray(Object... args) {
+    for(Object obj : args)
+      System.out.print(obj + &quot; &quot;);
+    System.out.println();
+  }
+  public static void main(String[] args) {
+    // Can take individual elements:
+    printArray(new Integer(47), new Float(3.14),
+      new Double(11.11));
+    printArray(47, 3.14F, 11.11);
+    printArray(&quot;one&quot;, &quot;two&quot;, &quot;three&quot;);
+    printArray(new A(), new A(), new A());
+    // Or an array:&amp;lt;1&amp;gt;
+    printArray((Object[])new Integer[]{ 1, 2, 3, 4 });
+    printArray(); // Empty list is OK
+  }
+} /* Output: (75% match)
+47 3.14 11.11
+47 3.14 11.11
+one two three
+A@1bab50a A@c3c749 A@150bd4d
+1 2 3 4
+*///:~
+&lt;/code&gt;&lt;/pre&gt;">class A {}
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NewVarArgs</span> </span>{
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> printArray(Object... args) {
+    <span class="hljs-keyword">for</span>(Object obj : args)
+      System.out.print(obj + <span class="hljs-string">" "</span>);
+    System.out.println();
+  }
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+    <span class="hljs-comment">// Can take individual elements:</span>
+    printArray(<span class="hljs-keyword">new</span> Integer(<span class="hljs-number">47</span>), <span class="hljs-keyword">new</span> Float(<span class="hljs-number">3.14</span>),
+      <span class="hljs-keyword">new</span> Double(<span class="hljs-number">11.11</span>));
+    printArray(<span class="hljs-number">47</span>, <span class="hljs-number">3.14</span>F, <span class="hljs-number">11.11</span>);
+    printArray(<span class="hljs-string">"one"</span>, <span class="hljs-string">"two"</span>, <span class="hljs-string">"three"</span>);
+    printArray(<span class="hljs-keyword">new</span> A(), <span class="hljs-keyword">new</span> A(), <span class="hljs-keyword">new</span> A());
+    <span class="hljs-comment">// Or an array:&lt;1&gt;</span>
+    printArray((Object[])<span class="hljs-keyword">new</span> Integer[]{ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span> });
+    printArray(); <span class="hljs-comment">// Empty list is OK</span>
+  }
+} <span class="hljs-comment">/* Output: (75% match)
+47 3.14 11.11
+47 3.14 11.11
+one two three
+A@1bab50a A@c3c749 A@150bd4d
+1 2 3 4
+*/</span><span class="hljs-comment">//:~</span>
+</code></pre><p>说明：</p><ul>
+<li>编译器会将可变参数转换为一个数组。所有在代码中可以使用foreach来迭代可变参数。若传递来的实参已经是一个数组，则编译器不会再执行转换。若传递来的实参不只一个数组（两个以上），则编译器会将其转换为数组的数组。
+在上例中，&lt;1&gt;处若换成<code>printArray((Object[])new Integer[]{ 1, 2, 3, 4 },(Object[])new Integer[]{ 6, 7, 8, 9 });</code>，则会对应输出<code>[Ljava.lang.Integer;@70dea4e [Ljava.lang.Integer;@5c647e05</code>（输出中[表示这是一个后面紧随的类型的数组）。</li>
+<li>在可变参数列表中可以使用任何类型的参数，包括基本类型。
+如：<code>static void f(Character... args)</code>、<code>static void f(int... args)</code>等。</li>
+<li>作者的建议：可变参数列表使得重载变得很复杂，故而：我们应该总是只在重载方法的一个版本上使用可变参数列表，或在重载时压根不使用它。</li>
+</ul><h5 id="6.枚举类型--enum"><a name="6.枚举类型--enum" href="#6.枚举类型--enum"></a>6.枚举类型—enum</h5><p>使用方法示例：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;public enum Spiciness {
+  NOT, MILD, MEDIUM, HOT, FLAMING
+}
+public class SimpleEnumUse {
+  public static void main(String[] args) {
+    Spiciness howHot = Spiciness.MEDIUM;
+    System.out.println(howHot);
+  }
+} /* Output:
+MEDIUM
+*///:~
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> Spiciness {
+  NOT, MILD, MEDIUM, HOT, FLAMING
+}
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SimpleEnumUse</span> </span>{
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+    Spiciness howHot = Spiciness.MEDIUM;
+    System.out.println(howHot);
+  }
+} <span class="hljs-comment">/* Output:
+MEDIUM
+*/</span><span class="hljs-comment">//:~</span>
+</code></pre><p>在创建enum时，编译器会自动添加一些有用的特性，如，会创建toString()方法，以便可以方便的显示某个enum实例的名称，如上例输出。编译器还会创建ordinal()和static values()方法，使用如下：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;public class EnumOrder {
+  public static void main(String[] args) {
+    for(Spiciness s : Spiciness.values())
+      System.out.println(s + &quot;, ordinal &quot; + s.ordinal());
+  }
+} /* Output:
+NOT, ordinal 0
+MILD, ordinal 1
+MEDIUM, ordinal 2
+HOT, ordinal 3
+FLAMING, ordinal 4
+*///:~
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EnumOrder</span> </span>{
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+    <span class="hljs-keyword">for</span>(Spiciness s : Spiciness.values())
+      System.out.println(s + <span class="hljs-string">", ordinal "</span> + s.ordinal());
+  }
+} <span class="hljs-comment">/* Output:
+NOT, ordinal 0
+MILD, ordinal 1
+MEDIUM, ordinal 2
+HOT, ordinal 3
+FLAMING, ordinal 4
+*/</span><span class="hljs-comment">//:~</span>
+</code></pre><p>ordinal():表示每个特定的enum常量的声明顺序，是一个整数。<br>static values():按照enum常量的声明顺序，产生由这些常量值构成的数组。  </p><ul>
+<li>enum的一个特别实用的特性，即可以在switch语句内使用：<pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;public class Burrito {
+Spiciness degree;
+public Burrito(Spiciness degree) { this.degree = degree;}
+public void describe() {
+  System.out.print(&quot;This burrito is &quot;);
+  switch(degree) {
+    //不能写成case Spiciness.NOT：...
+    case NOT:    System.out.println(&quot;not spicy at all.&quot;);
+                 break;
+    case MILD:
+    case MEDIUM: System.out.println(&quot;a little hot.&quot;);
+                 break;
+    case HOT:
+    case FLAMING:
+    default:     System.out.println(&quot;maybe too hot.&quot;);
+  }
+}    
+public static void main(String[] args) {
+  Burrito
+    plain = new Burrito(Spiciness.NOT),
+    greenChile = new Burrito(Spiciness.MEDIUM),
+    jalapeno = new Burrito(Spiciness.HOT);
+  plain.describe();
+  greenChile.describe();
+  jalapeno.describe();
+}
+} /* Output:
+This burrito is not spicy at all.
+This burrito is a little hot.
+This burrito is maybe too hot.
+*///:~
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Burrito</span> </span>{
+Spiciness degree;
+<span class="hljs-keyword">public</span> <span class="hljs-title">Burrito</span>(Spiciness degree) { <span class="hljs-keyword">this</span>.degree = degree;}
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">describe</span>() {
+  System.out.print(<span class="hljs-string">"This burrito is "</span>);
+  <span class="hljs-keyword">switch</span>(degree) {
+    <span class="hljs-comment">//不能写成case Spiciness.NOT：...</span>
+    <span class="hljs-keyword">case</span> NOT:    System.out.println(<span class="hljs-string">"not spicy at all."</span>);
+                 <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> MILD:
+    <span class="hljs-keyword">case</span> MEDIUM: System.out.println(<span class="hljs-string">"a little hot."</span>);
+                 <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> HOT:
+    <span class="hljs-keyword">case</span> FLAMING:
+    <span class="hljs-keyword">default</span>:     System.out.println(<span class="hljs-string">"maybe too hot."</span>);
+  }
+}    
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+  Burrito
+    plain = <span class="hljs-keyword">new</span> Burrito(Spiciness.NOT),
+    greenChile = <span class="hljs-keyword">new</span> Burrito(Spiciness.MEDIUM),
+    jalapeno = <span class="hljs-keyword">new</span> Burrito(Spiciness.HOT);
+  plain.describe();
+  greenChile.describe();
+  jalapeno.describe();
+}
+} <span class="hljs-comment">/* Output:
+This burrito is not spicy at all.
+This burrito is a little hot.
+This burrito is maybe too hot.
+*/</span><span class="hljs-comment">//:~</span>
+</code></pre>
+</li>
+</ul>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>

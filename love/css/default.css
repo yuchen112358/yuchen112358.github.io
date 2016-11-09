@@ -1,0 +1,140 @@
+body {
+	background-image: url(bg.jpg);
+	background-repeat:no-repeat;
+	background-attachment:fixed;
+	background-size: 100% 100%;
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	overflow: auto;
+}
+
+#mainDiv {
+	width: 100%;
+	height: 100%
+}
+
+#loveHeart {
+	float: left;
+	text-align:center;
+	width: 670px;
+	height: 625px
+}
+
+#garden {
+	width: 100%;
+	height: 100%
+}
+
+#elapseClock {
+	text-align: right;
+	font-size: 18px;
+	margin-top: 10px;
+	margin-bottom: 10px
+}
+
+#words {
+	font-family: "sans-serif";
+	width: 505px;
+	font-size: 24px;
+	color: #666
+}
+
+#messages {
+	display: none
+}
+
+#elapseClock .digit {
+	font-family: "digit";
+	font-size: 36px
+}
+
+#loveu {
+	padding: 5px;
+	font-size: 22px;
+	margin-top: 80px;
+	margin-right: 120px;
+	text-align: right;
+	display: none
+}
+
+#loveu .signature {
+	margin-top: 10px;
+	font-size: 20px;
+	font-style: italic
+}
+
+#code {
+	float: left;
+	width: 440px;
+	height: 400px;
+	color: #333;
+	font-family: "Consolas","Monaco","Bitstream Vera Sans Mono","Courier New","sans-serif";
+	font-size: 12px
+}
+
+#code .string {
+	color: #2a36ff
+}
+
+#code .keyword {
+	color: #7f0055;
+	font-weight: bold
+}
+
+#code .placeholder {
+	margin-left: 15px
+}
+
+#code .space {
+	margin-left: 23px
+}
+
+#code .comments {
+	color: palevioletred
+}
+
+#copyright {
+	margin-top: 10px;
+	text-align: center;
+	width: 100%;
+	color: #666
+}
+
+#errorMsg {
+	width: 100%;
+	text-align: center;
+	font-size: 24px;
+	position: absolute;
+	top: 100px;
+	left: 0
+}
+
+#copyright a {
+	color: #666
+}
+/*360°旋转图片*/
+.zzsc {
+	width:220px;
+	height:220px;
+	margin:0 auto;
+	background:no-repeat url("love.png") left top;
+	-webkit-background-size:220px 220px;
+	-moz-background-size:220px 220px;
+	background-size:220px 220px;
+	-webkit-border-radius:110px;
+	border-radius:110px;
+	-webkit-transition:-webkit-transform 2s ease-out;
+	-moz-transition:-moz-transform 2s ease-out;
+	-o-transition:-o-transform 2s ease-out;
+	-ms-transition:-ms-transform 2s ease-out;
+}
+.zzsc:hover {
+	-webkit-transform:rotateZ(360deg);
+	-moz-transform:rotateZ(360deg);
+	-o-transform:rotateZ(360deg);
+	-ms-transform:rotateZ(360deg);
+	transform:rotateZ(360deg);
+}
+
+

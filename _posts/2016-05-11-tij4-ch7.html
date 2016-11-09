@@ -1,0 +1,637 @@
+---
+layout:     post
+title:      "Java编程思想（第四版）——复用类"
+subtitle:   "Java的组合和继承"
+date:       2016-05-11
+author:     "yuchen"
+header-img: "img/post-bg-java.jpg"
+tags:
+    - Java
+    - Reusing Classes
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>ch7.html</title>
+  <meta name="generator" content="Haroopad 0.13.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF);background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:5px -27px no-repeat #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:#FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:#EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:#75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:1px solid #1A3C6C;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin:0;max-width:none;min-height:0;outline:#112644 0;overflow-x:visible;overflow-y:visible;padding:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}.mermaid .label{color:#333}.node circle,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.edgePath .path{stroke:green;stroke-width:1.5px}.cluster rect{fill:#cdffb2;rx:40;stroke:#6eaa49;stroke-width:1px}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{stroke-width:1.5;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#333}.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:'trebuchet ms',verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:lightgrey;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:lightgrey;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}text{font-family:'trebuchet ms',verdana,arial;font-size:14px}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x;border:0;height:3px;padding:0}hr.underscore{border-top-style:dashed!important}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:url(../img/ajax.gif) center center no-repeat #fff}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}input.task-list-item{margin-left:-1.62em}.markdown{font-family:"Hiragino Sans GB","Microsoft YaHei",STHeiti,SimSun,"Lucida Grande","Lucida Sans Unicode","Lucida Sans",'Segoe UI',AppleSDGothicNeo-Medium,'Malgun Gothic',Verdana,Tahoma,sans-serif;padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-wrap:break-word}.markdown pre{border-radius:3px;word-wrap:break-word;border:1px solid #ccc;overflow:auto;padding:.5em}.markdown pre code{border:0;display:block}.markdown pre>code{font-family:Consolas,Inconsolata,Courier,monospace;font-weight:700;white-space:pre;margin:0}.markdown code{border-radius:3px;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown mark{color:#000;background-color:#fcf8e3}.markdown table{padding:0;border-collapse:collapse;border-spacing:0;margin-bottom:16px}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.solarized-light{padding:20px;color:#737373;font-size:15px;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;color:#dccf8f;background:url(/images/pojoaque.jpg) left top #181914;-webkit-text-size-adjust:none}.diff .hljs-header,.hljs-comment,.hljs-doctype,.hljs-javadoc,.lisp .hljs-string{color:#586e75;font-style:italic}.css .hljs-tag,.css .rule .hljs-keyword,.hljs-addition,.hljs-keyword,.hljs-list .hljs-keyword,.hljs-winutils,.javascript .hljs-title,.method,.nginx .hljs-title{color:#b64926}.hljs-command,.hljs-dartdoc,.hljs-hexcolor,.hljs-number,.hljs-phpdoc,.hljs-regexp,.hljs-string,.hljs-tag .hljs-value,.tex .hljs-formula{color:#468966}.hljs-built_in,.hljs-chunk,.hljs-decorator,.hljs-function .hljs-title,.hljs-id,.hljs-identifier,.hljs-localvars,.hljs-title{color:#ffb03b}.hljs-attribute,.hljs-class .hljs-title,.hljs-constant,.hljs-parent,.hljs-type,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number{color:#b58900}.css .hljs-attribute{color:#b89859}.css .hljs-hexcolor,.css .hljs-number{color:#dccf8f}.css .hljs-class{color:#d3a60c}.diff .hljs-change,.hljs-attr_selector,.hljs-cdata,.hljs-important,.hljs-pi,.hljs-pragma,.hljs-preprocessor,.hljs-shebang,.hljs-special,.hljs-subst,.hljs-symbol,.hljs-symbol .hljs-string{color:#cb4b16}.hljs-deletion{color:#dc322f}.tex .hljs-formula{background:#073642}.MathJax_Hover_Frame{border-radius:.25em;-webkit-border-radius:.25em;-moz-border-radius:.25em;-khtml-border-radius:.25em;box-shadow:0 0 15px #83A;-webkit-box-shadow:0 0 15px #83A;-moz-box-shadow:0 0 15px #83A;-khtml-box-shadow:0 0 15px #83A;border:1px solid #A6D!important;display:inline-block;position:absolute}.MathJax_Hover_Arrow{position:absolute;width:15px;height:11px;cursor:pointer}#MathJax_About{position:fixed;left:50%;width:auto;text-align:center;border:3px outset;padding:1em 2em;background-color:#DDD;color:#000;cursor:default;font-family:message-box;font-size:120%;font-style:normal;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;z-index:201;border-radius:15px;-webkit-border-radius:15px;-moz-border-radius:15px;-khtml-border-radius:15px;box-shadow:0 10px 20px gray;-webkit-box-shadow:0 10px 20px gray;-moz-box-shadow:0 10px 20px gray;-khtml-box-shadow:0 10px 20px gray;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}.MathJax_Menu{position:absolute;background-color:#fff;color:#000;width:auto;padding:2px;border:1px solid #CCC;margin:0;cursor:default;font:menu;text-align:left;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;z-index:201;box-shadow:0 10px 20px gray;-webkit-box-shadow:0 10px 20px gray;-moz-box-shadow:0 10px 20px gray;-khtml-box-shadow:0 10px 20px gray;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}.MathJax_MenuItem{padding:2px 2em;background:0 0}.MathJax_MenuArrow{position:absolute;right:.5em;color:#666}.MathJax_MenuActive .MathJax_MenuArrow{color:#fff}.MathJax_MenuArrow.RTL{left:.5em;right:auto}.MathJax_MenuCheck{position:absolute;left:.7em}.MathJax_MenuCheck.RTL{right:.7em;left:auto}.MathJax_MenuRadioCheck{position:absolute;left:1em}.MathJax_MenuRadioCheck.RTL{right:1em;left:auto}.MathJax_MenuLabel{padding:2px 2em 4px 1.33em;font-style:italic}.MathJax_MenuRule{border-top:1px solid #CCC;margin:4px 1px 0}.MathJax_MenuDisabled{color:GrayText}.MathJax_MenuActive{background-color:Highlight;color:HighlightText}.MathJax_Menu_Close{position:absolute;width:31px;height:31px;top:-15px;left:-15px}#MathJax_Zoom{position:absolute;background-color:#F0F0F0;overflow:auto;display:block;z-index:301;padding:.5em;border:1px solid #000;margin:0;font-weight:400;font-style:normal;text-align:left;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;box-shadow:5px 5px 15px #AAA;-webkit-box-shadow:5px 5px 15px #AAA;-moz-box-shadow:5px 5px 15px #AAA;-khtml-box-shadow:5px 5px 15px #AAA;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}#MathJax_ZoomOverlay{position:absolute;left:0;top:0;z-index:300;display:inline-block;width:100%;height:100%;border:0;padding:0;margin:0;background-color:#fff;opacity:0;filter:alpha(opacity=0)}#MathJax_ZoomFrame{position:relative;display:inline-block;height:0;width:0}#MathJax_ZoomEventTrap{position:absolute;left:0;top:0;z-index:302;display:inline-block;border:0;padding:0;margin:0;background-color:#fff;opacity:0;filter:alpha(opacity=0)}.MathJax_Preview{color:#888}#MathJax_Message{position:fixed;left:1px;bottom:2px;background-color:#E6E6E6;border:1px solid #959595;margin:0;padding:2px 8px;z-index:102;color:#000;font-size:80%;width:auto;white-space:nowrap}#MathJax_MSIE_Frame{position:absolute;top:0;left:0;width:0;z-index:101;border:0;margin:0;padding:0}.MathJax_Error{color:#C00;font-style:italic}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+<h2 id="第七章-复用类"><a name="第七章-复用类" href="#第七章-复用类"></a>第七章 复用类</h2><hr class="page"><h4 id="1.-组合语法"><a name="1.-组合语法" href="#1.-组合语法"></a>1. 组合语法</h4><p>1）对于非基本类型的对象，必须将其引用置于新的类中，但可以定义基本类型数据。<br>2）每一个非基本类型的对象都有一个toString()方法，而且当编译器需要一个String而你却只有一个对象时，该方法便会被调用。<br>3）初始化一个类中的对象引用有如下四种方式：</p><ul>
+<li>1.在定义对象的地方。这意味着它们总能够在构造器调用之前被初始化。</li><li>2.在类的构造器中。</li><li>3.就在正要使用这些对象之前，这种方式成为惰性初始化(Delayed initialization)。在生成对象不值得及不必每次都生成对象的情况下，这种方式可以减少额外的负担。</li><li>4.使用实例初始化。
+以下是这四种方式的示例：</li></ul><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>// Constructor initialization with composition.
+import static net.mindview.util.Print.*;
+
+class Soap {
+  private String s;
+  Soap() {
+    print(&quot;Soap()&quot;);
+    //2.在类的构造器中初始化
+    s = &quot;Constructed&quot;;
+  }
+  public String toString() { return s; }
+}    
+
+public class Bath {
+  private String // 1.在定义对象的地方初始化：
+    s1 = &quot;Happy&quot;,
+    s2 = &quot;Happy&quot;,
+    s3, s4;
+  private Soap castille;
+  private int i;
+  private float toy;
+  public Bath() {
+    print(&quot;Inside Bath()&quot;);
+    //2.在类的构造器中初始化：
+    s3 = &quot;Joy&quot;;
+    toy = 3.14f;
+    castille = new Soap();
+  }    
+  // 4.实例初始化:
+  { i = 47; }
+  public String toString() {
+    if(s4 == null) // 3.惰性初始化(Delayed initialization):
+      s4 = &quot;Joy&quot;;
+    return
+      &quot;s1 = &quot; + s1 + &quot;\n&quot; +
+      &quot;s2 = &quot; + s2 + &quot;\n&quot; +
+      &quot;s3 = &quot; + s3 + &quot;\n&quot; +
+      &quot;s4 = &quot; + s4 + &quot;\n&quot; +
+      &quot;i = &quot; + i + &quot;\n&quot; +
+      &quot;toy = &quot; + toy + &quot;\n&quot; +
+      &quot;castille = &quot; + castille;
+  }    
+  public static void main(String[] args) {
+    Bath b = new Bath();
+    print(b);
+  }
+} /* Output:
+Inside Bath()
+Soap()
+s1 = Happy
+s2 = Happy
+s3 = Joy
+s4 = Joy
+i = 47
+toy = 3.14
+castille = Constructed
+*///:~
+</code></pre>"><span class="hljs-comment">// Constructor initialization with composition.</span>
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> net.mindview.util.Print.*;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Soap</span> </span>{
+  <span class="hljs-keyword">private</span> String s;
+  Soap() {
+    print(<span class="hljs-string">"Soap()"</span>);
+    <span class="hljs-comment">//2.在类的构造器中初始化</span>
+    s = <span class="hljs-string">"Constructed"</span>;
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> s; }
+}    
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bath</span> </span>{
+  <span class="hljs-keyword">private</span> String <span class="hljs-comment">// 1.在定义对象的地方初始化：</span>
+    s1 = <span class="hljs-string">"Happy"</span>,
+    s2 = <span class="hljs-string">"Happy"</span>,
+    s3, s4;
+  <span class="hljs-keyword">private</span> Soap castille;
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> i;
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">float</span> toy;
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Bath</span><span class="hljs-params">()</span> </span>{
+    print(<span class="hljs-string">"Inside Bath()"</span>);
+    <span class="hljs-comment">//2.在类的构造器中初始化：</span>
+    s3 = <span class="hljs-string">"Joy"</span>;
+    toy = <span class="hljs-number">3.14f</span>;
+    castille = <span class="hljs-keyword">new</span> Soap();
+  }    
+  <span class="hljs-comment">// 4.实例初始化:</span>
+  { i = <span class="hljs-number">47</span>; }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span>(s4 == <span class="hljs-keyword">null</span>) <span class="hljs-comment">// 3.惰性初始化(Delayed initialization):</span>
+      s4 = <span class="hljs-string">"Joy"</span>;
+    <span class="hljs-keyword">return</span>
+      <span class="hljs-string">"s1 = "</span> + s1 + <span class="hljs-string">"\n"</span> +
+      <span class="hljs-string">"s2 = "</span> + s2 + <span class="hljs-string">"\n"</span> +
+      <span class="hljs-string">"s3 = "</span> + s3 + <span class="hljs-string">"\n"</span> +
+      <span class="hljs-string">"s4 = "</span> + s4 + <span class="hljs-string">"\n"</span> +
+      <span class="hljs-string">"i = "</span> + i + <span class="hljs-string">"\n"</span> +
+      <span class="hljs-string">"toy = "</span> + toy + <span class="hljs-string">"\n"</span> +
+      <span class="hljs-string">"castille = "</span> + castille;
+  }    
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+    Bath b = <span class="hljs-keyword">new</span> Bath();
+    print(b);
+  }
+} <span class="hljs-comment">/* Output:
+Inside Bath()
+Soap()
+s1 = Happy
+s2 = Happy
+s3 = Joy
+s4 = Joy
+i = 47
+toy = 3.14
+castille = Constructed
+*/</span><span class="hljs-comment">//:~</span>
+</code></pre><h4 id="2.继承语法"><a name="2.继承语法" href="#2.继承语法"></a>2.继承语法</h4><p>1）当创建一个类时，总是在继承，因此，除非已明确指出要从其他类中继承，否则就是在隐式地从Java的标准根类Object进行继承。  </p><p>2）继承关键字<code>extends</code>：继承会自动得到基类中所有的域和方法。  </p><p>3）调用另外一个类的main函数的方式与调用另外一个类的普通静态函数相同，即<code>类名.main(args);</code>，args可以是主调用类从命令行获得的参数，也可以是其他任意的String数组。  </p><p>4）可以为每个类都创建一个main方法。这种在每个类中都设置一个main方法的技术可使每个类的单元测试都变得简单易行。而且在完成单元测试之后，也无需删除main(),可以留待下次测试。  </p><p>5）即使一个类只具有包访问权限，其public main()仍然是可以访问的。  </p><p>6）为了继承，一般的规则是将所有的数据成员都指定为private，将所有的方法指定为public（protected members also allow access by derived classes）。   </p><p>7）Java用<mark>super</mark>关键字表示超类（父类）。表达式<code>super.fun();</code>可以调用父类中的函数(此处是调用函数fun())。  </p><h6 id="2.1-初始化基类"><a name="2.1-初始化基类" href="#2.1-初始化基类"></a>2.1 初始化基类</h6><p><mark>注意：</mark>基类=父类；导出类=子类。<br>1）当创建了一个导出类的对象时，该对象包含了一个基类的子对象，该子对象被包装在导出类对象内部。
+2）基类子对象的初始化：在构造器中调用基类构造器来执行初始化。在执行基类构造器之前，定义处初始化、实例初始化等均会被执行。<mark>Java会自动在导出类的构造器中插入对基类构造器的调用。</mark>
+示例代码：</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>// Constructor calls during inheritance.
+import static io.github.wzzju.util.Print.*;
+
+class Art {
+  private String art = &quot; test art.\n&quot;;
+  private String artS;
+  {
+      artS = &quot; ART&quot;;
+  }
+  Art() { print(&quot;Art constructor&quot;+art+artS); }
+}
+
+class Drawing extends Art {
+  private String draw = &quot; test drawing.\n&quot;;
+  private String drawS;
+  {
+      drawS = &quot; DRAW&quot;;
+  }
+  Drawing() { print(&quot;Drawing constructor&quot;+draw+drawS); }
+}
+
+public class Cartoon extends Drawing {
+  public Cartoon() { print(&quot;Cartoon constructor&quot;); }
+  public static void main(String[] args) {
+    Cartoon x = new Cartoon();
+  }
+} /* Output:
+Art constructor test art.
+ ART
+Drawing constructor test drawing.
+ DRAW
+Cartoon constructor
+*///:~
+</code></pre>"><span class="hljs-comment">// Constructor calls during inheritance.</span>
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> io.github.wzzju.util.Print.*;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Art</span> </span>{
+  <span class="hljs-keyword">private</span> String art = <span class="hljs-string">" test art.\n"</span>;
+  <span class="hljs-keyword">private</span> String artS;
+  {
+      artS = <span class="hljs-string">" ART"</span>;
+  }
+  Art() { print(<span class="hljs-string">"Art constructor"</span>+art+artS); }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Drawing</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Art</span> </span>{
+  <span class="hljs-keyword">private</span> String draw = <span class="hljs-string">" test drawing.\n"</span>;
+  <span class="hljs-keyword">private</span> String drawS;
+  {
+      drawS = <span class="hljs-string">" DRAW"</span>;
+  }
+  Drawing() { print(<span class="hljs-string">"Drawing constructor"</span>+draw+drawS); }
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cartoon</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Drawing</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Cartoon</span><span class="hljs-params">()</span> </span>{ print(<span class="hljs-string">"Cartoon constructor"</span>); }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+    Cartoon x = <span class="hljs-keyword">new</span> Cartoon();
+  }
+} <span class="hljs-comment">/* Output:
+Art constructor test art.
+ ART
+Drawing constructor test drawing.
+ DRAW
+Cartoon constructor
+*/</span><span class="hljs-comment">//:~</span>
+</code></pre><p>可以看出，构建过程是从基类“向外”扩散的，所以基类在导出类构造器可以访问它之前，就已经完成初始化了。当然，默认构造器也会逐层调度基类的构造器。</p><h6 id="2.2-带参数的构造器"><a name="2.2-带参数的构造器" href="#2.2-带参数的构造器"></a>2.2 带参数的构造器</h6><ul>
+<li>编译器可以自动调用默认的构造函数，是因为它们没有任何参数。但是如果没有默认的基类构造函数，或者想调用一个带参数的基类构造函数，必须使用关键字super显示地编写调用基类构造函数的语句，并且配以适当的参数列表。</li><li>如果基类没有默认构造器（无参构造器），导出类不显式的调用基类的带参构造器，则编译器会报错。</li><li><mark>格外注意：</mark><ul>
+<li>调用基类构造器必须是在导出类构造器中要做的第一件事，否则编译器会报错。</li><li>而覆盖父类的方法时，可以在做完子类要做的事情之后再调用父类对应的方法。Java编程思想中在该种情况下都是放在最后才调用父类对应的方法。</li></ul>
+</li></ul><h4 id="3.代理"><a name="3.代理" href="#3.代理"></a>3.代理</h4><p>代理是第三种复用代码的关系，Java并没有提供对它的直接支持。它是继承和组合之间的中庸之道：</p><ul>
+<li>首先，我们需要将一个成员对象置于所要构造的类中（就像组合）；</li><li>其次，我们需要在新类中暴露该成员对象的所有方法（就像继承）或该成员对象的所有方法的某个子集。  </li></ul><p>示例代码：</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>public class SpaceShipControls {
+  void up(int velocity) {}
+  void down(int velocity) {}
+  void left(int velocity) {}
+  void right(int velocity) {}
+  void forward(int velocity) {}
+  void back(int velocity) {}
+  void turboBoost() {}
+}
+
+public class SpaceShipDelegation {
+  private String name;
+  private SpaceShipControls controls =
+    new SpaceShipControls();
+  public SpaceShipDelegation(String name) {
+    this.name = name;
+  }
+  // Delegated methods:
+  public void back(int velocity) {
+    controls.back(velocity);
+  }
+  public void down(int velocity) {
+    controls.down(velocity);
+  }
+  public void forward(int velocity) {
+    controls.forward(velocity);
+  }
+  public void left(int velocity) {
+    controls.left(velocity);
+  }
+  public void right(int velocity) {
+    controls.right(velocity);
+  }
+  public void turboBoost() {
+    controls.turboBoost();
+  }
+  public void up(int velocity) {
+    controls.up(velocity);
+  }
+  public static void main(String[] args) {
+    SpaceShipDelegation protector =
+      new SpaceShipDelegation(&quot;NSEA Protector&quot;);
+    protector.forward(100);
+  }
+}
+</code></pre>"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpaceShipControls</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">up</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{}
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">down</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{}
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">left</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{}
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">right</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{}
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">forward</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{}
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">back</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{}
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">turboBoost</span><span class="hljs-params">()</span> </span>{}
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpaceShipDelegation</span> </span>{
+  <span class="hljs-keyword">private</span> String name;
+  <span class="hljs-keyword">private</span> SpaceShipControls controls =
+    <span class="hljs-keyword">new</span> SpaceShipControls();
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SpaceShipDelegation</span><span class="hljs-params">(String name)</span> </span>{
+    <span class="hljs-keyword">this</span>.name = name;
+  }
+  <span class="hljs-comment">// Delegated methods:</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">back</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{
+    controls.back(velocity);
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">down</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{
+    controls.down(velocity);
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">forward</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{
+    controls.forward(velocity);
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">left</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{
+    controls.left(velocity);
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">right</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{
+    controls.right(velocity);
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">turboBoost</span><span class="hljs-params">()</span> </span>{
+    controls.turboBoost();
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">up</span><span class="hljs-params">(<span class="hljs-keyword">int</span> velocity)</span> </span>{
+    controls.up(velocity);
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+    SpaceShipDelegation protector =
+      <span class="hljs-keyword">new</span> SpaceShipDelegation(<span class="hljs-string">"NSEA Protector"</span>);
+    protector.forward(<span class="hljs-number">100</span>);
+  }
+}
+</code></pre><p><mark>使用代理的好处：</mark>使用代理时，我们可以拥有更多的控制力，因为我们可以选择只提供在成员对象中的方法的某个子集。</p><h4 id="4.结合使用组合和继承"><a name="4.结合使用组合和继承" href="#4.结合使用组合和继承"></a>4.结合使用组合和继承</h4><p>同时使用组合和继承，并配以必要的构造器初始化，可以创建更加复杂的类。</p><h6 id="4.1.确保正确清理"><a name="4.1.确保正确清理" href="#4.1.确保正确清理"></a>4.1.确保正确清理</h6><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>try{
+    //......
+}finally{
+    x.dispose();
+}
+</code></pre>"><span class="hljs-keyword">try</span>{
+    <span class="hljs-comment">//......</span>
+}<span class="hljs-keyword">finally</span>{
+    x.dispose();
+}
+</code></pre><p>上述代码中的finally子句表示的是“无论发生什么事，一定要为x调用dispose()。”
+在清理方法（dispose()）中，必须注意对基类清理方法和成员对象清理方法的调用顺序，以防某个子对象依赖于另外一个子对象的情形发生。  </p><ul>
+<li>一般，采用与C++编译器在其析构函数上所施加的形式：<mark>首先，执行类的所有特定的清理工作，其顺序同生成顺序相反（通常这就要求基类元素仍旧存活）；然后调用基类的清理方法。</mark></li><li><mark>注意：</mark>除了内存以外，不能依赖垃圾回收器去做任何事。如果需要进行清理，最好编写自己的清理方法，但是不要使用finalize()。</li></ul><h6 id="4.2名称屏蔽"><a name="4.2名称屏蔽" href="#4.2名称屏蔽"></a>4.2名称屏蔽</h6><ul>
+<li>如果Java的基类拥有某个已被多次重载的方法名称，那么在导出类中重新定义该方法名称并不会屏蔽器在基类中的任何一个版本（这一点与C++不同）。因此，无论是在该层或者它的基类中对方法进行定义，重载机制都可以正常工作。</li><li>如果你只是想覆写某个方法，但是害怕不留心重载了该方法（而并非覆写了该方法）时，可以选择添加<code>@Override</code>注解（Java SE5新增）。</li><li>在一个方法前添加了<code>@Override</code>注解，该方法便只能是覆写父类的某个方法，若是不留心写成了重载，编译器便会报错。这样<code>@Override</code>注解便可以防止你在不想重载时而意外地进行了重载。</li></ul><h4 id="5.在组合和继承之间选择"><a name="5.在组合和继承之间选择" href="#5.在组合和继承之间选择"></a>5.在组合和继承之间选择</h4><ul>
+<li>组合技术通常用于想在新类中使用现有类的功能而非它的接口这种形式。即，在新类中嵌入某个对象，让其实现所需要的功能，但是新类的用户看到的只是为新类所定义的接口，而非所嵌入对象的接口。为取得此效果，需要在新类中嵌入一个现有类的private对象。（特例，如Car将成员对象（Window/Wheel/Engine…）声明为public，一般情况下应该使域成为private。）</li><li>在继承的时候，使用某个现有类，并开发一个它的特殊版本。通常，这意味着你在使用一个通用类，并为了某种特殊需要而将其特殊化。</li><li>“is-a”(是一个)的关系是用继承来表达的，而“has-a”(有一个)的关系则是用组合来表达的。</li></ul><h4 id="6.protected关键字"><a name="6.protected关键字" href="#6.protected关键字"></a>6.protected关键字</h4><ul>
+<li><mark>protected关键字的作用：</mark>就类用户而言，其是private的，但对于任何继承于此类的子类或其他任何位于同一个包内的类来说，它却是可以访问的。（protected也提供了包内访问权限。）  </li><li><mark>注意：</mark>尽管可以创建protected域，但是最好的方式还是将域保持为private；你应当一直保留“更改底层实现”的权利。然后通过protected方法来控制类的继承者的访问权限。</li></ul><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>class A{
+  private String name;
+  protected void set(String name){
+    this.name = name;
+  }
+  public A(String nm){
+    name = nm;
+  }
+  //......
+}
+
+class B extends A{
+  private int number;
+  public B(String nm, int num){
+    super(nm);
+    number = num;
+  }
+  public void change(String nm, int num){
+    set(nm);//因为set()函数是protected的，故无论B和A是否在一个包内，在此都可以访问。
+    number = num;
+  }
+  //......
+}
+</code></pre>"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span></span>{
+  <span class="hljs-keyword">private</span> String name;
+  <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">set</span><span class="hljs-params">(String name)</span></span>{
+    <span class="hljs-keyword">this</span>.name = name;
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">A</span><span class="hljs-params">(String nm)</span></span>{
+    name = nm;
+  }
+  <span class="hljs-comment">//......</span>
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">A</span></span>{
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> number;
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">B</span><span class="hljs-params">(String nm, <span class="hljs-keyword">int</span> num)</span></span>{
+    <span class="hljs-keyword">super</span>(nm);
+    number = num;
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">change</span><span class="hljs-params">(String nm, <span class="hljs-keyword">int</span> num)</span></span>{
+    set(nm);<span class="hljs-comment">//因为set()函数是protected的，故无论B和A是否在一个包内，在此都可以访问。</span>
+    number = num;
+  }
+  <span class="hljs-comment">//......</span>
+}
+</code></pre><h4 id="7.向上转型"><a name="7.向上转型" href="#7.向上转型"></a>7.向上转型</h4><div align="center">
+<img src="/images/posts/tij_reusing00.png" alt="类继承图"><br>类继承图
+</div><p>由导出类转型成基类，在继承涂上是向上移动的，因此一般称为<em>向上转型(upcasting)</em>。由于向上转型是从一个较专用类型向较通用类型转换，所以总是很安全的。换句话说，导出类是基类的一个超集。它可能比基类含有更多的方法，但它必须至少具备基类中所含有的方法。在向上转型的过程中，类接口中唯一可能发生的事情是丢失方法，而不是获取它们。</p><h6 id="再讨论组合和继承"><a name="再讨论组合和继承" href="#再讨论组合和继承"></a>再讨论组合和继承</h6><p>相比于继承，运用组合技术使用现有类来开发新的类的做法更常见。应该慎用继承技术。</p><ul>
+<li>到底是该用组合还是用继承，一个最清晰的判断方法就是问一问自己是否需要从新类向基类进行向上转型。如果必须向上转型，则继承是必要的；但是如果不需要，则应当好好考虑自己是否需要继承。</li></ul><h4 id="8.final关键字"><a name="8.final关键字" href="#8.final关键字"></a>8.final关键字</h4><p>使用final的含义是”这是不可改变的”，不想做改变可能出于两种理由：设计或效率。
+final可用作数据、方法和类的修饰。</p><h6 id="8.1-fianl-数据"><a name="8.1-fianl-数据" href="#8.1-fianl-数据"></a>8.1 fianl 数据</h6><ul>
+<li><p>恒定不变的数据有两种：<br>  1. 一个永不改变的编译时常量。</p>
+<ul>
+<li><p>例子：</p>
+<pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>private final int valueOne = 9;
+private static final int VALUE_TWO = 99;
+//Typical public constant
+public static final int VALUE_THREE = 89;
+</code></pre>"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> valueOne = <span class="hljs-number">9</span>;
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> VALUE_TWO = <span class="hljs-number">99</span>;
+<span class="hljs-comment">//Typical public constant</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> VALUE_THREE = <span class="hljs-number">89</span>;
+</code></pre>
+<p>2. 一个在运行时被初始化的值，而且不希望被改变。</p>
+</li><li>例子：<pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>private static Random rand = new Random(47);
+private final int i4 = rand.nextInt(20);
+static final int INT_5 = rand.nextInt(20);
+</code></pre>"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Random rand = <span class="hljs-keyword">new</span> Random(<span class="hljs-number">47</span>);
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> i4 = rand.nextInt(<span class="hljs-number">20</span>);
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> INT_5 = rand.nextInt(<span class="hljs-number">20</span>);
+</code></pre>
+</li></ul>
+</li><li><p>一个既是static又是final的域只占据一段不能改变的存储空间。注意，带有恒定初始值(编译时常量)的static final基本类型全用大写字母命名，且字与字之间用下划线隔开。</p>
+</li><li>对于基本类型，final使数值不变；而用于对象引用，final使引用恒定不变，即，一旦引用被初始化指向一个对象引用，就无法再把它指向另一个对象。然而，对象其自身却是可以修改的（如对象内部的某个字段的值是可以被改变的）。该规则同样适用于数组，数组只不过是另一种引用。</li></ul><h6 id="8.1.1-空白final"><a name="8.1.1-空白final" href="#8.1.1-空白final"></a>8.1.1 空白final</h6><p>空白final是指被声明为final但又未给定初值的域。但空白final必须在构造器中用表达式赋值。例子如下：</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>class Poppet {
+  private int i;
+  Poppet(int ii) { i = ii; }
+}
+
+public class BlankFinal {
+  private final int i = 0; // Initialized final
+  private final int j; // Blank final
+  private final Poppet p; // Blank final reference
+  // Blank finals MUST be initialized in the constructor:
+  public BlankFinal() {
+    j = 1; // Initialize blank final
+    p = new Poppet(1); // Initialize blank final reference
+  }
+  public BlankFinal(int x) {
+    j = x; // Initialize blank final
+    p = new Poppet(x); // Initialize blank final reference
+  }
+  public static void main(String[] args) {
+    new BlankFinal();
+    new BlankFinal(47);
+  }
+}
+</code></pre>"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Poppet</span> </span>{
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> i;
+  Poppet(<span class="hljs-keyword">int</span> ii) { i = ii; }
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlankFinal</span> </span>{
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; <span class="hljs-comment">// Initialized final</span>
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> j; <span class="hljs-comment">// Blank final</span>
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Poppet p; <span class="hljs-comment">// Blank final reference</span>
+  <span class="hljs-comment">// Blank finals MUST be initialized in the constructor:</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BlankFinal</span><span class="hljs-params">()</span> </span>{
+    j = <span class="hljs-number">1</span>; <span class="hljs-comment">// Initialize blank final</span>
+    p = <span class="hljs-keyword">new</span> Poppet(<span class="hljs-number">1</span>); <span class="hljs-comment">// Initialize blank final reference</span>
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BlankFinal</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>{
+    j = x; <span class="hljs-comment">// Initialize blank final</span>
+    p = <span class="hljs-keyword">new</span> Poppet(x); <span class="hljs-comment">// Initialize blank final reference</span>
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+    <span class="hljs-keyword">new</span> BlankFinal();
+    <span class="hljs-keyword">new</span> BlankFinal(<span class="hljs-number">47</span>);
+  }
+}
+</code></pre><p>总之，必须在域的定义外或每个构造器中用表达式对fianl进行赋值。</p><h6 id="8.1.2-fianl参数"><a name="8.1.2-fianl参数" href="#8.1.2-fianl参数"></a>8.1.2 fianl参数</h6><p>Java允许在参数列表中以声明的方式将参数指明为final。这意味着你无法在方法中更改参数引用<strong>所指向的对象</strong>(但对象本身却是可以改变的)或无法在方法中更改基本类型的值。该特性注意用来向匿名内部类传递数据。</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>void with(final Gizmo g) {
+      g.i++;//OK
+    //! g = new Gizmo(); // Illegal -- g is final
+  }
+  void without(Gizmo g) {
+    g = new Gizmo(); // OK -- g not final
+    g.spin();
+  }
+  // void f(final int i) { i++; } // Can't change
+  // You can only read from a final primitive:
+  int g(final int i) { return i + 1; }
+</code></pre>"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">with</span><span class="hljs-params">(<span class="hljs-keyword">final</span> Gizmo g)</span> </span>{
+      g.i++;<span class="hljs-comment">//OK</span>
+    <span class="hljs-comment">//! g = new Gizmo(); // Illegal -- g is final</span>
+  }
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">without</span><span class="hljs-params">(Gizmo g)</span> </span>{
+    g = <span class="hljs-keyword">new</span> Gizmo(); <span class="hljs-comment">// OK -- g not final</span>
+    g.spin();
+  }
+  <span class="hljs-comment">// void f(final int i) { i++; } // Can't change</span>
+  <span class="hljs-comment">// You can only read from a final primitive:</span>
+  <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">g</span><span class="hljs-params">(<span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> i)</span> </span>{ <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span>; }
+</code></pre><h6 id="8.2-final方法"><a name="8.2-final方法" href="#8.2-final方法"></a>8.2 final方法</h6><ul>
+<li><p>使用final方法的原因有两个：</p>
+<ul>
+<li>把方法锁定，以防任何继承类修改它的含义。这是出于设计的考虑：确保在继承类中使方法行为保持不变，并且不会被覆盖。</li><li>效率：类似于C++的inline机制，早期的虚拟机需要，现在不需要了，故现在不需要使用final方法进行优化了。
+综上，仅当你想显式地阻止覆盖该方法时，才使该方法成为final的。</li></ul>
+</li><li><p>final和private关键字</p>
+<ul>
+<li>类中所有的private方法都隐式地指定为是final的。可以对private方法添加final修饰词，但这并不能给该方法增加任何额外的意义。</li></ul>
+</li></ul><p>看下面一个特殊的例子：</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>class WithFinals {
+  // Identical to &quot;private&quot; alone:
+  private final void f() { print(&quot;WithFinals.f()&quot;); }
+  // Also automatically &quot;final&quot;:
+  private void g() { print(&quot;WithFinals.g()&quot;); }
+}
+
+class OverridingPrivate extends WithFinals {
+  private final void f() {
+    print(&quot;OverridingPrivate.f()&quot;);
+  }
+  private void g() {
+    print(&quot;OverridingPrivate.g()&quot;);
+  }
+}
+
+class OverridingPrivate2 extends OverridingPrivate {
+  public final void f() {
+    print(&quot;OverridingPrivate2.f()&quot;);
+  }
+  public void g() {
+    print(&quot;OverridingPrivate2.g()&quot;);
+  }
+}
+
+public class FinalOverridingIllusion {
+  public static void main(String[] args) {
+    OverridingPrivate2 op2 = new OverridingPrivate2();
+    op2.f();
+    op2.g();
+    // You can upcast:
+    OverridingPrivate op = op2;
+    // But you can't call the methods:
+    //! op.f();
+    //! op.g();
+    // Same here:
+    WithFinals wf = op2;
+    //! wf.f();
+    //! wf.g();
+  }
+} /* Output:
+OverridingPrivate2.f()
+OverridingPrivate2.g()
+*///:~
+</code></pre>"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WithFinals</span> </span>{
+  <span class="hljs-comment">// Identical to "private" alone:</span>
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>{ print(<span class="hljs-string">"WithFinals.f()"</span>); }
+  <span class="hljs-comment">// Also automatically "final":</span>
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">g</span><span class="hljs-params">()</span> </span>{ print(<span class="hljs-string">"WithFinals.g()"</span>); }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OverridingPrivate</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">WithFinals</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>{
+    print(<span class="hljs-string">"OverridingPrivate.f()"</span>);
+  }
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">g</span><span class="hljs-params">()</span> </span>{
+    print(<span class="hljs-string">"OverridingPrivate.g()"</span>);
+  }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OverridingPrivate2</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">OverridingPrivate</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>{
+    print(<span class="hljs-string">"OverridingPrivate2.f()"</span>);
+  }
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">g</span><span class="hljs-params">()</span> </span>{
+    print(<span class="hljs-string">"OverridingPrivate2.g()"</span>);
+  }
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FinalOverridingIllusion</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+    OverridingPrivate2 op2 = <span class="hljs-keyword">new</span> OverridingPrivate2();
+    op2.f();
+    op2.g();
+    <span class="hljs-comment">// You can upcast:</span>
+    OverridingPrivate op = op2;
+    <span class="hljs-comment">// But you can't call the methods:</span>
+    <span class="hljs-comment">//! op.f();</span>
+    <span class="hljs-comment">//! op.g();</span>
+    <span class="hljs-comment">// Same here:</span>
+    WithFinals wf = op2;
+    <span class="hljs-comment">//! wf.f();</span>
+    <span class="hljs-comment">//! wf.g();</span>
+  }
+} <span class="hljs-comment">/* Output:
+OverridingPrivate2.f()
+OverridingPrivate2.g()
+*/</span><span class="hljs-comment">//:~</span>
+</code></pre><p>上例中，我们试图覆盖一个private方法(隐含是final的)，似乎是奏效的，而且编译器也不给出错误信息。但是上面的代码并没有进行对基类方法的覆写，仅是生成了一个新的方法，所以不可运用多态的性质。<br><mark>注意： “覆盖”只有在某方法是基类的接口（public方法）的一部分时才会出现。即，必须能将一个对象向上转型为它的基类并可调用相同的方法。</mark></p><h6 id="8.3-final类"><a name="8.3-final类" href="#8.3-final类"></a>8.3 final类</h6><p>final置于类的定义之前表示<mark>该类不允许被继承</mark>。这样做的原因如下：</p><ul>
+<li>出于某种考虑，你对该类的设计永不需要做任何变动；</li><li>出于安全的考虑，你不希望它有子类。</li></ul><p>关于final类：</p><ul>
+<li>final类的域可以根据个人意愿选择为是或不是final。不论类是否被定义无final，相同的规则都适用于定义为final的域，如final类的非final域是可以被重新赋值的；</li><li>由于final类禁止继承，所以final类中所有的方法都隐式指定为final的，因为本来就无法覆盖它们。当然，在final类中可以给方法添加final修饰，但这不会添加任何额外的意义。</li></ul><p>现代Java的容器库用ArrayList替代了Vector，用HashMap代替了HashTable。</p><h4 id="9.初始化及类的加载"><a name="9.初始化及类的加载" href="#9.初始化及类的加载"></a>9.初始化及类的加载</h4><ul>
+<li>每个类的编译代码都存在于它自己的独立的文件中。该文件只有在需要使用程序代码时才会被加载。</li><li>类代码在初次使用时才加载。即，类加载发生于创建类的第一个对象之时，但是当访问static域或static方法时，也会发生加载。</li><li>初次使用之处也是static初始化发生之处。所有的static对象和static代码段都会在加载时依程序中的顺序(即，定义类时的书写顺序)而依次初始化。当然，定义为static的东西只会被初始化一次。</li></ul><p>类的构造器也是static方法（即使static关键字没有显式地写出来）。因此更准确地讲，类是在其他任何static成员被访问时加载的。</p><h6 id="初始化及类的加载过程([点击查看](/resources/class_load_process.pdf))"><a name="初始化及类的加载过程([点击查看](/resources/class_load_process.pdf))" href="#初始化及类的加载过程([点击查看](/resources/class_load_process.pdf))"></a>初始化及类的加载过程(<a href="/resources/class_load_process.pdf">点击查看</a>)</h6><ul>
+<li>示例代码如下：</li></ul><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>import static io.github.wzzju.util.Print.*;
+
+class Insect {
+  private int i = 9;
+  protected int j;
+  Insect() {
+    print(&quot;i = &quot; + i + &quot;, j = &quot; + j);
+    j = 39;
+  }
+  private static int x1 =
+    printInit(&quot;static Insect.x1 initialized&quot;);
+  static int printInit(String s) {
+    print(s);
+    return 47;
+  }
+}
+
+public class Beetle extends Insect {
+  private int k = printInit(&quot;Beetle.k initialized&quot;);
+  public Beetle() {
+    print(&quot;k = &quot; + k);
+    print(&quot;j = &quot; + j);
+  }
+  private static int x2 =
+    printInit(&quot;static Beetle.x2 initialized&quot;);
+  public static void main(String[] args) {
+    print(&quot;Beetle constructor&quot;);
+    Beetle b = new Beetle();
+  }
+} /* Output:
+static Insect.x1 initialized
+static Beetle.x2 initialized
+Beetle constructor
+i = 9, j = 0
+Beetle.k initialized
+k = 47
+j = 39
+*///:~
+</code></pre>"><span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> io.github.wzzju.util.Print.*;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Insect</span> </span>{
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">9</span>;
+  <span class="hljs-keyword">protected</span> <span class="hljs-keyword">int</span> j;
+  Insect() {
+    print(<span class="hljs-string">"i = "</span> + i + <span class="hljs-string">", j = "</span> + j);
+    j = <span class="hljs-number">39</span>;
+  }
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> x1 =
+    printInit(<span class="hljs-string">"static Insect.x1 initialized"</span>);
+  <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">printInit</span><span class="hljs-params">(String s)</span> </span>{
+    print(s);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">47</span>;
+  }
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Beetle</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Insect</span> </span>{
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> k = printInit(<span class="hljs-string">"Beetle.k initialized"</span>);
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Beetle</span><span class="hljs-params">()</span> </span>{
+    print(<span class="hljs-string">"k = "</span> + k);
+    print(<span class="hljs-string">"j = "</span> + j);
+  }
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> x2 =
+    printInit(<span class="hljs-string">"static Beetle.x2 initialized"</span>);
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+    print(<span class="hljs-string">"Beetle constructor"</span>);
+    Beetle b = <span class="hljs-keyword">new</span> Beetle();
+  }
+} <span class="hljs-comment">/* Output:
+static Insect.x1 initialized
+static Beetle.x2 initialized
+Beetle constructor
+i = 9, j = 0
+Beetle.k initialized
+k = 47
+j = 39
+*/</span><span class="hljs-comment">//:~</span>
+</code></pre>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+/*
+Theme Name: Hcms
+Author: 倡萌
+Version: 1.1
+Tags: two-columns, fixed-width, custom-menu, cms
+*/
+/*---updown---一流资源网www.16css.com*/
+#shangxia{position:fixed;top:62%;right:38%;display:block;margin-right:-540px; z-index:999;}
+#shang,#comt,#xia{background:url(huadong.png) no-repeat;position:relative;cursor:pointer;height:25px;width:29px;margin:10px 0 0;}
+#comt{background-position:left -30px;height:32px;}
+#xia{background-position:left -68px;}
+#comt:hover{background-position:right -30px;}
+#shang:hover{background-position:right 0;}
+#xia:hover{background-position:right -68px ;}
+#myrss {background:url(rss.gif) no-repeat;height:128px;width:128px;margin:50px 0 0 -50px;position:relative;cursor:pointer;}

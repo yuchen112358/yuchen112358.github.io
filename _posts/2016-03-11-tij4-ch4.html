@@ -1,0 +1,192 @@
+---
+layout:     post
+title:      "Java编程思想（第四版）——控制执行流程"
+subtitle:   "控制执行流程的深入学习与理解"
+date:       2016-03-11
+author:     "yuchen"
+header-img: "img/post-bg-java.jpg"
+tags:
+    - Java
+    - Controlling Execution
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>ch4.html</title>
+  <meta name="generator" content="Haroopad 0.12.2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF) repeat scroll 0 0 transparent;background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:medium none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:medium none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:medium none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:none no-repeat scroll 5px -27px #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:none repeat scroll 0 0 #FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:none repeat scroll 0 0 #EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:none repeat scroll 0 0 #75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:#1A3C6C solid 1px;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-bottom-width:0;border-left-width:0;border-right-width:0;border-top-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;max-width:none;min-height:0;outline-color:#112644;outline-style:none;outline-width:0;overflow-x:visible;overflow-y:visible;padding-bottom:0;padding-left:0;padding-right:0;padding-top:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;border:0 none;color:#ccc;height:3px;padding:0}hr.underscore{border:0 none!important;height:30px;padding:0;-webkit-margin-before:0;-webkit-margin-after:0}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:#fff url(../img/ajax.gif) no-repeat center center}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}.markdown{padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-break:break-all;word-wrap:break-word}.markdown pre{border-radius:3px;word-break:break-all;word-wrap:break-word;overflow:auto}.markdown pre code{display:block}.markdown pre>code{border:1px solid #ccc;white-space:pre;padding:.5em;margin:0}.markdown code{border-radius:3px;word-break:break-all;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown table{padding:0;border-collapse:collapse;border-spacing:0}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.markdown em.underline{font-style:normal;text-decoration:underline}.markdown strong.highlight{color:#000;padding:0 5px;background-color:#fdffb6;-webkit-box-shadow:#fdffb6 0 0 5px;-moz-box-shadow:#fdffb6 0 0 5px;box-shadow:#fdffb6 0 0 5px}.solarized-light{padding:20px;color:#737373;font-size:15px;font-family:"Lucida Grande","Lucida Sans Unicode","Lucida Sans",AppleSDGothicNeo-Medium,'Segoe UI','Malgun Gothic',Verdana,Tahoma,sans-serif;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em;font-family:Consolas,Inconsolata,Courier,monospace}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;color:#dccf8f;background:url(./pojoaque.jpg) repeat scroll left top #181914;-webkit-text-size-adjust:none}.diff .hljs-header,.hljs-comment,.hljs-doctype,.hljs-javadoc,.hljs-template_comment,.lisp .hljs-string{color:#586e75;font-style:italic}.clojure .hljs-title,.css .hljs-tag,.css .rule .hljs-keyword,.hljs-addition,.hljs-keyword,.hljs-winutils,.javascript .hljs-title,.method,.nginx .hljs-title{color:#b64926}.hljs-command,.hljs-hexcolor,.hljs-number,.hljs-phpdoc,.hljs-regexp,.hljs-string,.hljs-tag .hljs-value,.tex .hljs-formula{color:#468966}.clojure .hljs-built_in,.hljs-built_in,.hljs-chunk,.hljs-decorator,.hljs-function .hljs-title,.hljs-id,.hljs-identifier,.hljs-localvars,.hljs-title,.lisp .hljs-title{color:#ffb03b}.hljs-attribute,.hljs-class .hljs-title,.hljs-constant,.hljs-parent,.hljs-type,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number{color:#b58900}.css .hljs-attribute{color:#b89859}.css .hljs-hexcolor,.css .hljs-number{color:#dccf8f}.css .hljs-class{color:#d3a60c}.diff .hljs-change,.hljs-attr_selector,.hljs-cdata,.hljs-important,.hljs-pi,.hljs-pragma,.hljs-preprocessor,.hljs-shebang,.hljs-special,.hljs-subst,.hljs-symbol,.hljs-symbol .hljs-string{color:#cb4b16}.hljs-deletion{color:#dc322f}.tex .hljs-formula{background:#073642}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+
+  <h2 id="java编程思想（第四版）学习笔记"><a name="java编程思想（第四版）学习笔记" href="#java编程思想（第四版）学习笔记"></a>Java编程思想（第四版）学习笔记</h2><h4 id="by-王震"><a name="by-王震" href="#by-王震"></a>By 王震 <a href="mailto:wzzju@mail.ustc.edu.cn">wzzju@mail.ustc.edu.cn</a></h4><hr class="page"><h3 id="第四章-控制执行流程"><a name="第四章-控制执行流程" href="#第四章-控制执行流程"></a>第四章 控制执行流程</h3><h5 id="1.关于goto"><a name="1.关于goto" href="#1.关于goto"></a>1.关于goto</h5><p>Java并不支持goto语句，但在Java中仍然可以进行类似goto那样的跳转，然而与典型的goto相比，存在很多限制。</p><h5 id="2.再次注意"><a name="2.再次注意" href="#2.再次注意"></a>2.再次注意</h5><p>Java不允许我们将一个数字作为布尔型值使用！！<br>在c/c++中的if(a)代码，于Java中必须写成if(a != 0)。</p><h5 id="3.关于static"><a name="3.关于static" href="#3.关于static"></a>3.关于static</h5><p>在一个类中，static函数只能访问static字段，并且只能直接调用类中的static方法。
+如下：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;public static void main(String[] args) {
+    test(10, 5);
+    print(result);
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+    test(<span class="hljs-number">10</span>, <span class="hljs-number">5</span>);
+    print(result);
+}
+</code></pre><p>test方法和result字段必须是由static修饰的。</p><h5 id="4.逗号操作符"><a name="4.逗号操作符" href="#4.逗号操作符"></a>4.逗号操作符</h5><p>Java里唯一用到逗号操作符的地方就是for循环的控制表达式。在控制表达式的初始化和步进部分，可以使用一系列由逗号分隔的语句；而且那些语句均会独立顺序执行。如：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;for(int i = 1, j = i + 10/*初始化部分可以有任意数量的同一类型定义*/; i &amp;lt; 5; i++, j = i * 2) {
+      System.out.println(&quot;i = &quot; + i + &quot; j = &quot; + j);
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>, j = i + <span class="hljs-number">10</span><span class="hljs-comment">/*初始化部分可以有任意数量的同一类型定义*/</span>; i &lt; <span class="hljs-number">5</span>; i++, j = i * <span class="hljs-number">2</span>) {
+      System.out.println(<span class="hljs-string">"i = "</span> + i + <span class="hljs-string">" j = "</span> + j);
+}
+</code></pre><h5 id="5.foreach语法"><a name="5.foreach语法" href="#5.foreach语法"></a>5.Foreach语法</h5><p><strong>示例1：</strong></p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;public class ForEachFloat {
+  public static void main(String[] args) {
+    Random rand = new Random(47);
+    float f[] = new float[10];
+    for(int i = 0; i &amp;lt; 10; i++)
+      f[i] = rand.nextFloat();
+    //下面是foreach语法
+    for(float x : f)
+      System.out.println(x);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ForEachFloat</span> </span>{
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+    Random rand = <span class="hljs-keyword">new</span> Random(<span class="hljs-number">47</span>);
+    <span class="hljs-keyword">float</span> f[] = <span class="hljs-keyword">new</span> <span class="hljs-keyword">float</span>[<span class="hljs-number">10</span>];
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++)
+      f[i] = rand.nextFloat();
+    <span class="hljs-comment">//下面是foreach语法</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">float</span> x : f)
+      System.out.println(x);
+  }
+}
+</code></pre><p>任何返回一个数组的方法都可以使用foreach，如示例2。<br><strong>示例2：</strong></p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;public class ForEachString {
+  public static void main(String[] args) {
+    for(char c : &quot;An African Swallow&quot;.toCharArray() )
+      System.out.print(c + &quot; &quot;);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ForEachString</span> </span>{
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">char</span> c : <span class="hljs-string">"An African Swallow"</span>.toCharArray() )
+      System.out.print(c + <span class="hljs-string">" "</span>);
+  }
+}
+</code></pre><h5 id="6.return"><a name="6.return" href="#6.return"></a>6.return</h5><p>如果在返回void的方法中没有return语句，那么在该方法的结尾处会有一个隐式的return。<br><strong class="highlight">注意</strong>：如果一个方法声明它将返回void之外的其他东西，那么必须确保每一条代码路径都将返回一个值。</p><h5 id="7.无穷循环"><a name="7.无穷循环" href="#7.无穷循环"></a>7.无穷循环</h5><p>两种形式：while(true)和for(;;)，并且编译器将它们看作是同一回事。</p><h5 id="8.goto"><a name="8.goto" href="#8.goto"></a>8.goto</h5><p>尽管goto仍然是Java中的一个保留字，但在语言中并未使用它；Java没有goto。然而,Java也能完成一些类似于跳转的操作，由break和continue这两个关键字实现，它们使用与goto相同的机制：标签。如：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;label1:
+&lt;/code&gt;&lt;/pre&gt;">label1:
+</code></pre><p>在Java中，标签起作用的唯一的地方刚好是在迭代语句之前。“刚好”一词表明，在标签和迭代之间置入任何语句都不好，也都不允许。而在迭代之前设置标签的唯一理由是：我们希望在其中嵌套另一个迭代或者一个开关（switch）。这是由于break和continue关键词通常只中断当前循环，但若是随同标签一起使用，它们就会中断循环，直到标签所在的地方。下面详细说明：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;label1:
+    outer-iteration{
+      inner-iteration{
+          //...
+          break;//(1)
+          //...
+          continue;//(2)
+          //...
+          continue label1;//(3)
+          //...
+          break label1;//(4)          
+      }
+  }
+&lt;/code&gt;&lt;/pre&gt;">label1:
+    outer-iteration{
+      inner-iteration{
+          <span class="hljs-comment">//...</span>
+          <span class="hljs-keyword">break</span>;<span class="hljs-comment">//(1)</span>
+          <span class="hljs-comment">//...</span>
+          <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//(2)</span>
+          <span class="hljs-comment">//...</span>
+          <span class="hljs-keyword">continue</span> label1;<span class="hljs-comment">//(3)</span>
+          <span class="hljs-comment">//...</span>
+          <span class="hljs-keyword">break</span> label1;<span class="hljs-comment">//(4)          </span>
+      }
+  }
+</code></pre><p>在（1）中，break中断内部迭代，回到外部迭代。在（2）中，continue使执行点移回到内部迭代的起始处。在（3）中，continue label1同时中断内部迭代以及外部迭代，直接转到label1处；随后，它实际上是继续迭代过程，但却从外部迭代开始。在（4）中，break label1也会中断所有迭代，并回到labe1处，但并不重新进入迭代，即它实际是完全中止了两个迭代。
+示例代码：</p><pre><code class="java hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;Java&quot;&gt;public class LabeledFor {
+  public static void main(String[] args) {
+    int i = 0;
+    outer: // Can't have statements here
+    for(; true ;) { // infinite loop
+      inner: // Can't have statements here
+      for(; i &amp;lt; 10; i++) {
+        print(&quot;i = &quot; + i);
+        if(i == 2) {
+          print(&quot;continue&quot;);
+          continue;
+        }
+        if(i == 3) {
+          print(&quot;break&quot;);
+          i++; // Otherwise i never
+               // gets incremented.
+          break;
+        }
+        if(i == 7) {
+          print(&quot;continue outer&quot;);
+          i++; // Otherwise i never
+               // gets incremented.
+          continue outer;
+        }
+        if(i == 8) {
+          print(&quot;break outer&quot;);
+          break outer;
+        }
+        for(int k = 0; k &amp;lt; 5; k++) {
+          if(k == 3) {
+            print(&quot;continue inner&quot;);
+            continue inner;
+          }
+        }
+      }
+    }
+    // Can't break or continue to labels here
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LabeledFor</span> </span>{
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span>(String[] args) {
+    <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+    outer: <span class="hljs-comment">// Can't have statements here</span>
+    <span class="hljs-keyword">for</span>(; <span class="hljs-keyword">true</span> ;) { <span class="hljs-comment">// infinite loop</span>
+      inner: <span class="hljs-comment">// Can't have statements here</span>
+      <span class="hljs-keyword">for</span>(; i &lt; <span class="hljs-number">10</span>; i++) {
+        print(<span class="hljs-string">"i = "</span> + i);
+        <span class="hljs-keyword">if</span>(i == <span class="hljs-number">2</span>) {
+          print(<span class="hljs-string">"continue"</span>);
+          <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-keyword">if</span>(i == <span class="hljs-number">3</span>) {
+          print(<span class="hljs-string">"break"</span>);
+          i++; <span class="hljs-comment">// Otherwise i never</span>
+               <span class="hljs-comment">// gets incremented.</span>
+          <span class="hljs-keyword">break</span>;
+        }
+        <span class="hljs-keyword">if</span>(i == <span class="hljs-number">7</span>) {
+          print(<span class="hljs-string">"continue outer"</span>);
+          i++; <span class="hljs-comment">// Otherwise i never</span>
+               <span class="hljs-comment">// gets incremented.</span>
+          <span class="hljs-keyword">continue</span> outer;
+        }
+        <span class="hljs-keyword">if</span>(i == <span class="hljs-number">8</span>) {
+          print(<span class="hljs-string">"break outer"</span>);
+          <span class="hljs-keyword">break</span> outer;
+        }
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; <span class="hljs-number">5</span>; k++) {
+          <span class="hljs-keyword">if</span>(k == <span class="hljs-number">3</span>) {
+            print(<span class="hljs-string">"continue inner"</span>);
+            <span class="hljs-keyword">continue</span> inner;
+          }
+        }
+      }
+    }
+    <span class="hljs-comment">// Can't break or continue to labels here</span>
+  }
+}
+</code></pre><p><strong class="highlight">注意</strong>：如果不带标签，break和continue只能中断最内层的循环。
+当然，如果想在中断循环的时候同时退出，简单的一个return即可。</p><h5 id="9.关于break和continue用法的总结"><a name="9.关于break和continue用法的总结" href="#9.关于break和continue用法的总结"></a>9.关于break和continue用法的总结</h5><p>break和continue可用在for循环和while循环中，规则如下：</p><ol>
+<li>一般的continue会退回最内层循环的开头（顶部），并继续执行；</li>
+<li>带标签的continue会到达标签的位置，并重新进入紧接在那个标签后面的循环。</li>
+<li>一般的break会中断并跳出当前循环。</li>
+<li>带标签的break会中断并跳出标签所指的循环。  </li>
+</ol><p><strong class="highlight">重点记忆</strong>：</p><blockquote>
+<p>在Java中需要使用标签的唯一理由就是因为有循环嵌套存在，而且像从多层循环中break或continue。</p>
+</blockquote><h5 id="10.switch"><a name="10.switch" href="#10.switch"></a>10.switch</h5><p>switch的选择因子现在不仅可以是int或char类型这样的整数值，也可以是字符串。但是依旧不能是浮点数（可以用enum减弱这种限制）。<br><strong class="highlight">Tips</strong>:为将一个整数值（如int型）当作字符打印，必须将其转型为char；否则，将产生整型输出。</p>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>

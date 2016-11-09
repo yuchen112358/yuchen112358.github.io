@@ -1,0 +1,237 @@
+---
+layout:     post
+title:      "Real-Time Scheduling on Multicore Platforms"
+subtitle:   "论文研读"
+date:       2016-04-24
+author:     "yuchen"
+header-img: "img/post-bg-odroid.jpg"
+tags:
+    - HMP
+    - Scheduling
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>real_time_scheduling.html</title>
+  <meta name="generator" content="Haroopad 0.12.2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF) repeat scroll 0 0 transparent;background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:medium none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:medium none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:medium none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:none no-repeat scroll 5px -27px #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:none repeat scroll 0 0 #FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:none repeat scroll 0 0 #EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:none repeat scroll 0 0 #75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:#1A3C6C solid 1px;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-bottom-width:0;border-left-width:0;border-right-width:0;border-top-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin-bottom:0;margin-left:0;margin-right:0;margin-top:0;max-width:none;min-height:0;outline-color:#112644;outline-style:none;outline-width:0;overflow-x:visible;overflow-y:visible;padding-bottom:0;padding-left:0;padding-right:0;padding-top:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;border:0 none;color:#ccc;height:3px;padding:0}hr.underscore{border:0 none!important;height:30px;padding:0;-webkit-margin-before:0;-webkit-margin-after:0}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:#fff url(../img/ajax.gif) no-repeat center center}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}.markdown{padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-break:break-all;word-wrap:break-word}.markdown pre{border-radius:3px;word-break:break-all;word-wrap:break-word;overflow:auto}.markdown pre code{display:block}.markdown pre>code{border:1px solid #ccc;white-space:pre;padding:.5em;margin:0}.markdown code{border-radius:3px;word-break:break-all;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown table{padding:0;border-collapse:collapse;border-spacing:0}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.markdown em.underline{font-style:normal;text-decoration:underline}.markdown strong.highlight{color:#000;padding:0 5px;background-color:#fdffb6;-webkit-box-shadow:#fdffb6 0 0 5px;-moz-box-shadow:#fdffb6 0 0 5px;box-shadow:#fdffb6 0 0 5px}.solarized-light{padding:20px;color:#737373;font-size:15px;font-family:"Lucida Grande","Lucida Sans Unicode","Lucida Sans",AppleSDGothicNeo-Medium,'Segoe UI','Malgun Gothic',Verdana,Tahoma,sans-serif;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em;font-family:Consolas,Inconsolata,Courier,monospace}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;color:#dccf8f;background:url(/images/pojoaque.jpg) repeat scroll left top #181914;-webkit-text-size-adjust:none}.diff .hljs-header,.hljs-comment,.hljs-doctype,.hljs-javadoc,.hljs-template_comment,.lisp .hljs-string{color:#586e75;font-style:italic}.clojure .hljs-title,.css .hljs-tag,.css .rule .hljs-keyword,.hljs-addition,.hljs-keyword,.hljs-winutils,.javascript .hljs-title,.method,.nginx .hljs-title{color:#b64926}.hljs-command,.hljs-hexcolor,.hljs-number,.hljs-phpdoc,.hljs-regexp,.hljs-string,.hljs-tag .hljs-value,.tex .hljs-formula{color:#468966}.clojure .hljs-built_in,.hljs-built_in,.hljs-chunk,.hljs-decorator,.hljs-function .hljs-title,.hljs-id,.hljs-identifier,.hljs-localvars,.hljs-title,.lisp .hljs-title{color:#ffb03b}.hljs-attribute,.hljs-class .hljs-title,.hljs-constant,.hljs-parent,.hljs-type,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number{color:#b58900}.css .hljs-attribute{color:#b89859}.css .hljs-hexcolor,.css .hljs-number{color:#dccf8f}.css .hljs-class{color:#d3a60c}.diff .hljs-change,.hljs-attr_selector,.hljs-cdata,.hljs-important,.hljs-pi,.hljs-pragma,.hljs-preprocessor,.hljs-shebang,.hljs-special,.hljs-subst,.hljs-symbol,.hljs-symbol .hljs-string{color:#cb4b16}.hljs-deletion{color:#dc322f}.tex .hljs-formula{background:#073642}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+
+  <p class="toc" style="float:right"></p><ul>
+<li><ul>
+<li><span class="title">
+<a href="#real-time-scheduling-on-multicore-platforms[^1]" title="Real-Time Scheduling on Multicore Platforms1">Real-Time Scheduling on Multicore Platforms1</a>
+</span>
+<!--span class="number">
+0
+</span-->
+<ul>
+<li><ul>
+<li><span class="title">
+<a href="#introduction" title="Introduction">Introduction</a>
+</span>
+<!--span class="number">
+1
+</span-->
+<ul>
+<li><ul>
+<li><span class="title">
+<a href="#所研究的问题" title="所研究的问题">所研究的问题</a>
+</span>
+<!--span class="number">
+2
+</span-->
+</li>
+<li><span class="title">
+<a href="#所提出的方法" title="所提出的方法">所提出的方法</a>
+</span>
+<!--span class="number">
+3
+</span-->
+</li>
+<li><span class="title">
+<a href="#megatask" title="Megatask">Megatask</a>
+</span>
+<!--span class="number">
+4
+</span-->
+</li>
+<li><span class="title">
+<a href="#例子" title="例子">例子</a>
+</span>
+<!--span class="number">
+5
+</span-->
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span class="title">
+<a href="#pfair-scheduling" title="Pfair Scheduling">Pfair Scheduling</a>
+</span>
+<!--span class="number">
+6
+</span-->
+</li>
+<li><span class="title">
+<a href="#experimental-results" title="Experimental Results">Experimental Results</a>
+</span>
+<!--span class="number">
+7
+</span-->
+<ul>
+<li><span class="title">
+<a href="#hand-crafted-task-sets" title="Hand-Crafted Task Sets">Hand-Crafted Task Sets</a>
+</span>
+<!--span class="number">
+8
+</span-->
+</li>
+<li><span class="title">
+<a href="#randomly-generated-task-sets" title="Randomly-Generated Task Sets">Randomly-Generated Task Sets</a>
+</span>
+<!--span class="number">
+9
+</span-->
+<ul>
+<li><span class="title">
+<a href="#randomly-generated-task-sets运行结果" title="Randomly-Generated Task Sets运行结果">Randomly-Generated Task Sets运行结果</a>
+</span>
+<!--span class="number">
+10
+</span-->
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span class="title">
+<a href="#下周任务" title="下周任务">下周任务</a>
+</span>
+<!--span class="number">
+11
+</span-->
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+
+</ul>
+<p></p><h2 id="real-time-scheduling-on-multicore-platforms[^1]"><a name="real-time-scheduling-on-multicore-platforms[^1]" href="#real-time-scheduling-on-multicore-platforms[^1]"></a>Real-Time Scheduling on Multicore Platforms<sup class="footnote-ref" id="fnref-f1"><a href="#fn-f1">1</a></sup></h2><p><!--
+![Alt Text](http://bit.ly/1drEdWK "Title" "width:30px;height:80px;float:right")
+--></p><hr class="page"><h4 id="introduction"><a name="introduction" href="#introduction"></a>Introduction</h4><p>Thermal and power problems limit the performance that singleprocessor chips can deliver. Multicore architectures, or chip
+multiprocessors, which include several processors on a single
+chip, are being widely touted as a solution to this problem.  </p><p>In many proposed multicore platforms, different cores share
+either on- or off-chip caches. To effectively exploit the available
+parallelism on these platforms, shared caches must not become
+performance bottlenecks.  </p><p>论文焦点是<strong class="highlight">“多核平台上实时应用的调度”</strong>。在该论文中，作者将关注的多核体系结构限制为如下模型：  </p><div align="center"><img src="/images/posts/rtas00.png" alt="Multicore architecture" title="Multicore architecture" style="width:440px;height:300px"></div><br><div align="center">Multicore architecture</div><p><strong class="highlight">注意：</strong>L2 misses对性能的影响远大于L1 misses。这是因为处理L2 miss（需要访问内存）可能需要高达100-300 cycles，而处理L1 miss（通过访问L2）则只需要10-30 cycles。<sup class="footnote-ref" id="fnref-f2"><a href="#fn-f2">2</a></sup></p><ul>
+<li><h6 id="所研究的问题"><a name="所研究的问题" href="#所研究的问题"></a>所研究的问题</h6>
+Wishing to know whether, in realtime systems, tasks that generate significant memory-to-L2 traffic can be discouraged from being co-scheduled while ensuring real-time constraints.</li>
+<li><h6 id="所提出的方法"><a name="所提出的方法" href="#所提出的方法"></a>所提出的方法</h6>
+Two-step process:<br>(1) combine tasks that may induce significant memory-to-L2 traffic into groups;<br>(2) at runtime, use a scheduling policy that reduces concurrency within groups.  </li>
+<li><h6 id="megatask"><a name="megatask" href="#megatask"></a>Megatask</h6>
+基于组识别的调度策略是一个基于megatask（巨型任务）概念的分层调度方法。一个megatask
+表示为一个任务组，其被当作一个单一调度实体。上层的调度器给一个megatask分配一个或多个处理器，megatask再轮流将处理器分配给它的组件任务。假设γ是一个
+megatask，其组件任务的总利用率（处理器利用率）是I + f，其中I是整数部分，f是小数部分（ 0 &lt; f &lt; 1）。这样组件任务需要I到I+1个处理器以满足它们的deadline。在论文中，为避免L2 cache发生抖动（thrashing）,在γ中至多可以并发调度（co-scheduled）I+1个任务。</li>
+<li><h6 id="例子"><a name="例子" href="#例子"></a>例子</h6>
+Consider a <strong class="highlight">four-core system</strong> in which the objective
+is to ensure that the combined working-set size of the tasks
+that are <strong class="highlight">co-scheduled does not exceed the capacity of the L2
+cache</strong>. Let the task set τ be comprised of <strong class="highlight">three tasks of weight
+(i.e., utilization) 0.6</strong> and with a working-set size of <strong class="highlight">200 KB</strong>
+(Group A), and <strong class="highlight">four tasks of weight 0.3</strong> and with a working-set
+size of <strong class="highlight">50 KB</strong> (Group B). Let the capacity
+of the <strong class="highlight">L2 cache be 512 KB</strong>. The total weight of τ is 3(<strong class="highlight">3*0.6+4*0.3</strong>), so co-scheduling <strong class="highlight">at least three</strong> of its tasks is unavoidable. However,
+since the combined working-set size of the tasks in Group A exceeds the L2 capacity(<strong class="highlight">3*200&gt;512</strong>), it is desirable that the three co-scheduled
+tasks not all be from this group. Because the total utilization of
+<strong class="highlight">Group A is 1.8</strong>, by combining the tasks in Group A into a single
+megatask, it can be ensured that <strong class="highlight">at most two tasks</strong> from it are
+ever co-scheduled.</li>
+</ul><h4 id="pfair-scheduling"><a name="pfair-scheduling" href="#pfair-scheduling"></a>Pfair Scheduling</h4><p>Pfair scheduling can be used to schedule a periodic,
+intra-sporadic (IS), or generalized-intra-sporadic (GIS) task system τ on M ≥ 1 processors. Each task T
+of τ is assigned a rational weight wt(T) ∈ (0, 1] that denotes the processor share it requires. For a periodic task T ,
+wt(T) = T.e/T.p, where T.e and T.p are the (integral) execution cost and period of T . A task is light if its weight is less
+than 1/2, and heavy, otherwise.<br>Pfair algorithms allocate processor time in discrete quanta;
+the time interval [t, t + 1), where t ∈ N (the set of nonnegative integers), is called slot t.  </p><div align="center"><img src="/images/posts/rtas01.png" alt="Periodic,IS,GIS task" title="Periodic,IS,GIS task" style="width:540px;height:300px"></div><br><div align="center"><font size="4">Periodic,IS,GIS task 示意图</font></div><p><strong class="highlight">注意：</strong>周期性任务系统也是IS任务系统，进而也是GIS任务系统，所以构建出适合GIS任务的模型也适合于其他任务模型。</p><ul>
+<li>调度算法<ul>
+<li>Pfair scheduling算法的调度原则：earliest-deadline-first。</li>
+<li>以防两个子任务出现相同的deadline，需要使用Tie-breaking rules。</li>
+<li>所知的最有效的最优算法是PD<sup>2</sup>，它使用两个tie-breaks。</li>
+<li>PD<sup>2</sup> is optimal,it correctly schedules any GIS task system τ for which T ∈τ wt(T ) ≤ M holds.</li>
+</ul>
+</li>
+<li><strong class="highlight">需要注意：</strong>即使使用最优的PD<sup>2</sup>算法作为第二层调度器，组件任务的deadline也可能得不到保证，为此作者提出了两种方法：1）Reweighting a megatask；2）Tardiness bounds without reweighting。<br>(上述两种方法全是理论证明和理论公式，在此就不详细介绍。)</li>
+</ul><h4 id="experimental-results"><a name="experimental-results" href="#experimental-results"></a>Experimental Results</h4><p>为了获取megatasking在减少cache竞争的效率，作者使用SESC模拟器进行了实验。   </p><ul>
+<li>所模拟的体系结构由不同数量的核组成，每一个均拥有16K L1
+data and instruction caches (4- and 2-way set associative, respectively) with random and LRU replacement policies, respectively, and a shared 8-way set associative 512K on-chip L2
+cache with an LRU replacement policy。  </li>
+<li>每一个cache拥有一个 64-byte line size。  </li>
+<li>在一个给定的working-set size(WSS)下，每一个调度任务均被赋予一个utilization and memory block。
+任务是顺序访问内存块的，且访问到末尾时会再次回到开始处。</li>
+<li>所有的调度、抢占、迁移开销均在模拟中被考虑进去。  </li>
+</ul><p>下面是作者在两种任务集上进行了模拟实验。在两个实验中，均将Pfair
+scheduling with megatasks 与 partitioned<sup class="footnote-ref" id="fnref-f3"><a href="#fn-f3">3</a></sup>
+EDF and ordinary Pfair scheduling (without megatasks)进行了比较。</p><h5 id="hand-crafted-task-sets"><a name="hand-crafted-task-sets" href="#hand-crafted-task-sets"></a>Hand-Crafted Task Sets</h5><ul>
+<li>所产生的hand-crafted task sets如下：</li>
+</ul><div align="center"><img src="/images/posts/rtas02.png" alt="Properties of example task sets" title="Properties of example task sets" style="width:540px;height:200px"></div><br><div align="center">Properties of example task sets.</div><p>备注：1 quanta = 1 ms.</p><ul>
+<li>模拟运行结果如下：</li>
+</ul><div align="center"><img src="/images/posts/rtas03.png" alt="实验结果" title="实验结果" style="width:540px;height:360px"></div><br><div align="center">L2 cache miss ratios per task set and (Min., Avg., Max.) per task memory accesses completed, in millions, for example task sets.</div><p>在获得这些结果时，megatask并没有进行reweighted，因为此处更关注cache的行为而不是时间属性。</p><ol>
+<li>BASIC由三个heavy-weight任务组成，运行其中两个不会产生L2 cache抖动，但是运行三个会产生。Partitioning 和 Pfair调度算法使用超过了2个核，产生了抖动，而将所有的任务并进一个megatask中，每次调度最多只会调度2（3*0.6=1.8,1+1=2)个任务，抖动消失。这个在BASIC中表现的十分明显。  </li>
+<li>SMALL_BASIC的效果与BASIC相同，但是表现的不如BASIC明显。</li>
+<li>将ONE_MEGA视为一个megatask时，一次最多可以调度4（5*0.7=3.5,3+1=4）个任务，不会产生抖动；而将ONE_MEGA视为2个megatask（2.1和1.4）可能会出现一次调度5（2.1-&gt;3,1.4-&gt;2,3+2）个任务的情况。</li>
+<li>将TWO_MEGA的整体视为一个megatask，可以保证最多一次调度4个任务，但是可能调用的包含三个WSS 190K的任务，这样便会产生L2 cache抖动；若仅仅只是将WSS 190K的三个任务视为一个megatask，三个WSS 60K的任务作为 free task，情况会仅仅好一些（因为会出现 190*2+60*3=560&gt;512的情况）。然而将TWO_MEGA分成两个
+megatasks, one eachfor 190K &amp; 60K tasks，这样最多只会出现2个WSS 190K和2个WSS 60K的任务共同被调度，不会产生L2 cache抖动（190*2+60*2=500&lt;512）。</li>
+<li>从相同时间内（从某一行看），每个任务完成的内存访问数来看，megatask的运行结果十分优越。</li>
+<li>解释：For example，the number of memory accesses (in millions) for the tasks in SMALL BASIC was
+{0.614, 4.123, 0.613, 4.103, 0.613} under partitioning, but
+{3.755, 3.765, 3.743, 3.717, 3.723} for megatasking.这样的非均匀的分布导致，在某些案例下，partioning拥有更高的最大完成内存访问数的值。</li>
+</ol><h5 id="randomly-generated-task-sets"><a name="randomly-generated-task-sets" href="#randomly-generated-task-sets"></a>Randomly-Generated Task Sets</h5><ul>
+<li>In generating task sets at
+random, the authors limited attention to a four-core system, and considered total WSSs of 768K, 896K, and 1024K, which correspond
+to 1.5, 1.75, and 2.0 times the size of the L2 cache.</li>
+<li>Total system utilizations were allowed to range between 2.0
+and 3.5. </li>
+<li>Task utilizations were generated uniformly over a range from some specified minimum to one, exclusive. The minimum task utilization was varied from 1/10 (which makes finding a feasible
+partitioning easier) to 1/2 (which makes partitioning harder).</li>
+<li>In total, 552 task sets were generated.</li>
+<li>产生这些任务集之后需要进行包装：<ul>
+<li>对于partitioning，注意使用首次适用策略（使用两次，第一次的标准依据WSS递减，第二次的标准依据是利用率递减，第一次失败则使用第二次）；</li>
+<li>对于megatask，详细见论文，具体原则是“If the current
+task could be added to the current megatask without pushing
+the megatask’s weight beyond the next integer boundary，then pack it to one.”。</li>
+<li>上述两种包装均会产生不合格的任务，不合格任务在实验时将不被包含。</li>
+</ul>
+</li>
+<li>在产生megatasks之后，每个megatask将被reweighted。</li>
+</ul><h6 id="randomly-generated-task-sets运行结果"><a name="randomly-generated-task-sets运行结果" href="#randomly-generated-task-sets运行结果"></a>Randomly-Generated Task Sets运行结果</h6><p><strong>L2 cache miss rates数据分析如下：</strong><br>使用三种调度算法，每一个合格的任务将被执行20 quanta，记录L2 cache miss rate。</p><div align="center"><img src="/images/posts/rtas004.png" alt="实验结果" title="实验结果"></div><div align="center">L2 cache miss rate versus both total system utilization (top) and minimum task utilization (bottom). The different columns correspond
+(left to right) to total WSSs of 1.5, 1.75, and 2.0 times the L2 cache capacity, respectively.Each point is an average obtained from between 19 and 48 task sets.</div><p><strong class="highlight">注意：</strong>较小的L2 cache miss rate不同将会导致很大的性能不同。下图给出了对于图(b)的 cycles-permemory-reference的数量.</p><div align="center"><img src="/images/posts/rtas05.png" alt="cycles-permemory-reference" title="cycles-permemory-reference"></div><br><div align="center">Cycles-per-memory-reference for the data in (b).</div><ul>
+<li>As seen in the bottom-row plots, the L2 miss rate increases with increasing task utilizations.这是因为heaviest tasks拥有最大的WSSs，因此很难在较少的核上运行。</li>
+<li>The top-row plots show a similar trend as the total system utilization increases from 2.0 to 2.5.<ul>
+<li>在总系统利用率超过2.5之后，miss rate 开始下降。一个可能的解释：
+The task-generation process may leave little room to improve miss rates at total utilizations beyond 2.5.</li>
+</ul>
+</li>
+<li>对于总的WSS来说，在1.5倍L2 cache大小下，megatask表现最好，且明显。
+在1.75倍、2倍L2 cache大小下，megatask在大多数情况下表现仍然最好，但是不明显。这是因为在1.75倍、2倍L2 cache大小下，这三种调度模式都不能很好的改善L2 cache性能，这在2倍L2 cache大小下体现尤为明显。</li>
+</ul><p><strong>内存访问统计数据（数据不包括调度代码本身）如下：</strong></p><div align="center"><img src="/images/posts/realtime00.png" alt="Instructions and memory accesses" title="Instructions and memory accesses"></div><br><div align="center">(Min., Avg., Max.) instructions and memory accesses completed over all non-disqualified task sets for each scheduling policy, in
+millions. </div><ul>
+<li>Megatasking is the clear winner by 5-6% on average and by as much as 30% in the worst case (as seen by the minimum values).</li>
+</ul><h4 id="下周任务"><a name="下周任务" href="#下周任务"></a>下周任务</h4><ul>
+<li>继续阅读与SESC模拟器相关的论文</li>
+<li>继续学习SESC的使用及部分核心源码的阅读</li>
+</ul><hr><ol class="footnotes"><li id="fn-f1"><p>Anderson J H, Calandrino J M, Devi U M C. Real-time scheduling on multicore platforms[C]//Real-Time and Embedded Technology and Applications Symposium, 2006. Proceedings of the 12th IEEE. IEEE, 2006: 179-190.<a href="#fnref-f1">↩</a></p>
+</li><li id="fn-f2"><p>A. Fedorova, M. Seltzer, C. Small, and D. Nussbaum. Performance of multithreaded chip multiprocessors and implications for operating system design. Proc. of the USENIX 2005 Annual Technical Conf., 2005. (See also Technical Report TR-17-04, Div. of Engineering and Applied Sciences, Harvard Univ. Aug., 2004.)<a href="#fnref-f2">↩</a></p>
+</li><li id="fn-f3"><p>A cache-partitioning scheme is presented that uniformly distributes the impact of cache contention among co-scheduled threads.<a href="#fnref-f3">↩</a></p>
+</li></ol>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>

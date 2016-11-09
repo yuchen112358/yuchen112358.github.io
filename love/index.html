@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="description" content="浪漫满屋"/>
+<meta name="keywords" content="love,little,girl"/>
+<title>致亲爱的小姑娘</title>
+<link href="css/default.css" type="text/css" rel="stylesheet"/>
+<link rel="shortcut icon" href="/img/favicon.ico">
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/garden.js" ></script>
+<script type="text/javascript" src="js/functions.js" ></script>
+<script type="text/javascript" src="js/min.js"></script>
+  
+<style type="text/css">
+/*鼠标上移放大图片*/
+.dynamic {
+	width: 900px;
+	margin: 40px auto 0
+}
+li {
+	width: 300px;
+	height: 400px;
+	float: left;
+	list-style: none
+}
+li img {
+	display: block;
+	width: 300px;
+	height: 400px;
+	padding: 8px;
+	background-color: #FFF;
+	box-shadow: 0px 0px 18px rgba(0,0,0,.4);
+	-webkit-transition: all ease .3s;
+	transition: all ease .3s
+}
+li img:hover {
+	-webkit-transform: scale(1.05);
+	transform: scale(1.05);
+	box-shadow: 0px 0px 18px rgba(0,0,0,.5);
+}
+/*浮起来的相框*/
+a{
+    color:#000;
+    text-decoration:none;
+    font-size:16px;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+.img{
+    border:0px;
+}
+.black_overlay{
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index:1001;
+    -moz-opacity: 0.8;
+    opacity:.80;
+    filter: alpha(opacity=80);
+}
+.white_content {
+    display: none;
+    position: absolute;
+    top: 15%;
+    left: 25%;
+    width: 320px;
+    height: 420px;
+    border: 16px solid #FFF;
+    border-bottom:none;
+    background-color: white;
+    z-index:1002;
+    overflow: auto;
+}
+</style>
+</head>
+
+<body>
+<!--<audio autoplay="autopaly" controls="controls">-->
+<audio autoplay="autopaly" loop>
+<source src="resources/littleG.mp3" type="audio/mp3" />
+</audio>
+<script type="text/javascript">
+(function($){
+	$.fn.snow = function(options){
+	var $flake = $('<div id="snowbox" />').css({'position': 'absolute','z-index':'9999', 'top': '-50px'}).html('&#10052;'),
+	documentHeight 	= $(document).height(),
+	documentWidth	= $(document).width(),
+	defaults = {
+		minSize		: 10,
+		maxSize		: 20,
+		newOn		: 1000,
+		flakeColor	: "#AFDAEF" /* 此处可以定义雪花颜色，若要白色可以改为#FFFFFF */
+	},
+	options	= $.extend({}, defaults, options);
+	var interval= setInterval( function(){
+	var startPositionLeft = Math.random() * documentWidth - 100,
+	startOpacity = 0.5 + Math.random(),
+	sizeFlake = options.minSize + Math.random() * options.maxSize,
+	endPositionTop = documentHeight - 200,
+	endPositionLeft = startPositionLeft - 500 + Math.random() * 500,
+	durationFall = documentHeight * 10 + Math.random() * 5000;
+	$flake.clone().appendTo('body').css({
+		left: startPositionLeft,
+		opacity: startOpacity,
+		'font-size': sizeFlake,
+		color: options.flakeColor
+	}).animate({
+		top: endPositionTop,
+		left: endPositionLeft,
+		opacity: 0.2
+	},durationFall,'linear',function(){
+		$(this).remove()
+	});
+	}, options.newOn);
+    };
+})(jQuery);
+$(function(){
+    $.fn.snow({ 
+	    minSize: 5, /* 定义雪花最小尺寸 */
+	    maxSize: 50,/* 定义雪花最大尺寸 */
+	    newOn: 300  /* 定义密集程度，数字越小越密集 */
+    });
+});
+</script>
+
+<div id="mainDiv">
+<div id="content">
+<div id="code">
+<span class="space"/><span class="comments">太子湾中，樱花树下，小姑娘那甜美的笑容现在依然时常浮现在我的脑海中……每一天都期盼着和小姑娘见面，每一刻都希冀着听到小姑娘的声音，每一秒都迫切着能与小姑娘相拥。今生今世能有小姑娘作伴，我便无一丝遗憾！</span><br />
+<span class="space"/><span class="comments">第一次的情人节，我们却遥隔他乡，不能陪伴在彼此身旁，但我不想因此而留下遗憾。小姑娘是上帝赐予我最美丽的天使，我更想将最美好的祝福通过光的速度送到你的身旁。和小姑娘在一起的每一天都是情人节，希望小姑娘每天都能开心幸福！愿一首《侧耳倾听》的主题曲将这最美好的祝福带到你的身旁，让我们也能像男女主角一样拥有世间最纯美、最幸福的爱情！</span><br />
+<table border="0" cellspacing="8" cellpadding="16">
+  <tr>
+    <td><img border=0></td>
+    <td>
+      <div class="dynamic">
+      <ul>
+        <li>
+          <p>
+          <a href="#" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><img src="images/love.JPG" width = "300" height = "400" alt="小姑娘" title="小姑娘和小学生要幸福地在一起O(∩_∩)O~"/></a>
+          </p>
+<!--显示浮起的相框，与上面的相结合才能显示浮动的相框-->
+          <div id="light" class="white_content">
+			<img src="images/love.JPG"/> 
+			<a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close
+			</a>
+		  </div>
+		  <div id="fade" class="black_overlay">
+		  </div>
+        </li>
+      </ul>
+    </td>
+  </tr>
+</table>
+</div>
+
+<div id="loveHeart">
+<canvas id="garden"></canvas>
+<div id="words">
+<div id="messages"><script language="JavaScript" type="text/javascript" src="js/clock.js"></script><br>
+<div id="love">
+<script type="text/javascript">
+document.write('<font  color=#00ffff>'+getUrlParam1("y")+'：'+'</font>');
+</SCRIPT><script type="text/javascript">
+document.write('<font  color=#00ffff>'+getUrlParam3("w")+'</font>');
+</SCRIPT>
+</div>
+</div>
+
+<div id="loveu">
+<div class="signature"><script type="text/javascript">
+document.write('<font  color=#00ffff>'+'最爱你的'+getUrlParam2("m")+'</font>');
+</SCRIPT>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+var offsetX = $("#loveHeart").width() / 2;
+var offsetY = $("#loveHeart").height() / 2 - 55;
+var together = new Date();	
+if (!document.createElement('canvas').getContext) {
+var msg = document.createElement("div");
+msg.id = "errorMsg";
+msg.innerHTML = "提醒您：IE浏览器版本过低！<br/>"+
+"推荐使用浏览器 <a href='http://dl.pconline.com.cn/download/51614.html' target='_blank'>Chrome 14+</a>"+
+"/<a href='http://download.microsoft.com/download/0/4/9/049A037E-B6B4-4303-90BE-BA6CAE979674/IE10-Windows6.1-x86-zh-cn.exe' target='_blank'>IE 9+</a>"+
+"/<a href='http://download.firefox.com.cn/releases/partners/baidu/webins3.0/zh-CN/Firefox-setup.exe' target='_blank'>Firefox 7+</a>"+
+"/Safari 4+<br/>请先升级您的浏览器！"; 
+document.body.appendChild(msg);
+$("#code").css("display", "none")
+$("#copyright").css("position", "absolute");
+$("#copyright").css("bottom", "10px");
+document.execCommand("stop");
+} else {
+setTimeout(function () {
+adjustWordsPosition();
+startHeartAnimation();
+}, 5000);
+
+timeElapse(together);
+setInterval(function () {
+timeElapse(together);
+}, 500);
+
+adjustCodePosition();
+$("#code").typewriter();
+}
+</script> 
+
+<br> 
+<!--<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#119;&#122;&#122;&#106;&#117;&#064;&#109;&#097;&#105;&#108;&#046;&#117;&#115;&#116;&#099;&#046;&#101;&#100;&#117;&#046;&#099;&#110;">制作人:雨辰</a>-->
+<!--小圆图，鼠标停留旋转-->
+<div class="zzsc">
+</div>
+<div style="text-align:center;clear:both;">
+</div>
+</body>
+</html>

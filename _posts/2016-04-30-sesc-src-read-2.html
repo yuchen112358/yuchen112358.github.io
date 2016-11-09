@@ -1,0 +1,1474 @@
+---
+layout:     post
+title:      "SESC源码阅读——Pipeline View"
+date:       2016-04-30
+author:     "yuchen"
+header-img: "img/post-bg-odroid.jpg"
+tags:
+    - SESC
+    - Pipeline View
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>sesc-src-read-2.html</title>
+  <meta name="generator" content="Haroopad 0.13.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>div.oembedall-githubrepos{border:1px solid #DDD;border-radius:4px;list-style-type:none;margin:0 0 10px;padding:8px 10px 0;font:13.34px/1.4 helvetica,arial,freesans,clean,sans-serif;width:452px;background-color:#fff}div.oembedall-githubrepos .oembedall-body{background:-moz-linear-gradient(center top,#FAFAFA,#EFEFEF);background:-webkit-gradient(linear,left top,left bottom,from(#FAFAFA),to(#EFEFEF));border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top:1px solid #EEE;margin-left:-10px;margin-top:8px;padding:5px 10px;width:100%}div.oembedall-githubrepos h3{font-size:14px;margin:0;padding-left:18px;white-space:nowrap}div.oembedall-githubrepos p.oembedall-description{color:#444;font-size:12px;margin:0 0 3px}div.oembedall-githubrepos p.oembedall-updated-at{color:#888;font-size:11px;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats{border:none;float:right;font-size:11px;font-weight:700;padding-left:15px;position:relative;z-index:5;margin:0}div.oembedall-githubrepos ul.oembedall-repo-stats li{border:none;color:#666;display:inline-block;list-style-type:none;margin:0!important}div.oembedall-githubrepos ul.oembedall-repo-stats li a{background-color:transparent;border:none;color:#666!important;background-position:5px -2px;background-repeat:no-repeat;border-left:1px solid #DDD;display:inline-block;height:21px;line-height:21px;padding:0 5px 0 23px}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a{border-left:medium none;margin-right:-3px}div.oembedall-githubrepos ul.oembedall-repo-stats li a:hover{background:5px -27px no-repeat #4183C4;color:#FFF!important;text-decoration:none}div.oembedall-githubrepos ul.oembedall-repo-stats li:first-child a:hover{border-bottom-left-radius:3px;border-top-left-radius:3px}ul.oembedall-repo-stats li:last-child a:hover{border-bottom-right-radius:3px;border-top-right-radius:3px}span.oembedall-closehide{background-color:#aaa;border-radius:2px;cursor:pointer;margin-right:3px}div.oembedall-container{margin-top:5px;text-align:left}.oembedall-ljuser{font-weight:700}.oembedall-ljuser img{vertical-align:bottom;border:0;padding-right:1px}.oembedall-stoqembed{border-bottom:1px dotted #999;float:left;overflow:hidden;width:730px;line-height:1;background:#FFF;color:#000;font-family:Arial,Liberation Sans,DejaVu Sans,sans-serif;font-size:80%;text-align:left;margin:0;padding:0}.oembedall-stoqembed a{color:#07C;text-decoration:none;margin:0;padding:0}.oembedall-stoqembed a:hover{text-decoration:underline}.oembedall-stoqembed a:visited{color:#4A6B82}.oembedall-stoqembed h3{font-family:Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;font-size:130%;font-weight:700;margin:0;padding:0}.oembedall-stoqembed .oembedall-reputation-score{color:#444;font-size:120%;font-weight:700;margin-right:2px}.oembedall-stoqembed .oembedall-user-info{height:35px;width:185px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-gravatar32{float:left;height:32px;width:32px}.oembedall-stoqembed .oembedall-user-info .oembedall-user-details{float:left;margin-left:5px;overflow:hidden;white-space:nowrap;width:145px}.oembedall-stoqembed .oembedall-question-hyperlink{font-weight:700}.oembedall-stoqembed .oembedall-stats{background:#EEE;margin:0 0 0 7px;padding:4px 7px 6px;width:58px}.oembedall-stoqembed .oembedall-statscontainer{float:left;margin-right:8px;width:86px}.oembedall-stoqembed .oembedall-votes{color:#555;padding:0 0 7px;text-align:center}.oembedall-stoqembed .oembedall-vote-count-post{font-size:240%;color:#808185;display:block;font-weight:700}.oembedall-stoqembed .oembedall-views{color:#999;padding-top:4px;text-align:center}.oembedall-stoqembed .oembedall-status{margin-top:-3px;padding:4px 0;text-align:center;background:#75845C;color:#FFF}.oembedall-stoqembed .oembedall-status strong{color:#FFF;display:block;font-size:140%}.oembedall-stoqembed .oembedall-summary{float:left;width:635px}.oembedall-stoqembed .oembedall-excerpt{line-height:1.2;margin:0;padding:0 0 5px}.oembedall-stoqembed .oembedall-tags{float:left;line-height:18px}.oembedall-stoqembed .oembedall-tags a:hover{text-decoration:none}.oembedall-stoqembed .oembedall-post-tag{background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;color:#3E6D8E;font-size:90%;line-height:2.4;margin:2px 2px 2px 0;padding:3px 4px;text-decoration:none;white-space:nowrap}.oembedall-stoqembed .oembedall-post-tag:hover{background-color:#3E6D8E;border-bottom:1px solid #37607D;border-right:1px solid #37607D;color:#E0EAF1}.oembedall-stoqembed .oembedall-fr{float:right}.oembedall-stoqembed .oembedall-statsarrow{background-image:url(http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=3);background-repeat:no-repeat;overflow:hidden;background-position:0 -435px;float:right;height:13px;margin-top:12px;width:7px}.oembedall-facebook1{border:1px solid #1A3C6C;padding:0;font:13.34px/1.4 verdana;width:500px}.oembedall-facebook2{background-color:#627add}.oembedall-facebook2 a{color:#e8e8e8;text-decoration:none}.oembedall-facebookBody{background-color:#fff;vertical-align:top;padding:5px}.oembedall-facebookBody .contents{display:inline-block;width:100%}.oembedall-facebookBody div img{float:left;margin-right:5px}div.oembedall-lanyard{-webkit-box-shadow:none;-webkit-transition-delay:0s;-webkit-transition-duration:.4000000059604645s;-webkit-transition-property:width;-webkit-transition-timing-function:cubic-bezier(0.42,0,.58,1);background-attachment:scroll;background-clip:border-box;background-color:transparent;background-image:none;background-origin:padding-box;border-width:0;box-shadow:none;color:#112644;display:block;float:left;font-family:'Trebuchet MS',Trebuchet,sans-serif;font-size:16px;height:253px;line-height:19px;margin:0;max-width:none;min-height:0;outline:#112644 0;overflow-x:visible;overflow-y:visible;padding:0;position:relative;text-align:left;vertical-align:baseline;width:804px}div.oembedall-lanyard .tagline{font-size:1.5em}div.oembedall-lanyard .wrapper{overflow:hidden;clear:both}div.oembedall-lanyard .split{float:left;display:inline}div.oembedall-lanyard .prominent-place .flag:active,div.oembedall-lanyard .prominent-place .flag:focus,div.oembedall-lanyard .prominent-place .flag:hover,div.oembedall-lanyard .prominent-place .flag:link,div.oembedall-lanyard .prominent-place .flag:visited{float:left;display:block;width:48px;height:48px;position:relative;top:-5px;margin-right:10px}div.oembedall-lanyard .place-context{font-size:.889em}div.oembedall-lanyard .prominent-place .sub-place{display:block}div.oembedall-lanyard .prominent-place{font-size:1.125em;line-height:1.1em;font-weight:400}div.oembedall-lanyard .main-date{color:#8CB4E0;font-weight:700;line-height:1.1}div.oembedall-lanyard .first{width:48.57%;margin:0 0 0 2.857%}.mermaid .label{color:#333}.node circle,.node polygon,.node rect{fill:#cde498;stroke:#13540c;stroke-width:1px}.edgePath .path{stroke:green;stroke-width:1.5px}.cluster rect{fill:#cdffb2;rx:40;stroke:#6eaa49;stroke-width:1px}.cluster text{fill:#333}.actor{stroke:#13540c;fill:#cde498}text.actor{fill:#000;stroke:none}.actor-line{stroke:grey}.messageLine0{stroke-width:1.5;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#333}.messageLine1{stroke-width:1.5;stroke-dasharray:"2 2";stroke:#333}#arrowhead{fill:#333}#crosshead path{fill:#333!important;stroke:#333!important}.messageText{fill:#333;stroke:none}.labelBox{stroke:#326932;fill:#cde498}.labelText,.loopText{fill:#000;stroke:none}.loopLine{stroke-width:2;stroke-dasharray:"2 2";marker-end:"url(#arrowhead)";stroke:#326932}.note{stroke:#6eaa49;fill:#fff5ad}.noteText{fill:#000;stroke:none;font-family:'trebuchet ms',verdana,arial;font-size:14px}.section{stroke:none;opacity:.2}.section0,.section2{fill:#6eaa49}.section1,.section3{fill:#fff;opacity:.2}.sectionTitle0,.sectionTitle1,.sectionTitle2,.sectionTitle3{fill:#333}.sectionTitle{text-anchor:start;font-size:11px;text-height:14px}.grid .tick{stroke:lightgrey;opacity:.3;shape-rendering:crispEdges}.grid path{stroke-width:0}.today{fill:none;stroke:red;stroke-width:2px}.task{stroke-width:2}.taskText{text-anchor:middle;font-size:11px}.taskTextOutsideRight{fill:#000;text-anchor:start;font-size:11px}.taskTextOutsideLeft{fill:#000;text-anchor:end;font-size:11px}.taskText0,.taskText1,.taskText2,.taskText3{fill:#fff}.task0,.task1,.task2,.task3{fill:#487e3a;stroke:#13540c}.taskTextOutside0,.taskTextOutside1,.taskTextOutside2,.taskTextOutside3{fill:#000}.active0,.active1,.active2,.active3{fill:#cde498;stroke:#13540c}.activeText0,.activeText1,.activeText2,.activeText3{fill:#000!important}.done0,.done1,.done2,.done3{stroke:grey;fill:lightgrey;stroke-width:2}.doneText0,.doneText1,.doneText2,.doneText3{fill:#000!important}.crit0,.crit1,.crit2,.crit3{stroke:#f88;fill:red;stroke-width:2}.activeCrit0,.activeCrit1,.activeCrit2,.activeCrit3{stroke:#f88;fill:#cde498;stroke-width:2}.doneCrit0,.doneCrit1,.doneCrit2,.doneCrit3{stroke:#f88;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges}.activeCritText0,.activeCritText1,.activeCritText2,.activeCritText3,.doneCritText0,.doneCritText1,.doneCritText2,.doneCritText3{fill:#000!important}.titleText{text-anchor:middle;font-size:18px;fill:#000}text{font-family:'trebuchet ms',verdana,arial;font-size:14px}html{height:100%}body{margin:0!important;padding:5px 20px 26px!important;background-color:#fff;font-family:"Lucida Grande","Segoe UI","Apple SD Gothic Neo","Malgun Gothic","Lucida Sans Unicode",Helvetica,Arial,sans-serif;font-size:.9em;overflow-x:hidden;overflow-y:auto}br,h1,h2,h3,h4,h5,h6{clear:both}hr.page{background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x;border:0;height:3px;padding:0}hr.underscore{border-top-style:dashed!important}body >:first-child{margin-top:0!important}img.plugin{box-shadow:0 1px 3px rgba(0,0,0,.1);border-radius:3px}iframe{border:0}figure{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0;-webkit-margin-end:0}kbd{border:1px solid #aaa;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;-moz-box-shadow:1px 2px 2px #ddd;-webkit-box-shadow:1px 2px 2px #ddd;box-shadow:1px 2px 2px #ddd;background-color:#f9f9f9;background-image:-moz-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-o-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:-webkit-linear-gradient(top,#eee,#f9f9f9,#eee);background-image:linear-gradient(top,#eee,#f9f9f9,#eee);padding:1px 3px;font-family:inherit;font-size:.85em}.oembeded .oembed_photo{display:inline-block}img[data-echo]{margin:25px 0;width:100px;height:100px;background:url(../img/ajax.gif) center center no-repeat #fff}.spinner{display:inline-block;width:10px;height:10px;margin-bottom:-.1em;border:2px solid rgba(0,0,0,.5);border-top-color:transparent;border-radius:100%;-webkit-animation:spin 1s infinite linear;animation:spin 1s infinite linear}.spinner:after{content:'';display:block;width:0;height:0;position:absolute;top:-6px;left:0;border:4px solid transparent;border-bottom-color:rgba(0,0,0,.5);-webkit-transform:rotate(45deg);transform:rotate(45deg)}@-webkit-keyframes spin{to{-webkit-transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}p.toc{margin:0!important}p.toc ul{padding-left:10px}p.toc>ul{padding:10px;margin:0 10px;display:inline-block;border:1px solid #ededed;border-radius:5px}p.toc li,p.toc ul{list-style-type:none}p.toc li{width:100%;padding:0;overflow:hidden}p.toc li a::after{content:"."}p.toc li a:before{content:"• "}p.toc h5{text-transform:uppercase}p.toc .title{float:left;padding-right:3px}p.toc .number{margin:0;float:right;padding-left:3px;background:#fff;display:none}input.task-list-item{margin-left:-1.62em}.markdown{font-family:"Hiragino Sans GB","Microsoft YaHei",STHeiti,SimSun,"Lucida Grande","Lucida Sans Unicode","Lucida Sans",'Segoe UI',AppleSDGothicNeo-Medium,'Malgun Gothic',Verdana,Tahoma,sans-serif;padding:20px}.markdown a{text-decoration:none;vertical-align:baseline}.markdown a:hover{text-decoration:underline}.markdown h1{font-size:2.2em;font-weight:700;margin:1.5em 0 1em}.markdown h2{font-size:1.8em;font-weight:700;margin:1.275em 0 .85em}.markdown h3{font-size:1.6em;font-weight:700;margin:1.125em 0 .75em}.markdown h4{font-size:1.4em;font-weight:700;margin:.99em 0 .66em}.markdown h5{font-size:1.2em;font-weight:700;margin:.855em 0 .57em}.markdown h6{font-size:1em;font-weight:700;margin:.75em 0 .5em}.markdown h1+p,.markdown h1:first-child,.markdown h2+p,.markdown h2:first-child,.markdown h3+p,.markdown h3:first-child,.markdown h4+p,.markdown h4:first-child,.markdown h5+p,.markdown h5:first-child,.markdown h6+p,.markdown h6:first-child{margin-top:0}.markdown hr{border:1px solid #ccc}.markdown p{margin:1em 0;word-wrap:break-word}.markdown ol{list-style-type:decimal}.markdown li{display:list-item;line-height:1.4em}.markdown blockquote{margin:1em 20px}.markdown blockquote>:first-child{margin-top:0}.markdown blockquote>:last-child{margin-bottom:0}.markdown blockquote cite:before{content:'\2014 \00A0'}.markdown .code{border-radius:3px;word-wrap:break-word}.markdown pre{border-radius:3px;word-wrap:break-word;border:1px solid #ccc;overflow:auto;padding:.5em}.markdown pre code{border:0;display:block}.markdown pre>code{font-family:Consolas,Inconsolata,Courier,monospace;font-weight:700;white-space:pre;margin:0}.markdown code{border-radius:3px;word-wrap:break-word;border:1px solid #ccc;padding:0 5px;margin:0 2px}.markdown img{max-width:100%}.markdown mark{color:#000;background-color:#fcf8e3}.markdown table{padding:0;border-collapse:collapse;border-spacing:0;margin-bottom:16px}.markdown table tr td,.markdown table tr th{border:1px solid #ccc;margin:0;padding:6px 13px}.markdown table tr th{font-weight:700}.markdown table tr th>:first-child{margin-top:0}.markdown table tr th>:last-child{margin-bottom:0}.markdown table tr td>:first-child{margin-top:0}.markdown table tr td>:last-child{margin-bottom:0}.solarized-light{padding:20px;color:#737373;font-size:15px;background:#fdf6e3;-webkit-font-smoothing:antialiased}.solarized-light a{color:#1e6ea7}.solarized-light a:hover{color:#268bd2}.solarized-light h1,.solarized-light h2,.solarized-light h3,.solarized-light h4,.solarized-light h5{color:#b58900}.solarized-light h2{border-bottom:1px solid #f6d784;line-height:1.7em}.solarized-light h6{color:#9c7600}.solarized-light hr{border:1px solid #fae7b3}.solarized-light pre>code{font-size:.9em}.solarized-light blockquote{border-left:4px solid #fae7b3;padding:0 15px;font-style:italic}.solarized-light table{background-color:#fdf4dd}.solarized-light table tr td,.solarized-light table tr th{border:1px solid #fae7b3}.solarized-light table tr:nth-child(2n){background-color:#fef8ea}.hljs{display:block;overflow-x:auto;padding:.5em;background:#fff;color:#000;-webkit-text-size-adjust:none}.hljs-comment,.hljs-javadoc{color:#006a00}.hljs-keyword,.hljs-literal,.nginx .hljs-title{color:#aa0d91}.hljs-list .hljs-title,.hljs-request,.hljs-status,.hljs-tag .hljs-title,.hljs-winutils,.http .hljs-title,.method,.setting .hljs-value,.tex .hljs-command{color:#008}.hljs-envvar,.tex .hljs-special{color:#660}.hljs-string{color:#c41a16}.apache .hljs-cbracket,.hljs-attr_selector,.hljs-cdata,.hljs-date,.hljs-filter .hljs-argument,.hljs-regexp,.hljs-tag .hljs-value{color:#080}.coffeescript .hljs-attribute,.css .hljs-function,.hljs-decorator,.hljs-function .hljs-title,.hljs-hexcolor,.hljs-number,.hljs-pi,.hljs-prompt,.hljs-rules .hljs-value,.hljs-shebang,.hljs-sub .hljs-identifier,.hljs-symbol,.hljs-symbol .hljs-string,.hljs-tag,.hljs-tag .hljs-keyword,.ini .hljs-title{color:#1c00cf}.clojure .hljs-attribute,.hljs-built_in,.hljs-class .hljs-id,.hljs-class .hljs-title,.hljs-dartdoc,.hljs-doctype,.hljs-javadoctag,.hljs-params,.hljs-phpdoc,.hljs-tag .hljs-attribute,.hljs-type,.hljs-typename,.hljs-yardoctag,.setting,.smalltalk .hljs-class{color:#5c2699}.hljs-variable{color:#3f6e74}.css .hljs-tag,.hljs-pseudo,.hljs-rules .hljs-property,.hljs-subst{color:#000}.css .hljs-class,.css .hljs-id{color:#9b703f}.hljs-value .hljs-important{color:#f70;font-weight:700}.hljs-rules .hljs-keyword{color:#c5af75}.apache .hljs-sqbracket,.hljs-annotation,.nginx .hljs-built_in{color:#9b859d}.hljs-pragma,.hljs-preprocessor,.hljs-preprocessor *{color:#643820}.tex .hljs-formula{background-color:#eee;font-style:italic}.diff .hljs-header,.hljs-chunk{color:gray;font-weight:700}.diff .hljs-change{background-color:#bccff9}.hljs-addition{background-color:#baeeba}.hljs-deletion{background-color:#ffc8bd}.hljs-comment .hljs-yardoctag{font-weight:700}.method .hljs-id{color:#000}.MathJax_Hover_Frame{border-radius:.25em;-webkit-border-radius:.25em;-moz-border-radius:.25em;-khtml-border-radius:.25em;box-shadow:0 0 15px #83A;-webkit-box-shadow:0 0 15px #83A;-moz-box-shadow:0 0 15px #83A;-khtml-box-shadow:0 0 15px #83A;border:1px solid #A6D!important;display:inline-block;position:absolute}.MathJax_Hover_Arrow{position:absolute;width:15px;height:11px;cursor:pointer}#MathJax_About{position:fixed;left:50%;width:auto;text-align:center;border:3px outset;padding:1em 2em;background-color:#DDD;color:#000;cursor:default;font-family:message-box;font-size:120%;font-style:normal;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;z-index:201;border-radius:15px;-webkit-border-radius:15px;-moz-border-radius:15px;-khtml-border-radius:15px;box-shadow:0 10px 20px gray;-webkit-box-shadow:0 10px 20px gray;-moz-box-shadow:0 10px 20px gray;-khtml-box-shadow:0 10px 20px gray;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}.MathJax_Menu{position:absolute;background-color:#fff;color:#000;width:auto;padding:2px;border:1px solid #CCC;margin:0;cursor:default;font:menu;text-align:left;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;z-index:201;box-shadow:0 10px 20px gray;-webkit-box-shadow:0 10px 20px gray;-moz-box-shadow:0 10px 20px gray;-khtml-box-shadow:0 10px 20px gray;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}.MathJax_MenuItem{padding:2px 2em;background:0 0}.MathJax_MenuArrow{position:absolute;right:.5em;color:#666}.MathJax_MenuActive .MathJax_MenuArrow{color:#fff}.MathJax_MenuArrow.RTL{left:.5em;right:auto}.MathJax_MenuCheck{position:absolute;left:.7em}.MathJax_MenuCheck.RTL{right:.7em;left:auto}.MathJax_MenuRadioCheck{position:absolute;left:1em}.MathJax_MenuRadioCheck.RTL{right:1em;left:auto}.MathJax_MenuLabel{padding:2px 2em 4px 1.33em;font-style:italic}.MathJax_MenuRule{border-top:1px solid #CCC;margin:4px 1px 0}.MathJax_MenuDisabled{color:GrayText}.MathJax_MenuActive{background-color:Highlight;color:HighlightText}.MathJax_Menu_Close{position:absolute;width:31px;height:31px;top:-15px;left:-15px}#MathJax_Zoom{position:absolute;background-color:#F0F0F0;overflow:auto;display:block;z-index:301;padding:.5em;border:1px solid #000;margin:0;font-weight:400;font-style:normal;text-align:left;text-indent:0;text-transform:none;line-height:normal;letter-spacing:normal;word-spacing:normal;word-wrap:normal;white-space:nowrap;float:none;box-shadow:5px 5px 15px #AAA;-webkit-box-shadow:5px 5px 15px #AAA;-moz-box-shadow:5px 5px 15px #AAA;-khtml-box-shadow:5px 5px 15px #AAA;filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}#MathJax_ZoomOverlay{position:absolute;left:0;top:0;z-index:300;display:inline-block;width:100%;height:100%;border:0;padding:0;margin:0;background-color:#fff;opacity:0;filter:alpha(opacity=0)}#MathJax_ZoomFrame{position:relative;display:inline-block;height:0;width:0}#MathJax_ZoomEventTrap{position:absolute;left:0;top:0;z-index:302;display:inline-block;border:0;padding:0;margin:0;background-color:#fff;opacity:0;filter:alpha(opacity=0)}.MathJax_Preview{color:#888}#MathJax_Message{position:fixed;left:1px;bottom:2px;background-color:#E6E6E6;border:1px solid #959595;margin:0;padding:2px 8px;z-index:102;color:#000;font-size:80%;width:auto;white-space:nowrap}#MathJax_MSIE_Frame{position:absolute;top:0;left:0;width:0;z-index:101;border:0;margin:0;padding:0}.MathJax_Error{color:#C00;font-style:italic}footer{position:fixed;font-size:.8em;text-align:right;bottom:0;margin-left:-25px;height:20px;width:100%}</style>
+</head>
+<body class="markdown solarized-light">
+<h2 id="sesc源码阅读——pipeline-view"><a name="sesc源码阅读——pipeline-view" href="#sesc源码阅读——pipeline-view"></a>SESC源码阅读——Pipeline View</h2><hr class="page"><h4 id="3.pipeline-view"><a name="3.pipeline-view" href="#3.pipeline-view"></a>3.Pipeline view</h4><p>在SESC中，GProcessor(Generic Processor)类的对象协调不同流水线阶段间的交互。GProcessor对象的对外接口是advanceClock()函数。advanceClock()函数于每个时钟周期将流水线往前推进一个阶段。为了完成这项工作，它首先调用一个函数获取指令并将该指令放到指令队列中。然后，它再调用一个函数从队列中发射指令到一个调度窗口。存在两个可以调度和执行指令的clusters，一个用于整型指令，一个用于浮点型指令，并且每一个都拥有它们自己的调度窗口。指令调度和执行被模拟器的其他部分处理。最后，一个函数会被调用，以将已经执行过的指令从reorder buffer中退出。  </p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/GProcessor.h
+class GProcessor {
+private:
+protected:
+  // Per instance data
+  const CPU_t Id;
+  const int32_t FetchWidth;
+  const int32_t IssueWidth;
+  const int32_t RetireWidth;
+  const int32_t RealisticWidth;
+  const int32_t InstQueueSize;
+  bool InOrderCore;
+  const size_t MaxFlows;
+  const size_t MaxROBSize;
+
+  GMemorySystem *memorySystem;
+
+  FastQueue&amp;lt;DInst *&amp;gt; ROB;
+
+  FastQueue&amp;lt;DInst *&amp;gt; replayQ;
+  LDSTQ lsq;
+  //......
+  ClusterManager clusterManager;
+  // Normal Stats
+  GStatsAvg robUsed;
+  // Energy Counters
+  GStatsEnergyBase *renameEnergy;
+  GStatsEnergyBase *robEnergy;
+  GStatsEnergyBase *wrRegEnergy[3]; // 0 INT, 1 FP, 2 NONE
+  GStatsEnergyBase *rdRegEnergy[3]; // 0 INT, 1 FP, 2 NONE
+  public:
+   // Inserts a fid in the processor. Notice that before called it must be sure
+  // that availableFlows is bigger than one
+  virtual void switchIn(Pid_t pid) = 0;
+
+  // Extracts the pid. Precondition: the pid should be running in the processor
+  virtual void switchOut(Pid_t pid) = 0;
+  virtual long long getAndClearnGradInsts(Pid_t pid)  = 0; // Must be called only by RunningProcs
+  virtual long long getAndClearnWPathInsts(Pid_t pid) = 0; // Must be called only by RunningProcs
+
+  // Returns the number of extra threads (switchIn) that processor may accept
+  virtual size_t availableFlows() const = 0;
+
+  virtual void goRabbitMode(long long n2Skip) = 0;
+
+  // Find a victim pid that can be switchout
+  virtual Pid_t findVictimPid() const = 0;
+
+  // Different types of cores extend this function. See SMTProcessor and
+  // Processor.
+  virtual void advanceClock() = 0;
+
+  virtual bool hasWork() const=0;
+  //......
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/GProcessor.h</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GProcessor</span> </span>{
+<span class="hljs-keyword">private</span>:
+<span class="hljs-keyword">protected</span>:
+  <span class="hljs-comment">// Per instance data</span>
+  <span class="hljs-keyword">const</span> CPU_t Id;
+  <span class="hljs-keyword">const</span> int32_t FetchWidth;
+  <span class="hljs-keyword">const</span> int32_t IssueWidth;
+  <span class="hljs-keyword">const</span> int32_t RetireWidth;
+  <span class="hljs-keyword">const</span> int32_t RealisticWidth;
+  <span class="hljs-keyword">const</span> int32_t InstQueueSize;
+  bool InOrderCore;
+  <span class="hljs-keyword">const</span> size_t MaxFlows;
+  <span class="hljs-keyword">const</span> size_t MaxROBSize;
+
+  GMemorySystem *memorySystem;
+
+  FastQueue&lt;DInst *&gt; ROB;
+
+  FastQueue&lt;DInst *&gt; replayQ;
+  LDSTQ lsq;
+  <span class="hljs-comment">//......</span>
+  ClusterManager clusterManager;
+  <span class="hljs-comment">// Normal Stats</span>
+  GStatsAvg robUsed;
+  <span class="hljs-comment">// Energy Counters</span>
+  GStatsEnergyBase *renameEnergy;
+  GStatsEnergyBase *robEnergy;
+  GStatsEnergyBase *wrRegEnergy[<span class="hljs-number">3</span>]; <span class="hljs-comment">// 0 INT, 1 FP, 2 NONE</span>
+  GStatsEnergyBase *rdRegEnergy[<span class="hljs-number">3</span>]; <span class="hljs-comment">// 0 INT, 1 FP, 2 NONE</span>
+  <span class="hljs-keyword">public</span>:
+   <span class="hljs-comment">// Inserts a fid in the processor. Notice that before called it must be sure</span>
+  <span class="hljs-comment">// that availableFlows is bigger than one</span>
+  <span class="hljs-function">virtual <span class="hljs-keyword">void</span> <span class="hljs-title">switchIn</span><span class="hljs-params">(Pid_t pid)</span> </span>= <span class="hljs-number">0</span>;
+
+  <span class="hljs-comment">// Extracts the pid. Precondition: the pid should be running in the processor</span>
+  <span class="hljs-function">virtual <span class="hljs-keyword">void</span> <span class="hljs-title">switchOut</span><span class="hljs-params">(Pid_t pid)</span> </span>= <span class="hljs-number">0</span>;
+  <span class="hljs-function">virtual <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> <span class="hljs-title">getAndClearnGradInsts</span><span class="hljs-params">(Pid_t pid)</span>  </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">// Must be called only by RunningProcs</span>
+  <span class="hljs-function">virtual <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> <span class="hljs-title">getAndClearnWPathInsts</span><span class="hljs-params">(Pid_t pid)</span> </span>= <span class="hljs-number">0</span>; <span class="hljs-comment">// Must be called only by RunningProcs</span>
+
+  <span class="hljs-comment">// Returns the number of extra threads (switchIn) that processor may accept</span>
+  <span class="hljs-function">virtual size_t <span class="hljs-title">availableFlows</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>= <span class="hljs-number">0</span>;
+
+  <span class="hljs-function">virtual <span class="hljs-keyword">void</span> <span class="hljs-title">goRabbitMode</span><span class="hljs-params">(<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> n2Skip)</span> </span>= <span class="hljs-number">0</span>;
+
+  <span class="hljs-comment">// Find a victim pid that can be switchout</span>
+  <span class="hljs-function">virtual Pid_t <span class="hljs-title">findVictimPid</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>= <span class="hljs-number">0</span>;
+
+  <span class="hljs-comment">// Different types of cores extend this function. See SMTProcessor and</span>
+  <span class="hljs-comment">// Processor.</span>
+  <span class="hljs-function">virtual <span class="hljs-keyword">void</span> <span class="hljs-title">advanceClock</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;
+
+  <span class="hljs-function">virtual bool <span class="hljs-title">hasWork</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>=<span class="hljs-number">0</span>;
+  <span class="hljs-comment">//......</span>
+}
+</code></pre><p>可以看出在GProcessor类中advanceClock()是一个虚函数，不同类型的核要扩展该函数，Processor类和SMTProcessor类均是其子类，如下：</p><pre class="go hljs"><code class="Go" data-origin="<pre><code class=&quot;Go&quot;>//src/libcore/Processor.h
+class Processor:public GProcessor {
+//......
+}
+void Processor::advanceClock()
+{
+#ifdef TS_STALL
+  if (isStall()) return;
+#endif  
+
+  clockTicks++;
+
+  //  GMSG(!ROB.empty(),&quot;robTop %d Ul %d Us %d Ub %d&quot;,ROB.getIdFromTop(0)
+  //       ,unresolvedLoad, unresolvedStore, unresolvedBranch);
+
+  // Fetch Stage
+  if (IFID.hasWork() ) {
+    IBucket *bucket = pipeQ.pipeLine.newItem();
+    if( bucket ) {
+      IFID.fetch(bucket);
+    }
+  }
+
+  // ID Stage (insert to instQueue)
+  if (spaceInInstQueue &amp;gt;= FetchWidth) {
+    IBucket *bucket = pipeQ.pipeLine.nextItem();
+    if( bucket ) {
+      I(!bucket-&amp;gt;empty());
+      //      I(bucket-&amp;gt;top()-&amp;gt;getInst()-&amp;gt;getAddr());
+
+      spaceInInstQueue -= bucket-&amp;gt;size();
+      pipeQ.instQueue.push(bucket);
+    }else{
+      noFetch2.inc();
+    }
+  }else{
+    noFetch.inc();
+  }
+
+  // RENAME Stage
+  if ( !pipeQ.instQueue.empty() ) {
+    spaceInInstQueue += issue(pipeQ);
+    //    spaceInInstQueue += issue(pipeQ);
+  }
+  retire();
+}
+
+//src/libcore/SMTProcessor.h
+class SMTProcessor:public GProcessor {
+//......
+}
+void SMTProcessor::advanceClock()
+{
+  clockTicks++;
+  //......
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/Processor.h</span>
+class Processor:public GProcessor {
+<span class="hljs-comment">//......</span>
+}
+void Processor::advanceClock()
+{
+#ifdef TS_STALL
+  <span class="hljs-keyword">if</span> (isStall()) <span class="hljs-keyword">return</span>;
+#endif  
+
+  clockTicks++;
+
+  <span class="hljs-comment">//  GMSG(!ROB.empty(),"robTop %d Ul %d Us %d Ub %d",ROB.getIdFromTop(0)</span>
+  <span class="hljs-comment">//       ,unresolvedLoad, unresolvedStore, unresolvedBranch);</span>
+
+  <span class="hljs-comment">// Fetch Stage</span>
+  <span class="hljs-keyword">if</span> (IFID.hasWork() ) {
+    IBucket *bucket = pipeQ.pipeLine.newItem();
+    <span class="hljs-keyword">if</span>( bucket ) {
+      IFID.fetch(bucket);
+    }
+  }
+
+  <span class="hljs-comment">// ID Stage (insert to instQueue)</span>
+  <span class="hljs-keyword">if</span> (spaceInInstQueue &gt;= FetchWidth) {
+    IBucket *bucket = pipeQ.pipeLine.nextItem();
+    <span class="hljs-keyword">if</span>( bucket ) {
+      I(!bucket-&gt;empty());
+      <span class="hljs-comment">//      I(bucket-&gt;top()-&gt;getInst()-&gt;getAddr());</span>
+
+      spaceInInstQueue -= bucket-&gt;size();
+      pipeQ.instQueue.push(bucket);
+    }<span class="hljs-keyword">else</span>{
+      noFetch2.inc();
+    }
+  }<span class="hljs-keyword">else</span>{
+    noFetch.inc();
+  }
+
+  <span class="hljs-comment">// RENAME Stage</span>
+  <span class="hljs-keyword">if</span> ( !pipeQ.instQueue.empty() ) {
+    spaceInInstQueue += issue(pipeQ);
+    <span class="hljs-comment">//    spaceInInstQueue += issue(pipeQ);</span>
+  }
+  retire();
+}
+
+<span class="hljs-comment">//src/libcore/SMTProcessor.h</span>
+class SMTProcessor:public GProcessor {
+<span class="hljs-comment">//......</span>
+}
+void SMTProcessor::advanceClock()
+{
+  clockTicks++;
+  <span class="hljs-comment">//......</span>
+}
+</code></pre><p>流水线建模中所有类的交互如下：<br><img src="/images/posts/sescdoc00.png" alt="流水线建模中所有类的交互"></p><h6 id="3.1-取指/译码(fetch/decode)"><a name="3.1-取指/译码(fetch/decode)" href="#3.1-取指/译码(fetch/decode)"></a>3.1 取指/译码(Fetch/Decode)</h6><p>取指是流水线的第一个阶段。在该阶段中，指令从I-cache中取出并被放到流水线中。在经典的配置中，取指单元每个周期最多取出4条指令。取指单元也会预测分支走向，并获取该预测分支路径下的指令。
+处理取指的类是FetchEngine。它的对外接口是fetch()函数。</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/FetchEngine.h
+class FetchEngine {
+private:
+  // Static data
+  static long long nInst2Sim;
+  static long long totalnInst;
+
+  const int32_t Id;
+  const int32_t cpuId;
+
+  GMemorySystem *gms;
+  GProcessor *gproc;
+
+  Pid_t pid;
+
+  BPredictor *bpred;
+  //......
+  // Fills the current fetch buffer.
+  //  Always fetches at most fetchWidth instructions
+  void fetch(IBucket *buffer, int32_t fetchMax = -1);
+
+  // Fake fetch. Fills the buffer with fake (mispredicted) instructions
+  // Only active is SESC_MISPATH def'd
+  void fakeFetch(IBucket *buffer, int32_t fetchMax = -1);
+  void realFetch(IBucket *buffer, int32_t fetchMax = -1);
+  //......
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/FetchEngine.h</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FetchEngine</span> </span>{
+<span class="hljs-keyword">private</span>:
+  <span class="hljs-comment">// Static data</span>
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> nInst2Sim;
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> totalnInst;
+
+  <span class="hljs-keyword">const</span> int32_t Id;
+  <span class="hljs-keyword">const</span> int32_t cpuId;
+
+  GMemorySystem *gms;
+  GProcessor *gproc;
+
+  Pid_t pid;
+
+  BPredictor *bpred;
+  <span class="hljs-comment">//......</span>
+  <span class="hljs-comment">// Fills the current fetch buffer.</span>
+  <span class="hljs-comment">//  Always fetches at most fetchWidth instructions</span>
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">fetch</span><span class="hljs-params">(IBucket *buffer, int32_t fetchMax = -<span class="hljs-number">1</span>)</span></span>;
+
+  <span class="hljs-comment">// Fake fetch. Fills the buffer with fake (mispredicted) instructions</span>
+  <span class="hljs-comment">// Only active is SESC_MISPATH def'd</span>
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">fakeFetch</span><span class="hljs-params">(IBucket *buffer, int32_t fetchMax = -<span class="hljs-number">1</span>)</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">realFetch</span><span class="hljs-params">(IBucket *buffer, int32_t fetchMax = -<span class="hljs-number">1</span>)</span></span>;
+  <span class="hljs-comment">//......</span>
+}
+</code></pre><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/FetchEngine.cpp
+void FetchEngine::fetch(IBucket *bucket, int32_t fetchMax)
+{
+  if(missInstID) {
+    fakeFetch(bucket, fetchMax);
+  }else{
+    realFetch(bucket, fetchMax);
+  }
+
+  if(enableICache &amp;amp;&amp;amp; !bucket-&amp;gt;empty()) {
+    szFS.sample(bucket-&amp;gt;size());
+    if (bucket-&amp;gt;top()-&amp;gt;getInst()-&amp;gt;isStoreAddr())
+      IMemRequest::create(bucket-&amp;gt;topNext(), gms, bucket);
+    else
+      IMemRequest::create(bucket-&amp;gt;top(), gms, bucket);
+  }else{
+    // Even if there are no inst to fetch, bucket.empty(), it should
+    // be markFetched. Otherwise, we would loose count of buckets
+    bucket-&amp;gt;markFetchedCB.schedule(IL1HitDelay);
+  }
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/FetchEngine.cpp</span>
+<span class="hljs-keyword">void</span> FetchEngine::fetch(IBucket *bucket, int32_t fetchMax)
+{
+  <span class="hljs-keyword">if</span>(missInstID) {
+    fakeFetch(bucket, fetchMax);
+  }<span class="hljs-keyword">else</span>{
+    realFetch(bucket, fetchMax);
+  }
+
+  <span class="hljs-keyword">if</span>(enableICache &amp;&amp; !bucket-&gt;empty()) {
+    szFS.sample(bucket-&gt;size());
+    <span class="hljs-keyword">if</span> (bucket-&gt;top()-&gt;getInst()-&gt;isStoreAddr())
+      IMemRequest::create(bucket-&gt;topNext(), gms, bucket);
+    <span class="hljs-keyword">else</span>
+      IMemRequest::create(bucket-&gt;top(), gms, bucket);
+  }<span class="hljs-keyword">else</span>{
+    <span class="hljs-comment">// Even if there are no inst to fetch, bucket.empty(), it should</span>
+    <span class="hljs-comment">// be markFetched. Otherwise, we would loose count of buckets</span>
+    bucket-&gt;markFetchedCB.schedule(IL1HitDelay);
+  }
+}
+</code></pre><p>fetch()函数尝试从I-cache中获取可配置数量的指令。fetch()函数也模型化一个分支预测器。fetch()函数与ExecutionFlow类进行交互。特别地，它调用ExecutePC()函数从cache得到下一条指令的地址。然后，它为这个地址向I-cache产生一个请求。当所有的指令从I-cache返回时，这些指令成束地被传递到流水线的下一个阶段。</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/FetchEngine.cpp
+void FetchEngine::realFetch(IBucket *bucket, int32_t fetchMax)
+{
+  int32_t n2Fetched=fetchMax &amp;gt; 0 ? fetchMax : FetchWidth;
+  maxBB = BB4Cycle; // Reset the max number of BB to fetch in this cycle (decreased in processBranch)
+
+  // This method only can be called once per cycle or the restriction of the
+  // BB4Cycle would not enforced
+  I(pid&amp;gt;=0);
+  I(maxBB&amp;gt;0);
+  I(bucket-&amp;gt;empty());
+
+  I(missInstID==0);
+
+  Pid_t myPid = flow.currentPid();
+//......
+
+
+  do {
+    nGradInsts++; // Before executePC because it can trigger a context switch
+
+    DInst *dinst = flow.executePC();
+    if (dinst == 0)
+      break;
+//......
+
+    const Instruction *inst = dinst-&amp;gt;getInst();
+
+//......
+    instFetched(dinst);
+    bucket-&amp;gt;push(dinst);
+//......
+
+    n2Fetched--;
+
+    bbSize++;
+    fbSize++;
+    if(inst-&amp;gt;isBranch()) {
+      szBB.sample(bbSize);
+      bbSize=0;
+
+      if (!processBranch(dinst, n2Fetched)) {
+    break;
+      }
+    }
+
+  }while(n2Fetched&amp;gt;0 &amp;amp;&amp;amp; flow.currentPid()==myPid);
+
+//......
+
+  ushort tmp = FetchWidth - n2Fetched;
+
+  totalnInst+=tmp;
+  if( totalnInst &amp;gt;= nInst2Sim ) {
+    MSG(&quot;stopSimulation at %lld (%lld)&quot;,totalnInst, nInst2Sim);
+    osSim-&amp;gt;stopSimulation();
+  }
+
+  nFetched.add(tmp);
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/FetchEngine.cpp</span>
+<span class="hljs-keyword">void</span> FetchEngine::realFetch(IBucket *bucket, int32_t fetchMax)
+{
+  int32_t n2Fetched=fetchMax &gt; <span class="hljs-number">0</span> ? fetchMax : FetchWidth;
+  maxBB = BB4Cycle; <span class="hljs-comment">// Reset the max number of BB to fetch in this cycle (decreased in processBranch)</span>
+
+  <span class="hljs-comment">// This method only can be called once per cycle or the restriction of the</span>
+  <span class="hljs-comment">// BB4Cycle would not enforced</span>
+  I(pid&gt;=<span class="hljs-number">0</span>);
+  I(maxBB&gt;<span class="hljs-number">0</span>);
+  I(bucket-&gt;empty());
+
+  I(missInstID==<span class="hljs-number">0</span>);
+
+  Pid_t myPid = flow.currentPid();
+<span class="hljs-comment">//......</span>
+
+
+  do {
+    nGradInsts++; <span class="hljs-comment">// Before executePC because it can trigger a context switch</span>
+
+    DInst *dinst = flow.executePC();
+    <span class="hljs-keyword">if</span> (dinst == <span class="hljs-number">0</span>)
+      <span class="hljs-keyword">break</span>;
+<span class="hljs-comment">//......</span>
+
+    <span class="hljs-keyword">const</span> Instruction *inst = dinst-&gt;getInst();
+
+<span class="hljs-comment">//......</span>
+    instFetched(dinst);
+    bucket-&gt;push(dinst);
+<span class="hljs-comment">//......</span>
+
+    n2Fetched--;
+
+    bbSize++;
+    fbSize++;
+    <span class="hljs-keyword">if</span>(inst-&gt;isBranch()) {
+      szBB.sample(bbSize);
+      bbSize=<span class="hljs-number">0</span>;
+
+      <span class="hljs-keyword">if</span> (!processBranch(dinst, n2Fetched)) {
+    <span class="hljs-keyword">break</span>;
+      }
+    }
+
+  }<span class="hljs-keyword">while</span>(n2Fetched&gt;<span class="hljs-number">0</span> &amp;&amp; flow.currentPid()==myPid);
+
+<span class="hljs-comment">//......</span>
+
+  ushort tmp = FetchWidth - n2Fetched;
+
+  totalnInst+=tmp;
+  <span class="hljs-keyword">if</span>( totalnInst &gt;= nInst2Sim ) {
+    MSG(<span class="hljs-string">"stopSimulation at %lld (%lld)"</span>,totalnInst, nInst2Sim);
+    osSim-&gt;stopSimulation();
+  }
+
+  nFetched.add(tmp);
+}
+</code></pre><p>译码（如：将指令从ISA格式转变为内部格式）发生在模拟的程序被读入且每条二进制指令被译码成Instruction对象时。因此，在成束地将指令传递到流水线的下一个阶段时，FetchEngine类简单地增加一个译码延时惩罚。</p><ul>
+<li><h6 id="分支预测器"><a name="分支预测器" href="#分支预测器"></a>分支预测器</h6>
+</li></ul><p>SESC支持若干不同的分支预测器。预测器的选择和它大小的决定在运行时进行。因为分支预测在取指单元中完成，所以FetchEngine类也负责处理预测器的选择和它大小的决定。<br>如果指令是一个分支，FetchEngine类会调用processBranch()函数，其完成分支预测。如果分支预测是错误的，processBranch()函数将会通过标记误预测模仿流水线刷新(pipeline flush)。processBranch()函数代码如下：</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/FetchEngine.cpp
+bool FetchEngine::processBranch(DInst *dinst, ushort n2Fetched)
+{
+  const Instruction *inst = dinst-&amp;gt;getInst();
+  InstID oracleID         = flow.getNextID();
+#ifdef BPRED_UPDATE_RETIRE
+  PredType prediction     = bpred-&amp;gt;predict(inst, oracleID, false);
+  if (!dinst-&amp;gt;isFake())
+    dinst-&amp;gt;setBPPred(bpred, oracleID);
+#else
+  PredType prediction     = bpred-&amp;gt;predict(inst, oracleID, !dinst-&amp;gt;isFake());
+#endif
+
+  if( oracleID != inst-&amp;gt;calcNextInstID() ) {
+    fbSizeBB--;
+    if( fbSizeBB == 0 ) {
+      szFB.sample(fbSize); 
+      fbSize=0;
+      fbSizeBB = BB4Cycle;
+    }
+  }
+
+  if(prediction == CorrectPrediction) {
+    if( oracleID != inst-&amp;gt;calcNextInstID() ) { //Taken
+      // Only when the branch is taken check maxBB
+      maxBB--;
+      if( maxBB == 0 ) {
+        // No instructions fetched (stall)
+        if (missInstID==0)
+          nDelayInst2.add(n2Fetched);
+
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+#ifdef SESC_MISPATH
+  if (missInstID==0 &amp;amp;&amp;amp; !dinst-&amp;gt;isFake()) { // Only first mispredicted instruction
+    I(missFetchTime == 0);
+    missFetchTime = globalClock;
+    missInstID    = inst-&amp;gt;calcNextInstID();
+    dinst-&amp;gt;setFetch(this);
+  }
+#else
+  I(missInstID==0);
+  I(missFetchTime==0);
+
+  missFetchTime = globalClock;
+  missInstID    = inst-&amp;gt;calcNextInstID();
+
+  if( BTACDelay ) {
+    if( prediction == NoBTBPrediction &amp;amp;&amp;amp; inst-&amp;gt;doesJump2Label() ) {
+      nBTAC.inc();
+      unBlockFetchCB.schedule(BTACDelay);
+    }else{
+      dinst-&amp;gt;setFetch(this); // blocked fetch (awaked in Resources)
+    }
+  }else{
+    dinst-&amp;gt;setFetch(this); // blocked fetch (awaked in Resources)
+  }
+#endif // SESC_MISPATH
+
+  return false;
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/FetchEngine.cpp</span>
+bool FetchEngine::processBranch(DInst *dinst, ushort n2Fetched)
+{
+  <span class="hljs-keyword">const</span> Instruction *inst = dinst-&gt;getInst();
+  InstID oracleID         = flow.getNextID();
+#ifdef BPRED_UPDATE_RETIRE
+  PredType prediction     = bpred-&gt;predict(inst, oracleID, <span class="hljs-keyword">false</span>);
+  <span class="hljs-keyword">if</span> (!dinst-&gt;isFake())
+    dinst-&gt;setBPPred(bpred, oracleID);
+#<span class="hljs-keyword">else</span>
+  PredType prediction     = bpred-&gt;predict(inst, oracleID, !dinst-&gt;isFake());
+#<span class="hljs-function">endif
+
+  <span class="hljs-title">if</span><span class="hljs-params">( oracleID != inst-&gt;calcNextInstID()</span> ) </span>{
+    fbSizeBB--;
+    <span class="hljs-keyword">if</span>( fbSizeBB == <span class="hljs-number">0</span> ) {
+      szFB.sample(fbSize); 
+      fbSize=<span class="hljs-number">0</span>;
+      fbSizeBB = BB4Cycle;
+    }
+  }
+
+  <span class="hljs-keyword">if</span>(prediction == CorrectPrediction) {
+    <span class="hljs-keyword">if</span>( oracleID != inst-&gt;calcNextInstID() ) { <span class="hljs-comment">//Taken</span>
+      <span class="hljs-comment">// Only when the branch is taken check maxBB</span>
+      maxBB--;
+      <span class="hljs-keyword">if</span>( maxBB == <span class="hljs-number">0</span> ) {
+        <span class="hljs-comment">// No instructions fetched (stall)</span>
+        <span class="hljs-keyword">if</span> (missInstID==<span class="hljs-number">0</span>)
+          nDelayInst2.add(n2Fetched);
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+      }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+  }
+
+
+#<span class="hljs-function">ifdef SESC_MISPATH
+  <span class="hljs-title">if</span> <span class="hljs-params">(missInstID==<span class="hljs-number">0</span> &amp;&amp; !dinst-&gt;isFake()</span>) </span>{ <span class="hljs-comment">// Only first mispredicted instruction</span>
+    I(missFetchTime == <span class="hljs-number">0</span>);
+    missFetchTime = globalClock;
+    missInstID    = inst-&gt;calcNextInstID();
+    dinst-&gt;setFetch(<span class="hljs-keyword">this</span>);
+  }
+#<span class="hljs-function"><span class="hljs-keyword">else</span>
+  <span class="hljs-title">I</span><span class="hljs-params">(missInstID==<span class="hljs-number">0</span>)</span></span>;
+  I(missFetchTime==<span class="hljs-number">0</span>);
+
+  missFetchTime = globalClock;
+  missInstID    = inst-&gt;calcNextInstID();
+
+  <span class="hljs-keyword">if</span>( BTACDelay ) {
+    <span class="hljs-keyword">if</span>( prediction == NoBTBPrediction &amp;&amp; inst-&gt;doesJump2Label() ) {
+      nBTAC.inc();
+      unBlockFetchCB.schedule(BTACDelay);
+    }<span class="hljs-keyword">else</span>{
+      dinst-&gt;setFetch(<span class="hljs-keyword">this</span>); <span class="hljs-comment">// blocked fetch (awaked in Resources)</span>
+    }
+  }<span class="hljs-keyword">else</span>{
+    dinst-&gt;setFetch(<span class="hljs-keyword">this</span>); <span class="hljs-comment">// blocked fetch (awaked in Resources)</span>
+  }
+#endif <span class="hljs-comment">// SESC_MISPATH</span>
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+}
+</code></pre><p>bpred的定义为<code>BPredictor *bpred;</code>，BPredictor类内有一个 <code>BPred *pred;</code>定义，BPred是所有分支预测器的父类。BPredictor类中的predict()函数会调用BPred类的doPredict()函数，而doPredict()函数会调用BPred类的predict()函数（一个虚函数），实际会调用配置文件中对应子类的predict()函数。<br>连续的调用fetch()函数将会触发调用fakeFetch()函数，其从误预测分支的错误路径上获取指令。这些指令将被标记为假指令。</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/FetchEngine.cpp
+void FetchEngine::fakeFetch(IBucket *bucket, int32_t fetchMax)
+{
+  I(missInstID);
+#ifdef SESC_MISPATH
+  if(!issueWrongPath)
+    return;
+
+  ushort n2Fetched = FetchWidth;
+
+  do {
+//......
+
+    dinst-&amp;gt;setFake();
+    n2Fetched--;
+    bucket-&amp;gt;push(dinst);
+
+    const Instruction *fakeInst = Instruction::getInst(missInstID);
+    if (fakeInst-&amp;gt;isBranch()) {
+      if (!processBranch(dinst, n2Fetched))
+        break;
+    }else{
+      missInstID = fakeInst-&amp;gt;calcNextInstID();
+    }
+
+  }while(n2Fetched);
+
+  nFetched.add(FetchWidth - n2Fetched);
+  nWPathInsts += FetchWidth - n2Fetched;
+#endif // SESC_MISPATH
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/FetchEngine.cpp</span>
+<span class="hljs-keyword">void</span> FetchEngine::fakeFetch(IBucket *bucket, int32_t fetchMax)
+{
+  I(missInstID);
+#<span class="hljs-function">ifdef SESC_MISPATH
+  <span class="hljs-title">if</span><span class="hljs-params">(!issueWrongPath)</span>
+    return</span>;
+
+  ushort n2Fetched = FetchWidth;
+
+  do {
+<span class="hljs-comment">//......</span>
+
+    dinst-&gt;setFake();
+    n2Fetched--;
+    bucket-&gt;push(dinst);
+
+    <span class="hljs-keyword">const</span> Instruction *fakeInst = Instruction::getInst(missInstID);
+    <span class="hljs-keyword">if</span> (fakeInst-&gt;isBranch()) {
+      <span class="hljs-keyword">if</span> (!processBranch(dinst, n2Fetched))
+        <span class="hljs-keyword">break</span>;
+    }<span class="hljs-keyword">else</span>{
+      missInstID = fakeInst-&gt;calcNextInstID();
+    }
+
+  }<span class="hljs-keyword">while</span>(n2Fetched);
+
+  nFetched.add(FetchWidth - n2Fetched);
+  nWPathInsts += FetchWidth - n2Fetched;
+#endif <span class="hljs-comment">// SESC_MISPATH</span>
+}
+</code></pre><p>最后，当误预测分支执行时，它更新了FetchEngine对象并重新存储了正确的执行路径。</p><h6 id="3.2-发射和调度(issuing-&amp;-scheduling)"><a name="3.2-发射和调度(issuing-&amp;-scheduling)" href="#3.2-发射和调度(issuing-&amp;-scheduling)"></a>3.2 发射和调度(Issuing &amp; Scheduling)</h6><p>在发射阶段期间，指令从指令队列中获取(这些指令是在取指阶段放在指令队列中的)，然后将其置于一个特定cluster的独立调度窗口中。调度包括何时一条指令的输入操作数就绪和何时指令被调度执行。直到被调度，每一条指令都按序(如 in program order)地处于处理器中。在调度和执行中，当指令就绪执行时它们是乱序执行的。之后，在退出阶段(retirement stage)，指令按程序序(program order)被放回。<br>GProcessor对象中的issue()函数从指令队列中获取一定可配置数量的指令并试图将它们放进对应cluster的调度队列中。issue()函数为每条指令调用addInst()函数。如果addInst()函数因为一条指令调用失败，issue()函数返回，且issue()函数于下一个周期中再次尝试发射该条指令。</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/GProcessor.cpp
+int32_t GProcessor::issue(PipeQueue &amp;amp;pipeQ)
+{
+  int32_t i=0; // Instructions executed counter
+  int32_t j=0; // Fake Instructions counter
+//......
+  do{
+    IBucket *bucket = pipeQ.instQueue.top();
+    do{
+      I(!bucket-&amp;gt;empty());
+      if( i &amp;gt;= IssueWidth ) {
+        return i+j;
+      }
+
+      I(!bucket-&amp;gt;empty());
+
+      DInst *dinst = bucket-&amp;gt;top();
+//......
+
+      StallCause c = addInst(dinst);
+      if (c != NoStall) {
+        if (i &amp;lt; RealisticWidth)
+          nStall[c]-&amp;gt;add(RealisticWidth - i);
+        return i+j;
+      }
+      i++;
+
+      bucket-&amp;gt;pop();
+
+    }while(!bucket-&amp;gt;empty());
+
+    pipeQ.pipeLine.doneItem(bucket);
+    pipeQ.instQueue.pop();
+  }while(!pipeQ.instQueue.empty());
+
+  return i+j;
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/GProcessor.cpp</span>
+int32_t GProcessor::issue(PipeQueue &amp;pipeQ)
+{
+  int32_t i=<span class="hljs-number">0</span>; <span class="hljs-comment">// Instructions executed counter</span>
+  int32_t j=<span class="hljs-number">0</span>; <span class="hljs-comment">// Fake Instructions counter</span>
+<span class="hljs-comment">//......</span>
+  do{
+    IBucket *bucket = pipeQ.instQueue.top();
+    do{
+      I(!bucket-&gt;empty());
+      <span class="hljs-keyword">if</span>( i &gt;= IssueWidth ) {
+        <span class="hljs-keyword">return</span> i+j;
+      }
+
+      I(!bucket-&gt;empty());
+
+      DInst *dinst = bucket-&gt;top();
+<span class="hljs-comment">//......</span>
+
+      StallCause c = addInst(dinst);
+      <span class="hljs-keyword">if</span> (c != NoStall) {
+        <span class="hljs-keyword">if</span> (i &lt; RealisticWidth)
+          nStall[c]-&gt;add(RealisticWidth - i);
+        <span class="hljs-keyword">return</span> i+j;
+      }
+      i++;
+
+      bucket-&gt;pop();
+
+    }<span class="hljs-keyword">while</span>(!bucket-&gt;empty());
+
+    pipeQ.pipeLine.doneItem(bucket);
+    pipeQ.instQueue.pop();
+  }<span class="hljs-keyword">while</span>(!pipeQ.instQueue.empty());
+
+  <span class="hljs-keyword">return</span> i+j;
+}
+</code></pre><p>在确认指令可以被发射前，addInst()函数会检查一些事情。检查事项如下：</p><ul>
+<li>reorder buffer中是否还有空间；</li><li>是否存在空闲的目的寄存器；</li><li>对应cluster调度窗口中是否还有空间；</li><li>基于一条指令所使用的确切资源，它执行其他的一些检查。例如，对于loads，它将会确认loads最大数目还未达到；对于分支，它将会确认未完成分支(outstanding branches)的最大数目还未达到。该检查是通过调用该指令的确定Resource类对象的schedule()函数完成的。（Resources的例子是load/store单元或浮点乘法器）。   </li></ul><h6 id="3.2.1-指令间的依赖"><a name="3.2.1-指令间的依赖" href="#3.2.1-指令间的依赖"></a>3.2.1 指令间的依赖</h6><p>如果上述描述的GProcessor类中的addInst()函数执行成功，它会调用确定cluster(该cluster接下来会执行这条指令)的addInst函数。最后，一个该条指令的入口将会被添加到reorder buffer的尾端。<br>为了管理指令间的依赖（如：当一个指令的目的寄存器是另一条指令的源寄存器时），每个Cluster拥有一个DepWindow(dependency window)对象。该对象用于管理指令间的依赖。Cluster类中的addInst()函数接着调用与该Cluster相关联的DepWindow中的addInst()函数。<br>在DepWindow中，指令到目的寄存器的映射表被维护着。该映射表跟踪向每个寄存器进行写操作的的最近指令。当addInst()函数被调用时，向该表中查询被调度指令的源寄存器。指令间存在依赖关系，则可以查询到为该指令产生输入操作数的指令(即该源寄存器真的在映射表中)。当一条指令完成运行，如果映射该条指令的入口仍在表中，则清除该入口。  </p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/Cluster.h
+class Cluster {
+ private:
+//......
+ protected:
+  DepWindow window;
+
+  const int32_t MaxWinSize;
+  int32_t windowSize;
+
+  GProcessor *const gproc;
+//......
+  Resource   *res[MaxInstType];
+
+ protected:
+  void delEntry() {
+    windowSize++;
+    I(windowSize&amp;lt;=MaxWinSize);
+  }
+//......
+ public:
+  void newEntry() {
+    windowSize--;
+    I(windowSize&amp;gt;=0);
+  }
+//......
+}
+
+
+//src/libcore/Cluster.cpp
+void Cluster::addInst(DInst *dinst) 
+{
+  window.addInst(dinst);
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/Cluster.h</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cluster</span> </span>{
+ <span class="hljs-keyword">private</span>:
+<span class="hljs-comment">//......</span>
+ <span class="hljs-keyword">protected</span>:
+  DepWindow window;
+
+  <span class="hljs-keyword">const</span> int32_t MaxWinSize;
+  int32_t windowSize;
+
+  GProcessor *<span class="hljs-keyword">const</span> gproc;
+<span class="hljs-comment">//......</span>
+  Resource   *res[MaxInstType];
+
+ <span class="hljs-keyword">protected</span>:
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">delEntry</span><span class="hljs-params">()</span> </span>{
+    windowSize++;
+    I(windowSize&lt;=MaxWinSize);
+  }
+<span class="hljs-comment">//......</span>
+ <span class="hljs-keyword">public</span>:
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">newEntry</span><span class="hljs-params">()</span> </span>{
+    windowSize--;
+    I(windowSize&gt;=<span class="hljs-number">0</span>);
+  }
+<span class="hljs-comment">//......</span>
+}
+
+
+<span class="hljs-comment">//src/libcore/Cluster.cpp</span>
+<span class="hljs-keyword">void</span> Cluster::addInst(DInst *dinst) 
+{
+  window.addInst(dinst);
+}
+</code></pre><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/DepWindow.cpp
+DepWindow::DepWindow(GProcessor *gp, const char *clusterName)
+  :gproc(gp)
+  ,Id(gp-&amp;gt;getId())
+  ,InterClusterLat(SescConf-&amp;gt;getInt(&quot;cpucore&quot;, &quot;interClusterLat&quot;,gp-&amp;gt;getId()))
+  ,WakeUpDelay(SescConf-&amp;gt;getInt(clusterName, &quot;wakeupDelay&quot;))
+  ,SchedDelay(SescConf-&amp;gt;getInt(clusterName, &quot;schedDelay&quot;))
+  ,RegFileDelay(SescConf-&amp;gt;getInt(&quot;cpucore&quot;, &quot;regFileDelay&quot;))
+  ,nReplay(&quot;Proc(%d)_%s:nReplay&quot;, gp-&amp;gt;getId(), clusterName)
+{
+  char cadena[100];
+  sprintf(cadena,&quot;Proc(%d)_%s&quot;, Id, clusterName);
+
+  resultBusEnergy = new GStatsEnergy(&quot;resultBusEnergy&quot;, cadena , Id, IssuePower
+                                     ,EnergyMgr::get(&quot;resultBusEnergy&quot;,Id));
+
+  forwardBusEnergy = new GStatsEnergy(&quot;forwardBusEnergy&quot;, cadena , Id, IssuePower
+                                      ,EnergyMgr::get(&quot;forwardBusEnergy&quot;,Id));
+
+
+  windowSelEnergy  = new GStatsEnergy(&quot;windowSelEnergy&quot;,cadena, Id, IssuePower
+                                      ,EnergyMgr::get(&quot;windowSelEnergy&quot;,Id));
+
+  windowRdWrEnergy = new GStatsEnergy(&quot;windowRdWrEnergy&quot;, cadena , Id, IssuePower
+                                      ,EnergyMgr::get(&quot;windowRdWrEnergy&quot;,Id));
+
+  windowCheckEnergy = new GStatsEnergy(&quot;windowCheckEnergy&quot;, cadena, Id, IssuePower
+                                       ,EnergyMgr::get(&quot;windowCheckEnergy&quot;,Id));
+
+
+  sprintf(cadena,&quot;Proc(%d)_%s_wakeUp&quot;, Id, clusterName);
+  wakeUpPort = PortGeneric::create(cadena
+                                 ,SescConf-&amp;gt;getInt(clusterName, &quot;wakeUpNumPorts&quot;)
+                                 ,SescConf-&amp;gt;getInt(clusterName, &quot;wakeUpPortOccp&quot;));
+
+  SescConf-&amp;gt;isInt(clusterName, &quot;wakeupDelay&quot;);
+  SescConf-&amp;gt;isBetween(clusterName, &quot;wakeupDelay&quot;, 0, 1024);
+
+  sprintf(cadena,&quot;Proc(%d)_%s_sched&quot;, Id, clusterName);
+  schedPort = PortGeneric::create(cadena
+                                  ,SescConf-&amp;gt;getInt(clusterName, &quot;SchedNumPorts&quot;)
+                                  ,SescConf-&amp;gt;getInt(clusterName, &quot;SchedPortOccp&quot;));
+
+  // Constraints
+  SescConf-&amp;gt;isInt(clusterName    , &quot;schedDelay&quot;);
+  SescConf-&amp;gt;isBetween(clusterName , &quot;schedDelay&quot;, 0, 1024);
+
+  SescConf-&amp;gt;isInt(&quot;cpucore&quot;    , &quot;interClusterLat&quot;,Id);
+  SescConf-&amp;gt;isBetween(&quot;cpucore&quot; , &quot;interClusterLat&quot;, 0, 1024,Id);
+
+  SescConf-&amp;gt;isInt(&quot;cpucore&quot;    , &quot;regFileDelay&quot;);
+  SescConf-&amp;gt;isBetween(&quot;cpucore&quot; , &quot;regFileDelay&quot;, 0, 1024);
+}
+void DepWindow::addInst(DInst *dinst)
+{
+  const Instruction *inst = dinst-&amp;gt;getInst();
+
+  I(dinst-&amp;gt;getResource() != 0); // Resource::schedule must set the resource field
+
+
+
+  if (!dinst-&amp;gt;hasDeps()) {
+    dinst-&amp;gt;setWakeUpTime(wakeUpPort-&amp;gt;nextSlot() + WakeUpDelay);
+    preSelect(dinst);
+  }
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/DepWindow.cpp</span>
+DepWindow::DepWindow(GProcessor *gp, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *clusterName)
+  :gproc(gp)
+  ,Id(gp-&gt;getId())
+  ,InterClusterLat(SescConf-&gt;getInt(<span class="hljs-string">"cpucore"</span>, <span class="hljs-string">"interClusterLat"</span>,gp-&gt;getId()))
+  ,WakeUpDelay(SescConf-&gt;getInt(clusterName, <span class="hljs-string">"wakeupDelay"</span>))
+  ,SchedDelay(SescConf-&gt;getInt(clusterName, <span class="hljs-string">"schedDelay"</span>))
+  ,RegFileDelay(SescConf-&gt;getInt(<span class="hljs-string">"cpucore"</span>, <span class="hljs-string">"regFileDelay"</span>))
+  ,nReplay(<span class="hljs-string">"Proc(%d)_%s:nReplay"</span>, gp-&gt;getId(), clusterName)
+{
+  <span class="hljs-keyword">char</span> cadena[<span class="hljs-number">100</span>];
+  sprintf(cadena,<span class="hljs-string">"Proc(%d)_%s"</span>, Id, clusterName);
+
+  resultBusEnergy = <span class="hljs-keyword">new</span> GStatsEnergy(<span class="hljs-string">"resultBusEnergy"</span>, cadena , Id, IssuePower
+                                     ,EnergyMgr::get(<span class="hljs-string">"resultBusEnergy"</span>,Id));
+
+  forwardBusEnergy = <span class="hljs-keyword">new</span> GStatsEnergy(<span class="hljs-string">"forwardBusEnergy"</span>, cadena , Id, IssuePower
+                                      ,EnergyMgr::get(<span class="hljs-string">"forwardBusEnergy"</span>,Id));
+
+
+  windowSelEnergy  = <span class="hljs-keyword">new</span> GStatsEnergy(<span class="hljs-string">"windowSelEnergy"</span>,cadena, Id, IssuePower
+                                      ,EnergyMgr::get(<span class="hljs-string">"windowSelEnergy"</span>,Id));
+
+  windowRdWrEnergy = <span class="hljs-keyword">new</span> GStatsEnergy(<span class="hljs-string">"windowRdWrEnergy"</span>, cadena , Id, IssuePower
+                                      ,EnergyMgr::get(<span class="hljs-string">"windowRdWrEnergy"</span>,Id));
+
+  windowCheckEnergy = <span class="hljs-keyword">new</span> GStatsEnergy(<span class="hljs-string">"windowCheckEnergy"</span>, cadena, Id, IssuePower
+                                       ,EnergyMgr::get(<span class="hljs-string">"windowCheckEnergy"</span>,Id));
+
+
+  sprintf(cadena,<span class="hljs-string">"Proc(%d)_%s_wakeUp"</span>, Id, clusterName);
+  wakeUpPort = PortGeneric::create(cadena
+                                 ,SescConf-&gt;getInt(clusterName, <span class="hljs-string">"wakeUpNumPorts"</span>)
+                                 ,SescConf-&gt;getInt(clusterName, <span class="hljs-string">"wakeUpPortOccp"</span>));
+
+  SescConf-&gt;isInt(clusterName, <span class="hljs-string">"wakeupDelay"</span>);
+  SescConf-&gt;isBetween(clusterName, <span class="hljs-string">"wakeupDelay"</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1024</span>);
+
+  sprintf(cadena,<span class="hljs-string">"Proc(%d)_%s_sched"</span>, Id, clusterName);
+  schedPort = PortGeneric::create(cadena
+                                  ,SescConf-&gt;getInt(clusterName, <span class="hljs-string">"SchedNumPorts"</span>)
+                                  ,SescConf-&gt;getInt(clusterName, <span class="hljs-string">"SchedPortOccp"</span>));
+
+  <span class="hljs-comment">// Constraints</span>
+  SescConf-&gt;isInt(clusterName    , <span class="hljs-string">"schedDelay"</span>);
+  SescConf-&gt;isBetween(clusterName , <span class="hljs-string">"schedDelay"</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1024</span>);
+
+  SescConf-&gt;isInt(<span class="hljs-string">"cpucore"</span>    , <span class="hljs-string">"interClusterLat"</span>,Id);
+  SescConf-&gt;isBetween(<span class="hljs-string">"cpucore"</span> , <span class="hljs-string">"interClusterLat"</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1024</span>,Id);
+
+  SescConf-&gt;isInt(<span class="hljs-string">"cpucore"</span>    , <span class="hljs-string">"regFileDelay"</span>);
+  SescConf-&gt;isBetween(<span class="hljs-string">"cpucore"</span> , <span class="hljs-string">"regFileDelay"</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1024</span>);
+}
+<span class="hljs-keyword">void</span> DepWindow::addInst(DInst *dinst)
+{
+  <span class="hljs-keyword">const</span> Instruction *inst = dinst-&gt;getInst();
+
+  I(dinst-&gt;getResource() != <span class="hljs-number">0</span>); <span class="hljs-comment">// Resource::schedule must set the resource field</span>
+
+
+
+  <span class="hljs-keyword">if</span> (!dinst-&gt;hasDeps()) {
+    dinst-&gt;setWakeUpTime(wakeUpPort-&gt;nextSlot() + WakeUpDelay);
+    preSelect(dinst);
+  }
+}
+</code></pre><p>上述构造函数中SescConf的定义是<code>SConfig *SescConf=0;</code>，此处便涉及了配置文件的使用。</p><pre class="go hljs"><code class="Go" data-origin="<pre><code class=&quot;Go&quot;>class SConfig:public Config {
+private:
+protected:
+
+  // Redefine the following two methods so that the class works a
+  // little bit different.
+  // 
+  // Instead of the original Config interface I have something a
+  // little bit more specific for the sesc configuration file.  The
+  // first section of the configuration file has variables that
+  // point to sections. Example:
+  // 
+  // bpred = 'myBPredSection'
+  // a = 1
+  // b = 1 
+  // [myBPredSection]
+  // a = 2
+  // c = 2
+  // 
+  // Results for getInt:
+  // getInt(&quot;bpred&quot;,&quot;a&quot;) = 1 // main section overides private section
+  // getInt(&quot;bpred&quot;,&quot;b&quot;) = 1 // only defined in main
+  // getInt(&quot;bpred&quot;,&quot;c&quot;) = 2 // only defined in section
+  // 
+  // Remeber that the environment variable ALWAYS overides local variables:
+  // SESC_a = 7 // highest priority overide (a=7)
+  // SESC_bpred_a = 8 // whould use a = 7 instead. If SESC_a is not defined a = 8
+  // SESC_bpred_c = 7 // highest
+  // SESC_b = 7 
+  // SESC_bpred_b = 7 // unless getInt(&quot;bpred&quot;,&quot;b&quot;) it is ignored
+  // 
+
+  virtual const char *getEnvVar(const char *block,
+                const char *name);
+
+  virtual const Record *getRecord(const char *block,
+                  const char *name,
+                  int32_t vectorPos);
+
+public:
+  SConfig(const char *name);
+
+  std::vector&amp;lt;char *&amp;gt; getSplitCharPtr(const char *block,
+                      const char *name,
+                      int32_t vectorPos=0);
+};
+
+extern SConfig *SescConf;       // declared in SescConf.cpp
+</code></pre>">class SConfig:public Config {
+private:
+protected:
+
+  <span class="hljs-comment">// Redefine the following two methods so that the class works a</span>
+  <span class="hljs-comment">// little bit different.</span>
+  <span class="hljs-comment">// </span>
+  <span class="hljs-comment">// Instead of the original Config interface I have something a</span>
+  <span class="hljs-comment">// little bit more specific for the sesc configuration file.  The</span>
+  <span class="hljs-comment">// first section of the configuration file has variables that</span>
+  <span class="hljs-comment">// point to sections. Example:</span>
+  <span class="hljs-comment">// </span>
+  <span class="hljs-comment">// bpred = 'myBPredSection'</span>
+  <span class="hljs-comment">// a = 1</span>
+  <span class="hljs-comment">// b = 1 </span>
+  <span class="hljs-comment">// [myBPredSection]</span>
+  <span class="hljs-comment">// a = 2</span>
+  <span class="hljs-comment">// c = 2</span>
+  <span class="hljs-comment">// </span>
+  <span class="hljs-comment">// Results for getInt:</span>
+  <span class="hljs-comment">// getInt("bpred","a") = 1 // main section overides private section</span>
+  <span class="hljs-comment">// getInt("bpred","b") = 1 // only defined in main</span>
+  <span class="hljs-comment">// getInt("bpred","c") = 2 // only defined in section</span>
+  <span class="hljs-comment">// </span>
+  <span class="hljs-comment">// Remeber that the environment variable ALWAYS overides local variables:</span>
+  <span class="hljs-comment">// SESC_a = 7 // highest priority overide (a=7)</span>
+  <span class="hljs-comment">// SESC_bpred_a = 8 // whould use a = 7 instead. If SESC_a is not defined a = 8</span>
+  <span class="hljs-comment">// SESC_bpred_c = 7 // highest</span>
+  <span class="hljs-comment">// SESC_b = 7 </span>
+  <span class="hljs-comment">// SESC_bpred_b = 7 // unless getInt("bpred","b") it is ignored</span>
+  <span class="hljs-comment">// </span>
+
+  virtual <span class="hljs-keyword">const</span> char *getEnvVar(<span class="hljs-keyword">const</span> char *block,
+                <span class="hljs-keyword">const</span> char *name);
+
+  virtual <span class="hljs-keyword">const</span> Record *getRecord(<span class="hljs-keyword">const</span> char *block,
+                  <span class="hljs-keyword">const</span> char *name,
+                  int32_t vectorPos);
+
+public:
+  SConfig(<span class="hljs-keyword">const</span> char *name);
+
+  std::vector&lt;char *&gt; getSplitCharPtr(<span class="hljs-keyword">const</span> char *block,
+                      <span class="hljs-keyword">const</span> char *name,
+                      int32_t vectorPos=<span class="hljs-number">0</span>);
+};
+
+extern SConfig *SescConf;       <span class="hljs-comment">// declared in SescConf.cpp</span>
+</code></pre><p>考虑下面的代码片段：</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>x: ld R1,0X1000;读取内存地址0x1000的内容值寄存器R1
+y: add R1,R1,R2
+</code></pre>">x: ld R1,<span class="hljs-number">0X1000</span>;读取内存地址<span class="hljs-number">0x1000</span>的内容值寄存器R1
+y: add R1,R1,R2
+</code></pre><p>上述代码中，指令y依赖于指令x。指令y是消费者，指令x是生产者。在本例中，于指令x上会调用addSrc()函数(在src/libcore/DInst.h中存在两个函数void addSrc1(DInst <em> d)和void addSrc2(DInst </em> d))，此时该函数的参数便是指令y。之后，在运行(execution)阶段，在指令x已经完成执行后，指令x可以唤醒指令y并调度指令y执行。另外，DInst y也会标记自己依赖于一条指令。<br>对于一条没有依赖的指令，指令会被调度执行。这通过生成一个于确定数量的时钟周期内执行Resource类的simTime()函数的回调事件完成。延时取决于固定的调度惩罚和依赖于该Resource的已就绪执行的指令数，因为每一个Resource于一个周期内仅仅可以执行一小固定数量的指令。<br>最后，映射表中的输出操作数将被设置为指向这条被调度的指令（即完成指令到目的寄存器的映射工作）。然后，消耗这个输出操作数的后续指令将依赖于该指令。</p><h6 id="3.3-执行(execution)"><a name="3.3-执行(execution)" href="#3.3-执行(execution)"></a>3.3 执行(Execution)</h6><p>DepWindow对象或者调度一条指令进行执行，或者在必须首先执行的指令中设置指针。<br>对于每一种指令类型，都存在Resource的子类，如下图所示：<br><img src="/images/posts/sescdoc01.png" alt="Resource类的层次图"><br>loads通过FULoad子类处理，stores通过FUStore处理， 其他杂的内存访问通过FUMemory处理，branches通过FUBranch处理，其他的所有指令通过FUGeneric处理。每一个子类都定义了一个simTime()函数，其模拟功能的执行。每一个子类也定义了一个executed()函数，其在执行完成后被调用。分支和整数操作的执行耗费一个时钟周期，浮点操作的运行需要若干个周期，而对内存的操作可能最多要耗费成百上千个周期。<br>Execution是通过Resource对象中的simTime()函数完成的。对于loads,FULoad将发送load到cache。对于stores，它将调度一个对于executed()函数的回调（stores被实际发送到cache是在退出(retirement)阶段，stores可能会沿着一个分支的错误路径进行）。对于所有其他的指令，一个回调会被调度去执行executed()函数。<br><del>executed函数会调用与该Resource相对应的Cluster中的entryExecuted()函数。entryExecuted()函数会调用DepWindow对象中的simTimeAck()函数。<strong>(entryExecuted()和simTimeAck()两个函数都没有找到)。</strong></del>executed函数会调用与该Resource相对应的Cluster中的executed()函数。Cluster中的executed()函数会调用DepWindow对象中的函数首先标记该DInst为executed，故而，之后该指令将被退出。然后，它检查目的寄存器在表中的入口是否仍然存在，如果仍然存在，则清除该入口。之后需要消费该值的指令将不必等待。最后，它调用DepWindow中的executed()函数检查是否存在任意的指令依赖它。再次考虑上面的例子，DInst x 检查到DInst y不再依赖任意的其他指令。然后，通过生成一个对simTime()函数的回调事件使得y被调度执行。</p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/Resource.cpp
+void FULoad::simTime(DInst *dinst)
+{
+  Time_t when = gen-&amp;gt;nextSlot()+lat;
+
+  // The check in the LD Queue is performed always, for hit &amp;amp; miss
+  iAluEnergy-&amp;gt;inc();
+
+  stqCheckEnergy-&amp;gt;inc(); // Check st-ld forwarding
+
+  cluster-&amp;gt;getGProcessor()-&amp;gt;getLSQ()-&amp;gt;executed(dinst);
+  ldqRdWrEnergy-&amp;gt;inc();
+  ldqCheckEnergy-&amp;gt;inc();        
+
+  if (dinst-&amp;gt;isLoadForwarded()) {
+
+    dinst-&amp;gt;doAtExecutedCB.scheduleAbs(when+LSDelay);
+    // forwardEnergy-&amp;gt;inc(); // TODO: CACTI == a read in the STQ
+    nForwarded.inc();
+  }else{
+    if(dinst-&amp;gt;isDeadInst()) {
+      // dead inst, just make it fly through the pipeline
+      dinst-&amp;gt;doAtExecuted();
+    } else {
+      cacheDispatchedCB::scheduleAbs(when, this, dinst);
+    }
+  }
+}
+
+void FULoad::executed(DInst* dinst)
+{
+  Resource::executed(dinst);
+}
+
+void Resource::executed(DInst *dinst)
+{
+  cluster-&amp;gt;executed(dinst);
+}
+
+
+//src/libcore/Cluster.cpp
+void ExecutedCluster::executed(DInst *dinst)
+{
+  dinst-&amp;gt;markExecuted();
+
+  delEntry();
+
+  window.executed(dinst);//window是DepWindow对象
+}
+
+
+//src/libcore/DepWindow.cpp
+// Called when dinst finished execution. Look for dependent to wakeUp
+void DepWindow::executed(DInst *dinst)
+{
+  const Instruction *inst = dinst-&amp;gt;getInst();
+
+#ifdef SESC_BAAD
+  dinst-&amp;gt;setExeTime();
+#endif
+
+
+  //  MSG(&quot;execute [0x%x] @%lld&quot;,dinst, globalClock);
+
+  I(!dinst-&amp;gt;hasDeps());
+
+  resultBusEnergy-&amp;gt;inc();
+  windowCheckEnergy-&amp;gt;inc();
+  windowSelEnergy-&amp;gt;inc();
+  windowRdWrEnergy-&amp;gt;inc();  // Add entry
+  windowRdWrEnergy-&amp;gt;inc();  // check deps
+  windowRdWrEnergy-&amp;gt;inc();  // Remove the entry
+
+  if (!dinst-&amp;gt;hasPending())
+    return;
+
+  if (dinst-&amp;gt;isStallOnLoad())
+    wakeUpDeps(dinst);
+
+  I(dinst-&amp;gt;getResource());
+  const Cluster *srcCluster = dinst-&amp;gt;getResource()-&amp;gt;getCluster();
+
+  // Only until reaches last. The instructions that are from another processor
+  // should be added again to the dependence chain so that MemRequest::ack can
+  // awake them (other processor instructions)
+
+  const DInst *stopAtDst = 0;
+
+  bool replayDetected = false;
+
+  while (dinst-&amp;gt;hasPending()) {
+
+    if (stopAtDst == dinst-&amp;gt;getFirstPending())
+      break;
+    DInst *dstReady = dinst-&amp;gt;getNextPending();
+    I(dstReady);
+
+    if (!dstReady-&amp;gt;isIssued()) {
+      I(dinst-&amp;gt;getInst()-&amp;gt;isStore());
+
+      // Accross processor dependence
+      if (dstReady-&amp;gt;hasDepsAtRetire())
+        dstReady-&amp;gt;clearDepsAtRetire();
+
+      I(!dstReady-&amp;gt;hasDeps());
+      continue;
+    }
+    if (dstReady-&amp;gt;isExecuted()) {
+      // The instruction got executed even though it has dependences. This is
+      // because the instruction got silently killed (killSilently)
+      if (!dstReady-&amp;gt;hasDeps())
+        dstReady-&amp;gt;scrap();
+      continue;
+    }
+
+    if (dstReady-&amp;gt;hasDepsAtRetire() &amp;amp;&amp;amp; dinst-&amp;gt;getInst()-&amp;gt;isStore()) {
+      // Means that there was a memory dependence between this two memory
+      // access, and the they are performed in different processors
+
+      I(dstReady-&amp;gt;isSrc2Ready());
+      I(dstReady-&amp;gt;getInst()-&amp;gt;isLoad());
+
+#ifdef LOG_ENFORCEMENT
+      LOG(&quot;across cluster dependence enforcement (%p) pc=0x%x [addr=0x%x] vs (%p) pc=0x%x [addr=0x%x]&quot;
+            ,dinst
+            ,(int)dinst-&amp;gt;getInst()-&amp;gt;getAddr()   , (int)dinst-&amp;gt;getVaddr()
+            ,dstReady
+            ,(int)dstReady-&amp;gt;getInst()-&amp;gt;getAddr(), (int)dstReady-&amp;gt;getVaddr());
+#endif
+
+    dinst-&amp;gt;addFakeSrc(dstReady, true); // Requeue the instruction at the end
+
+      if (stopAtDst == 0)
+        stopAtDst = dstReady;
+      continue;
+    }
+    GI(dstReady-&amp;gt;hasDepsAtRetire(),!dstReady-&amp;gt;isSrc2Ready());
+
+    if (!dstReady-&amp;gt;hasDeps()) {
+      // Check dstRes because dstReady may not be issued
+      I(dstReady-&amp;gt;getResource());
+      const Cluster *dstCluster = dstReady-&amp;gt;getResource()-&amp;gt;getCluster();
+      I(dstCluster);
+
+      Time_t when = wakeUpPort-&amp;gt;nextSlot();
+      if (dstCluster != srcCluster) {
+        forwardBusEnergy-&amp;gt;inc();
+    when += InterClusterLat;
+      }
+
+      dstReady-&amp;gt;setWakeUpTime(when);
+
+      preSelect(dstReady);
+    }else{
+      if (!replayDetected &amp;amp;&amp;amp; dstReady-&amp;gt;isJustWaitingOnMemory()) {
+    replayDetected = true;
+    //    MSG(&quot;pc=0x%x dinst=%p @%lld&quot;,dinst-&amp;gt;getInst()-&amp;gt;getAddr(), dinst, globalClock);
+    nReplay.inc();
+      }
+    }
+
+
+  }
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/Resource.cpp</span>
+<span class="hljs-keyword">void</span> FULoad::simTime(DInst *dinst)
+{
+  Time_t when = gen-&gt;nextSlot()+lat;
+
+  <span class="hljs-comment">// The check in the LD Queue is performed always, for hit &amp; miss</span>
+  iAluEnergy-&gt;inc();
+
+  stqCheckEnergy-&gt;inc(); <span class="hljs-comment">// Check st-ld forwarding</span>
+
+  cluster-&gt;getGProcessor()-&gt;getLSQ()-&gt;executed(dinst);
+  ldqRdWrEnergy-&gt;inc();
+  ldqCheckEnergy-&gt;inc();        
+
+  <span class="hljs-keyword">if</span> (dinst-&gt;isLoadForwarded()) {
+
+    dinst-&gt;doAtExecutedCB.scheduleAbs(when+LSDelay);
+    <span class="hljs-comment">// forwardEnergy-&gt;inc(); // TODO: CACTI == a read in the STQ</span>
+    nForwarded.inc();
+  }<span class="hljs-keyword">else</span>{
+    <span class="hljs-keyword">if</span>(dinst-&gt;isDeadInst()) {
+      <span class="hljs-comment">// dead inst, just make it fly through the pipeline</span>
+      dinst-&gt;doAtExecuted();
+    } <span class="hljs-keyword">else</span> {
+      cacheDispatchedCB::scheduleAbs(when, <span class="hljs-keyword">this</span>, dinst);
+    }
+  }
+}
+
+<span class="hljs-keyword">void</span> FULoad::executed(DInst* dinst)
+{
+  Resource::executed(dinst);
+}
+
+<span class="hljs-keyword">void</span> Resource::executed(DInst *dinst)
+{
+  cluster-&gt;executed(dinst);
+}
+
+
+<span class="hljs-comment">//src/libcore/Cluster.cpp</span>
+<span class="hljs-keyword">void</span> ExecutedCluster::executed(DInst *dinst)
+{
+  dinst-&gt;markExecuted();
+
+  delEntry();
+
+  window.executed(dinst);<span class="hljs-comment">//window是DepWindow对象</span>
+}
+
+
+<span class="hljs-comment">//src/libcore/DepWindow.cpp</span>
+<span class="hljs-comment">// Called when dinst finished execution. Look for dependent to wakeUp</span>
+<span class="hljs-keyword">void</span> DepWindow::executed(DInst *dinst)
+{
+  <span class="hljs-keyword">const</span> Instruction *inst = dinst-&gt;getInst();
+
+#ifdef SESC_BAAD
+  dinst-&gt;setExeTime();
+#endif
+
+
+  <span class="hljs-comment">//  MSG("execute [0x%x] @%lld",dinst, globalClock);</span>
+
+  I(!dinst-&gt;hasDeps());
+
+  resultBusEnergy-&gt;inc();
+  windowCheckEnergy-&gt;inc();
+  windowSelEnergy-&gt;inc();
+  windowRdWrEnergy-&gt;inc();  <span class="hljs-comment">// Add entry</span>
+  windowRdWrEnergy-&gt;inc();  <span class="hljs-comment">// check deps</span>
+  windowRdWrEnergy-&gt;inc();  <span class="hljs-comment">// Remove the entry</span>
+
+  <span class="hljs-keyword">if</span> (!dinst-&gt;hasPending())
+    <span class="hljs-keyword">return</span>;
+
+  <span class="hljs-keyword">if</span> (dinst-&gt;isStallOnLoad())
+    wakeUpDeps(dinst);
+
+  I(dinst-&gt;getResource());
+  <span class="hljs-keyword">const</span> Cluster *srcCluster = dinst-&gt;getResource()-&gt;getCluster();
+
+  <span class="hljs-comment">// Only until reaches last. The instructions that are from another processor</span>
+  <span class="hljs-comment">// should be added again to the dependence chain so that MemRequest::ack can</span>
+  <span class="hljs-comment">// awake them (other processor instructions)</span>
+
+  <span class="hljs-keyword">const</span> DInst *stopAtDst = <span class="hljs-number">0</span>;
+
+  bool replayDetected = <span class="hljs-keyword">false</span>;
+
+  <span class="hljs-keyword">while</span> (dinst-&gt;hasPending()) {
+
+    <span class="hljs-keyword">if</span> (stopAtDst == dinst-&gt;getFirstPending())
+      <span class="hljs-keyword">break</span>;
+    DInst *dstReady = dinst-&gt;getNextPending();
+    I(dstReady);
+
+    <span class="hljs-keyword">if</span> (!dstReady-&gt;isIssued()) {
+      I(dinst-&gt;getInst()-&gt;isStore());
+
+      <span class="hljs-comment">// Accross processor dependence</span>
+      <span class="hljs-keyword">if</span> (dstReady-&gt;hasDepsAtRetire())
+        dstReady-&gt;clearDepsAtRetire();
+
+      I(!dstReady-&gt;hasDeps());
+      <span class="hljs-keyword">continue</span>;
+    }
+    <span class="hljs-keyword">if</span> (dstReady-&gt;isExecuted()) {
+      <span class="hljs-comment">// The instruction got executed even though it has dependences. This is</span>
+      <span class="hljs-comment">// because the instruction got silently killed (killSilently)</span>
+      <span class="hljs-keyword">if</span> (!dstReady-&gt;hasDeps())
+        dstReady-&gt;scrap();
+      <span class="hljs-keyword">continue</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (dstReady-&gt;hasDepsAtRetire() &amp;&amp; dinst-&gt;getInst()-&gt;isStore()) {
+      <span class="hljs-comment">// Means that there was a memory dependence between this two memory</span>
+      <span class="hljs-comment">// access, and the they are performed in different processors</span>
+
+      I(dstReady-&gt;isSrc2Ready());
+      I(dstReady-&gt;getInst()-&gt;isLoad());
+
+#<span class="hljs-function">ifdef LOG_ENFORCEMENT
+      <span class="hljs-title">LOG</span><span class="hljs-params">(<span class="hljs-string">"across cluster dependence enforcement (%p) pc=0x%x [addr=0x%x] vs (%p) pc=0x%x [addr=0x%x]"</span>
+            ,dinst
+            ,(<span class="hljs-keyword">int</span>)</span>dinst-&gt;<span class="hljs-title">getInst</span><span class="hljs-params">()</span>-&gt;<span class="hljs-title">getAddr</span><span class="hljs-params">()</span>   , <span class="hljs-params">(<span class="hljs-keyword">int</span>)</span>dinst-&gt;<span class="hljs-title">getVaddr</span><span class="hljs-params">()</span>
+            ,dstReady
+            ,<span class="hljs-params">(<span class="hljs-keyword">int</span>)</span>dstReady-&gt;<span class="hljs-title">getInst</span><span class="hljs-params">()</span>-&gt;<span class="hljs-title">getAddr</span><span class="hljs-params">()</span>, <span class="hljs-params">(<span class="hljs-keyword">int</span>)</span>dstReady-&gt;<span class="hljs-title">getVaddr</span><span class="hljs-params">()</span>)</span>;
+#endif
+
+    dinst-&gt;addFakeSrc(dstReady, <span class="hljs-keyword">true</span>); <span class="hljs-comment">// Requeue the instruction at the end</span>
+
+      <span class="hljs-keyword">if</span> (stopAtDst == <span class="hljs-number">0</span>)
+        stopAtDst = dstReady;
+      <span class="hljs-keyword">continue</span>;
+    }
+    GI(dstReady-&gt;hasDepsAtRetire(),!dstReady-&gt;isSrc2Ready());
+
+    <span class="hljs-keyword">if</span> (!dstReady-&gt;hasDeps()) {
+      <span class="hljs-comment">// Check dstRes because dstReady may not be issued</span>
+      I(dstReady-&gt;getResource());
+      <span class="hljs-keyword">const</span> Cluster *dstCluster = dstReady-&gt;getResource()-&gt;getCluster();
+      I(dstCluster);
+
+      Time_t when = wakeUpPort-&gt;nextSlot();
+      <span class="hljs-keyword">if</span> (dstCluster != srcCluster) {
+        forwardBusEnergy-&gt;inc();
+    when += InterClusterLat;
+      }
+
+      dstReady-&gt;setWakeUpTime(when);
+
+      preSelect(dstReady);
+    }<span class="hljs-keyword">else</span>{
+      <span class="hljs-keyword">if</span> (!replayDetected &amp;&amp; dstReady-&gt;isJustWaitingOnMemory()) {
+    replayDetected = <span class="hljs-keyword">true</span>;
+    <span class="hljs-comment">//    MSG("pc=0x%x dinst=%p @%lld",dinst-&gt;getInst()-&gt;getAddr(), dinst, globalClock);</span>
+    nReplay.inc();
+      }
+    }
+
+
+  }
+}
+</code></pre><h6 id="3.4-退出(retirement)"><a name="3.4-退出(retirement)" href="#3.4-退出(retirement)"></a>3.4 退出(Retirement)</h6><p>在乱序处理器流水线的退出阶段，已经执行过的指令从reorder buffer的头部按原始的程序序(program order)被移除。典型地，每个周期最多3到4条指令可被移除。对于大部分指令来说，一旦它们执行完成并已到达reorder buffer的头部，它们总是会被移除。然而，stores直到退出阶段才被实际发送到cache。如果此时cache不能接受该store，该store将不能退出。  </p><p>在SESC中，GProcessor对象于每个周期调用一次retire()函数。retire()函数取走reorder buffer头部的DInst(the DInst is the oldest instruction)，并检查它是否可以被退出。首先，该函数通过检查executed标志(如上所述，该标志在执行阶段被设置)来确定该指令是否已经被执行。然后，它调用Resource对象的retire()函数去处理那条指令。  </p><p>Resource对象的retire()函数返回一个成功代码指示该指令是否可以被退出。对于所有的指令除了stores外，指令总是可以被退出的。对于stores，retire()函数检查cache是否可以接受这个store，然后返回对应的代码。如果存在太多的未完成的stores(outstanding stores)或者如果存在内存保护的话，cache可能不能接受这个store。如果cache可以接受该store，一个内存请求将被发送到该cache用于store，接着，该指令便可以被退出。  </p><p>Resource对象中的retire()函数也负责销毁该DInst对象。  </p><p>在GProcessor对象中，retire()函数很适合用于检查何时处理器因为指令太多而导致停顿（如处理器不再退出指令）。如果一个处理器停顿太久，这很可能表明存在bug。  </p><pre class="java hljs"><code class="Java" data-origin="<pre><code class=&quot;Java&quot;>//src/libcore/GProcessor.cpp
+void GProcessor::retire()
+{
+    //......
+  robUsed.sample(ROB.size());
+
+  ushort i;
+
+  for(i=0;i&amp;lt;RetireWidth &amp;amp;&amp;amp; !ROB.empty();i++) {
+    DInst *dinst = ROB.top();
+
+    if( !dinst-&amp;gt;isExecuted() ) {
+      addStatsNoRetire(i, dinst, NotExecuted);
+      return;
+    }
+
+    // save it now because retire can destroy DInst
+    int32_t rp = dinst-&amp;gt;getInst()-&amp;gt;getDstPool();
+
+    bool fake = dinst-&amp;gt;isFake();
+
+    I(dinst-&amp;gt;getResource());
+    RetOutcome retOutcome = dinst-&amp;gt;getResource()-&amp;gt;retire(dinst);
+    if( retOutcome != Retired) {
+      addStatsNoRetire(i, dinst, retOutcome);
+      return;
+    }
+    //......
+}
+
+//src/libcore/Resource.cpp
+enum RetOutcome {
+  Retired=0,
+  NotExecuted,
+  NotFinished,   // for loads only
+  NoCacheSpace,  // for stores and ifetch ops only
+  NoCachePorts,  // for stores only
+  WaitForFence,  // for ifetch ops only
+  MaxRetOutcome
+};
+RetOutcome Resource::retire(DInst *dinst)
+{
+  cluster-&amp;gt;retire(dinst);
+  dinst-&amp;gt;destroy();
+  return Retired;
+}
+
+//src/libcore/Cluster.cpp
+//retire()函数在Cluster类中是虚函数，ExecutedCluster是Cluster的子类。
+void ExecutedCluster::retire(DInst *dinst)
+{
+//......
+  winNotUsed.sample(windowSize);
+  // Nothing
+}
+</code></pre>"><span class="hljs-comment">//src/libcore/GProcessor.cpp</span>
+<span class="hljs-keyword">void</span> GProcessor::retire()
+{
+    <span class="hljs-comment">//......</span>
+  robUsed.sample(ROB.size());
+
+  ushort i;
+
+  <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;RetireWidth &amp;&amp; !ROB.empty();i++) {
+    DInst *dinst = ROB.top();
+
+    <span class="hljs-keyword">if</span>( !dinst-&gt;isExecuted() ) {
+      addStatsNoRetire(i, dinst, NotExecuted);
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-comment">// save it now because retire can destroy DInst</span>
+    int32_t rp = dinst-&gt;getInst()-&gt;getDstPool();
+
+    bool fake = dinst-&gt;isFake();
+
+    I(dinst-&gt;getResource());
+    RetOutcome retOutcome = dinst-&gt;getResource()-&gt;retire(dinst);
+    <span class="hljs-keyword">if</span>( retOutcome != Retired) {
+      addStatsNoRetire(i, dinst, retOutcome);
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-comment">//......</span>
+}
+
+<span class="hljs-comment">//src/libcore/Resource.cpp</span>
+<span class="hljs-keyword">enum</span> RetOutcome {
+  Retired=<span class="hljs-number">0</span>,
+  NotExecuted,
+  NotFinished,   <span class="hljs-comment">// for loads only</span>
+  NoCacheSpace,  <span class="hljs-comment">// for stores and ifetch ops only</span>
+  NoCachePorts,  <span class="hljs-comment">// for stores only</span>
+  WaitForFence,  <span class="hljs-comment">// for ifetch ops only</span>
+  MaxRetOutcome
+};
+RetOutcome Resource::retire(DInst *dinst)
+{
+  cluster-&gt;retire(dinst);
+  dinst-&gt;destroy();
+  <span class="hljs-keyword">return</span> Retired;
+}
+
+<span class="hljs-comment">//src/libcore/Cluster.cpp</span>
+<span class="hljs-comment">//retire()函数在Cluster类中是虚函数，ExecutedCluster是Cluster的子类。</span>
+<span class="hljs-keyword">void</span> ExecutedCluster::retire(DInst *dinst)
+{
+<span class="hljs-comment">//......</span>
+  winNotUsed.sample(windowSize);
+  <span class="hljs-comment">// Nothing</span>
+}
+</code></pre>
+
+<footer style="position:fixed; font-size:.8em; text-align:right; bottom:0px; margin-left:-25px; height:20px; width:100%;">generated by <a href="http://pad.haroopress.com" target="_blank">haroopad</a></footer>
+</body>
+</html>
