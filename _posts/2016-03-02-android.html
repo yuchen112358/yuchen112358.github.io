@@ -70,6 +70,16 @@ sudo ln -s /usr/bin/g++-4.4 /usr/bin/g++
 
 g++ -v
 </code></pre><blockquote>
+
+<h5 id="关于gettex相关函数未定义"><a name="关于gettex相关函数未定义" href="#关于gettex相关函数未定义"></a>关于gcc和g++降级</h5>
+
+<p><h6>两个解决方案如下：</h6></p>
+<ul>
+<li>在其对应的Makefile文件中加上一句<code>LDFLAGS+= -lintl</code></li>
+<li>将gcc/g++降级到4.4版本</code></li>
+</ul>
+  
+
 <h5 id="安装jdk-1.6"><a name="安装jdk-1.6" href="#安装jdk-1.6"></a>安装JDK 1.6</h5>
 </blockquote><ul>
 <li><a href="http://jingyan.baidu.com/article/2d5afd69f1f6b985a3e28e4f.html" title="百度经验">安装步骤链接</a></li></ul><h4 id="6\.解决编译错误参考链接"><a name="6\.解决编译错误参考链接" href="#6\.解决编译错误参考链接"></a>6.解决编译错误参考链接</h4><ul>
