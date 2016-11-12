@@ -29,6 +29,7 @@ tags:
 ```
 .tar.gz 和 .tgz
 解压：tar zxvf FileName.tar.gz
+解压（指定解压目录）：tar -C /work/Odroid -xzf FileName.tar.gz
 压缩：tar zcvf FileName.tar.gz DirName
 ```
 
