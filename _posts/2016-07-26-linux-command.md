@@ -319,7 +319,29 @@ mount -o rw,remount /system
 mount -o ro,remount /system
 ```
 
+### 九.远程命令
 
+##### 1）远程登录
+
+```bash
+# 基本用法
+ssh user@host
+# 若本地用户名与远程用户名一致，登录时可以省略用户名
+ssh host
+# 指定端口
+ssh -p 2222 user@host
+```
+
+##### 2）远程复制文件
+
+```bash
+# 上传文件
+scp 需要上传的文件路径  user@host:/dir
+# 下载文件
+scp user@host:/dir 要拷贝到的地方
+# 指定端口
+scp -P 2222 user@host:/dir   要拷贝到的地方
+```
 
 
 
