@@ -79,6 +79,30 @@ plt.show()
 
 ![png](/images/posts/python/output_10_0.png)
 
+#### 柱状图
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+plt.rc('font', family='SimHei', size=13)
+ 
+num = np.array([13325, 9403, 9227, 8651])
+ratio = np.array([0.75, 0.76, 0.72, 0.75])
+men = num * ratio
+women = num * (1-ratio)
+x = ['A','B','C\nC','D']
+ 
+width = 0.5
+idx = np.arange(len(x))
+plt.bar(idx, men, width, color='red', label='Male')
+plt.bar(idx, women, width, bottom=men, color='yellow', label='Female')
+plt.xlabel('Type')
+plt.ylabel('Distribution')
+plt.xticks(idx+width/2, x, rotation=40)
+plt.legend()
+```
+
+![png](/images/posts/python/output_34_1.png)
 
 #### 折线图
 
@@ -211,19 +235,19 @@ x=np.arange(1,100)
 
 plt.subplot(221)  # 2行2列第1个图
 
-plt.plot(x,x)
+plt.plot(x,x,'r*')
 
 plt.subplot(222)
 
-plt.plot(x,-x)
+plt.plot(x,-x,'g.')
 
 plt.subplot(223)
 
-plt.plot(x,x*x)
+plt.plot(x,x*x,'b+')
 
 plt.subplot(224)
 
-plt.plot(x,np.log(x))
+plt.plot(x,np.log(x),'y^')
 
 plt.show()
 ```
