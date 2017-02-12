@@ -177,7 +177,7 @@ plt.show()
 
 ## 二、图像的调整
 
-#### 1、23种点形状
+#### 1、20余种点形状
 
 > `"."  point     ","  pixel     "o" circle      "v" triangle_down`
 
