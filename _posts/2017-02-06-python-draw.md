@@ -84,7 +84,7 @@ plt.show()
 ```python
 import matplotlib.pyplot as plt
 import numpy as np
-plt.rc('font', family='SimHei', size=13)
+plt.rc('font', family='Arial', size=9)
  
 num = np.array([13325, 9403, 9227, 8651])
 ratio = np.array([0.75, 0.76, 0.72, 0.75])
@@ -100,9 +100,10 @@ plt.xlabel('Type')
 plt.ylabel('Distribution')
 plt.xticks(idx+width/2, x, rotation=40)
 plt.legend()
+plt.savefig('images/bar.eps', format='eps',dpi=1000)
 ```
 
-![png](/images/posts/python/output_34_1.png)
+![png](/images/posts/python/output_34_0.png)
 
 #### 折线图
 
