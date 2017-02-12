@@ -235,19 +235,19 @@ x=np.arange(1,100)
 
 plt.subplot(221)  # 2行2列第1个图
 
-plt.plot(x,x,'r*')
+plt.plot(x,x,'r-*')
 
 plt.subplot(222)
 
-plt.plot(x,-x,'g.')
+plt.plot(x,-x,'g--.')
 
 plt.subplot(223)
 
-plt.plot(x,x*x,'b+')
+plt.plot(x,x*x,'b-.+')
 
 plt.subplot(224)
 
-plt.plot(x,np.log(x),'y^')
+plt.plot(x,np.log(x),'y:^')
 
 plt.show()
 ```
@@ -266,7 +266,10 @@ import numpy as np
 
 y=np.arange(1,5)
 
-plt.plot(y,y*2)
+plt.plot(y,y,'r-p')
+plt.plot(y,y*2,'g--s')
+plt.plot(y,y*3,'b-..')
+plt.plot(y,y*4,'k:x')
 
 plt.grid(True,color='g',linestyle='--',linewidth='1')
 
