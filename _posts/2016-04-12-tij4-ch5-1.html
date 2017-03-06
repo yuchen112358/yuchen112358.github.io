@@ -40,7 +40,7 @@ int: 99, String: Int first
 <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span></span>{
     f();
 }
-</pre><p><code>f();</code>行不需要利用返回值，仅仅是调用该函数，得到其他效果。</p><h5 id="4.关于方法重载的传参"><a name="4.关于方法重载的传参" href="#4.关于方法重载的传参"></a>4.关于方法重载的传参</h5><ul>
+</pre><p><code>f();</code>不需要利用返回值，仅仅是调用该函数，得到其他效果。</p><h5 id="4.关于方法重载的传参"><a name="4.关于方法重载的传参" href="#4.关于方法重载的传参"></a>4.关于方法重载的传参</h5><ul>
 <li>整型常量被当做int值处理，即选择接受int型参数的方法。</li><li>如果传入的数据类型（实际参数类型）小于方法中声明的形式参数类型，实际数据类型就会被提升。</li><li>char型略有不同，如果无法找到恰好接受char型参数的方法，就会把char直接提升至int型。</li><li>方法接受较小的基本类型作为参数。如果传入的实际参数较大，就得通过强制类型转换来执行窄化转换，否则，编译器会报错。</li></ul><h5 id="5.默认构造器"><a name="5.默认构造器" href="#5.默认构造器"></a>5.默认构造器</h5><ul>
 <li>如果你写的类中没有构造器，则编译器会自动帮你创建一个默认构造器。</li><li>但是，如果已经定义了一个构造器（无论是否有参数），编译器就不会帮你自动创建默认构造器。</li></ul><h5 id="6.this关键字"><a name="6.this关键字" href="#6.this关键字"></a>6.this关键字</h5><p>可以在一条语句中定义类对象：</p><pre class="java hljs">Banana a = <span class="hljs-keyword">new</span> Banana(),
        b = <span class="hljs-keyword">new</span> Banana();

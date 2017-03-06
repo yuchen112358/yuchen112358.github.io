@@ -112,7 +112,7 @@ tags:
   String s = <span class="hljs-keyword">new</span> String(<span class="hljs-string">"a string"</span>);
   <span class="hljs-comment">//end of scope</span>
 }
-</code></pre><p>上述代码中，引用s在作用域终点就消失了。然而，s指向的String对象仍继续占据内存空间。虽然如此，但是在这段代码中，我们无法在这个作用域之外访问这个对象，因为对它唯一的引用已经超出了作用域的范围。在程序执行过程中，需要传递和复制对象引用，以便继续使用对象。是谁证明，由new创建的对象，只要你需要，就会一直保留下去。Java有一个<strong>垃圾回收器</strong>，用来监视用new创建的所有对象，并辨别那些不会再被引用的对象，之后释放这些对象的内存空间，以便供其他新的对象使用。</p><p>16.类包括两种类型的元素：字段和方法。如果字段是对某个对象的引用，那么必须初始化该引用，以便使其与一个实际的对象（使用new来实现）相关联。若类的某个成员是基本数据类型，即使没有进行初始化，Java也会确保它获得一个默认值，如下表所示：</p><table>
+</code></pre><p>上述代码中，引用s在作用域终点就消失了。然而，s指向的String对象仍继续占据内存空间。虽然如此，但是在这段代码中，我们无法在这个作用域之外访问这个对象，因为对它唯一的引用已经超出了作用域的范围。在程序执行过程中，需要传递和复制对象引用，以便继续使用对象。事实证明，由new创建的对象，只要你需要，就会一直保留下去。Java有一个<strong>垃圾回收器</strong>，用来监视用new创建的所有对象，并辨别那些不会再被引用的对象，之后释放这些对象的内存空间，以便供其他新的对象使用。</p><p>16.类包括两种类型的元素：字段和方法。如果字段是对某个对象的引用，那么必须初始化该引用，以便使其与一个实际的对象（使用new来实现）相关联。若类的某个成员是基本数据类型，即使没有进行初始化，Java也会确保它获得一个默认值，如下表所示：</p><table>
 <thead>
 <tr>
 <th style="text-align:left">基本类型</th>
@@ -149,7 +149,7 @@ tags:
 <td style="text-align:center">0.0f</td>
 </tr>
 <tr>
-<td style="text-align:left">fouble</td>
+<td style="text-align:left">double</td>
 <td style="text-align:center">0.0d</td>
 </tr>
 </tbody>
@@ -164,7 +164,7 @@ tags:
 @see fully-qualified-classname
 @see fully-qualified-classname#method-name</p>
 </blockquote>
-</blockquote><p>注意：使用“@see”，文档中会出现“See Also”超链接文本</p><p><strong class="highlight">2）@{@link package.class#member label}</strong></p><blockquote>
+</blockquote><p>注意：使用“@see”，文档中会出现“See Also”超链接文本</p><p><strong class="highlight">2）{@link package.class#member label}</strong></p><blockquote>
 <p>该标签与@see极其类似，只是它用于行内，并且是用”label”作为超链接文本而不是“See Also”。</p>
 </blockquote><p><strong class="highlight">3）@docRoot</strong></p><blockquote>
 <p>该标签产生到文档根目录的相对路径，用于文档树页面的显示超链接。</p>
@@ -181,7 +181,7 @@ tags:
 “author-information”是你的姓名，但是也可以包括电子邮件地址或其他任何适宜的信息。
 如果javadoc命令行使用了“-author”标记，那么就会从生成的HTML文档中特别提取出作者信息。
 可以使用多个标签以便列出所有作者，但是它们必须是连续放置。</p>
-</blockquote><p><strong class="highlight">7）since</strong></p><blockquote>
+</blockquote><p><strong class="highlight">7）@since</strong></p><blockquote>
 <p>该标签允许你指定程序代码最早使用的版本，可以在HTML Java文档中看到它被用来指定所用的JDK版本的情况。</p>
 </blockquote><p><strong class="highlight">8）@param</strong></p><blockquote>
 <p>该标签用于方法文档，格式如下：
