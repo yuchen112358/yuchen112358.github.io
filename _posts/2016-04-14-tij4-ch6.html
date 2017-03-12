@@ -45,7 +45,7 @@ private的运用示例：可能想控制如何创建对象，并阻止别人直�
 </pre><p>上述示例中，不能通过构造器来创建Sundae对象，而必须调用makeASundae()方法来达到此目的。  </p><ul>
 <li><strong>说明：</strong>除非必须公开底层实现细目（此种境况很少），否则就应该将所有的域指定为private。</li><li>However, just because a reference to an object is private inside a class doesn’t mean that some other object can’t have a public reference to the same object.（如何理解此句话？）</li></ul><h6 id="protected：继承访问权限"><a name="protected：继承访问权限" href="#protected：继承访问权限"></a>protected：继承访问权限</h6><ul>
 <li>如果创建了一个新包，并在该新包中创建一个类（子类）继承另一个包中的某个类（基类），那么唯一可以访问基类的成员就是其public成员和protected成员（当然，如果在同一个包内执行继承工作，就可以操纵所有的拥有包访问权限的成员）。</li><li>protected也提供包访问权限，即相同包内的其他所有类可以访问protected元素。</li></ul><h6 id="小结：访问权限示意图"><a name="小结：访问权限示意图" href="#小结：访问权限示意图"></a>小结：访问权限示意图</h6><p><img src="/images/posts/tij_access01.png" alt="访问权限示意图">  </p><h5 id="4.接口和实现"><a name="4.接口和实现" href="#4.接口和实现"></a>4.接口和实现</h5><ul>
-<li>访问权限的控制常被称为是具体实现的隐藏。把数据和方法包装进类中，以及具体实现的隐藏，行共同被称作是封装。其结果是一个同时带有特征和行为的数据类型。  </li><li>为了清楚起见，可能会采用一种将public成员置于开头，后面紧跟protected、包访问权限和private成员的创建类形式。示例如下：  <pre data-origin="public class OrganizedByAccess {
+<li>访问权限的控制常被称为是具体实现的隐藏。把数据和方法包装进类中，以及具体实现的隐藏，这些共同被称作是封装。其结果是一个同时带有特征和行为的数据类型。  </li><li>为了清楚起见，可能会采用一种将public成员置于开头，后面紧跟protected、包访问权限和private成员的创建类形式。示例如下：  <pre data-origin="public class OrganizedByAccess {
 public void pub1() { /* ... */ }
 public void pub2() { /* ... */ }
 public void pub3() { /* ... */ }
