@@ -31,7 +31,7 @@ sudo apt-get –purge remove xserver-xorg-video-nouveau
 
 重启系统`sudo reboot`，按ctrl+alt+F1进入命令行界面(tty1),执行如下命令：
 
-不要按照上面打进行，之前卸载工作按照[http://www.linuxidc.com/Linux/2016-12/138907.htm]来。
+不要按照上面的步骤进行，之前卸载工作按照[http://www.linuxidc.com/Linux/2016-12/138907.htm]来。
 
 检查nouveau driver确保没有被加载: 
 
