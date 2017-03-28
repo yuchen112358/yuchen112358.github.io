@@ -29,9 +29,11 @@ sudo apt-get –purge remove nvidia-*(需要清除干净)
 sudo apt-get –purge remove xserver-xorg-video-nouveau
 ```
 
-重启系统`sudo reboot`，按ctrl+alt+F1进入命令行界面(tty1),执行如下命令：  
+重启系统`sudo reboot`，按ctrl+alt+F1进入命令行界面(tty1),执行如下命令：
 
-检查nouveau driver确保没有被加载:  
+之前安装卸载工作安装[http://www.linuxidc.com/Linux/2016-12/138907.htm]来。
+
+检查nouveau driver确保没有被加载: 
 
 ```
 lsmod | grep nouveau
