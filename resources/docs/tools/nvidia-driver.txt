@@ -52,6 +52,9 @@ sudo ./NVIDIA-Linux-x86_64-367.44.run --update
 sudo ./NVIDIA-Linux-x86_64-367.44.run --uninstall
 ```
 
+cd /etc/apt/sources.list.d/
+ll
+rm 要删除的ppa文件
 
 使用如下命令安装CUDA
 
