@@ -69,6 +69,6 @@ sudo apt-get install -y cuda
 
 ```
 sudo apt-get remove --purge nvidia-352
-```
-
+```删掉之后发现显卡驱动没有了，只能再次运行下面的命令了：
+sudo ./NVIDIA-Linux-x86_64-367.44.run --update
 [^1]: http://www.wxhp.org/ubuntu-install-nvidia-official-drivers.html
