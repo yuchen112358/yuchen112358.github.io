@@ -62,7 +62,7 @@ disqus_username: yuchen112358
 # Baidu Analytics
 ba_track_id: 13c9a2dba777da336a571899406669ca #要改
 # Google Analytics
-ga_track_id: 'UA-81223678-3'            # Format: UA-xxxxxx-xx 要改
+ga_track_id: 'UA-81223678-1'            # Format: UA-xxxxxx-xx 要改
 ga_domain: yuchen112358.github.io
 
 
