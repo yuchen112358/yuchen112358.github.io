@@ -5,7 +5,7 @@ header-img: img/home-bg.jpg
 email: wzzju@mail.ustc.edu.cn
 description: "低功耗、Power efficiency | 王震，Linux Kernel & Android Lover | 这里是@YuChen王震的个人博客"
 keyword: "王震,yuchen,YuChen,王震的博客,YuChen's Blog"
-url: "http://www.wzzju.top"              # your host, for absolute URL
+url: "https://yuchen112358.github.io"              # your host, for absolute URL
 baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
@@ -63,7 +63,7 @@ disqus_username: yuchen112358
 ba_track_id: 13c9a2dba777da336a571899406669ca #要改
 # Google Analytics
 ga_track_id: 'UA-81223678-3'            # Format: UA-xxxxxx-xx 要改
-ga_domain: www.wzzju.top
+ga_domain: yuchen112358.github.io
 
 
 
